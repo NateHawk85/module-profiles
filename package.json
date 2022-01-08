@@ -25,6 +25,17 @@
   },
   "homepage": "https://github.com/NateHawk85/module-profiles#readme",
   "devDependencies": {
-    "jest": "^27.3.1"
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "jest": "^27.3.1",
+    "jest-when": "^3.5.0"
+  },
+  "jest": {
+    "setupFiles": [
+      "./src/tests/mocks/mock-foundry.js"
+    ]
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.16.3"
   }
 }

@@ -9,7 +9,10 @@
   "system": [
     "dnd5e"
   ],
+  "styles": [
+    "src/styles/module-profiles-styles.css"
+  ],
   "esmodules": [
-    "./scripts/main.js"
+    "./src/scripts/main.js"
   ]
 }

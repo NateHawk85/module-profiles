@@ -1,24 +1,53 @@
-<form>
-    <nav class="tabs" data-group="primary-tabs">
-        {{#each tabs}}
-            <a class="item" data-tab="{{label}}"><i class="fas fa-dice-d20"></i> {{title}}</a>
-        {{/each}}
-    </nav>
+<form id="module-profiles-management-window">
+	<!------------------------------ Header ------------------------------>
+	<h2 class="module-profiles-header">Manage Module Profiles</h2>
+	<hr>
 
-    <b>Fixed header</b><br>
-    {{header}}
-    <hr>
+	<!------------------------------ Content ------------------------------>
+	<div class="flexrow right-aligned">
+		<button>
+			<i class="fa fa-file-import"></i> Import Profile(s)
+		</button>
+		<button>
+			<i class="fa fa-file-export"></i> Export All Profiles
+		</button>
+	</div>
+	<table id="module-profiles-list">
+		<thead>
+		<tr class="flexrow">
+			<td class="profile-name-column">Profile Name</td>
+			<td class="icon-column">Activate</td>
+			<td class="icon-column">Edit</td>
+			<td class="icon-column">Duplicate</td>
+			<td class="icon-column">Export</td>
+			<td class="icon-column">Delete</td>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each things}}
+			<tr class="flexrow"> <!-- TODO - highlight active profile -->
+				<td class="profile-name-column">{{title}}</td>
+				<td class="icon-column"><a class="fa fa-power-off"></a></td> <!-- TODO - prompt user 'are you sure? any changes made to the current profile will be unsaved -->
+				<td class="icon-column"><a class="fa fa-edit"></a></td> <!-- TODO - pop open window to edit name of profile + selected module list -->
+				<td class="icon-column"><a class="fa fa-copy"></a></td> <!-- TODO - copy module profile, with '(Copy) at the end -->
+				<td class="icon-column"><a class="fa fa-file-export"></a></td> <!-- TODO -->
+				<td class="icon-column"><a class="fa fa-trash"></a></td> <!-- TODO -->
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+	<div class="flexrow right-aligned">
+		<a><i class="fa fa-plus"></i> <b>Add New</b></a>
+	</div>
 
-    <section class="content">
-        {{#each tabs}}
-            <div class="tab" data-tab="{{label}}" data-group="primary-tabs">
-                Fixed content for tab {{title}}<br>
-                {{{content}}}
-            </div>
-        {{/each}}
-    </section>
-
-    <hr>
-    Fixed <em>footer</em><br>
-    {{footer}}
+	<!------------------------------ Footer ------------------------------>
+	<hr>
+	<div class="flexrow">
+		<button type="submit" name="submit">
+			<i class="fa fa-check"></i> Save Changes
+		</button>
+		<button type="submit" name="submit">
+			<i class="fa fa-ban"></i> Cancel
+		</button>
+	</div>
 </form>
