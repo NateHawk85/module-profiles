@@ -67,21 +67,18 @@ export function retrieveAllProfiles()
 	return SettingsUtils.getSetting(SettingKey.PROFILES);
 }
 
-// TODO
-export function retrieveProfile(profileId)
+// TODO - this needs fixed
+export function retrieveProfile(profileName)
 {
-	return retrieveAllProfiles()[profileId];
+	return retrieveAllProfiles()[profileName];
 }
 
 // TODO
 //	- expect data in this format
 //	{
-//		id: String,
 //		name: String
 //		modules: Object (module list)
 //	}
-
-
 /**
  * Saves the current profile settings.
  * @param {string} profileId
@@ -100,9 +97,9 @@ export function updateProfile(updatedProfile)
 }
 
 // TODO
-export function updateActiveProfileId(profileId)
+export function updateActiveProfileName(profileName)
 {
-	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileId);
+	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
 }
 
 
@@ -127,7 +124,7 @@ function buildDefaultProfile()
 // TODO
 export function resetProfiles()
 {
-	updateActiveProfileId([DEFAULT_PROFILE_NAME]).then(() =>
+	updateActiveProfileName([DEFAULT_PROFILE_NAME]).then(() =>
 	{
 		return SettingsUtils.setSetting(SettingKey.PROFILES, undefined);
 	});

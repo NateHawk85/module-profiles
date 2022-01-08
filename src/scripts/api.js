@@ -4,13 +4,12 @@ import * as Settings from './settings.js';
 export function registerApi()
 {
 	const api = {
-		retrieveActiveProfileId: Settings.retrieveActiveProfileId,
-		retrieveSavedActiveProfile: Settings.retrieveActiveProfile,
+		retrieveActiveProfile: Settings.retrieveActiveProfile,
 		retrieveAllProfiles: Settings.retrieveAllProfiles,
 		retrieveProfile: Settings.retrieveProfile,
 		updateProfile: Settings.updateProfile,
 		retrieveCurrentModuleConfiguration: Settings.retrieveCurrentModuleConfiguration,
-		updateActiveProfileId: Settings.updateActiveProfileId,
+		updateActiveProfileId: Settings.updateActiveProfileName,
 		resetProfiles: Settings.resetProfiles
 	};
 
