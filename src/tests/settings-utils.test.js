@@ -1,4 +1,5 @@
 import * as SettingsUtils from '../scripts/settings-utils.js';
+import {when} from 'jest-when';
 
 const MODULE_NAME = 'module-profiles';
 
@@ -15,9 +16,9 @@ describe('getSetting', () =>
 	test.each(['a setting value', {hey: 'another object setting value'}])
 		('WHEN called THEN returns what game.settings.get returns: %s', (value) =>
 		{
-			game.settings.get.mockReturnValue(value);
+			when(game.settings.get).calledWith(MODULE_NAME, 'key').mockReturnValue(value);
 
-			expect(SettingsUtils.getSetting('key')).toBe(value);
+			expect(SettingsUtils.getSetting('key')).toStrictEqual(value);
 		});
 });
 
@@ -37,9 +38,9 @@ describe('setSetting', () =>
 	test.each(['a value', 'another value'])
 		('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
 		{
-			game.settings.set.mockReturnValue(value);
+			when(game.settings.set).calledWith(MODULE_NAME, 'key', 'value').mockReturnValue(value);
 
-			expect(SettingsUtils.setSetting('key', 'value')).toBe(value);
+			expect(SettingsUtils.setSetting('key', 'value')).toStrictEqual(value);
 		});
 });
 

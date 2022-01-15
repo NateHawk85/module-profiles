@@ -42,18 +42,18 @@ export function registerSettings()
 
 /**
  * Gets the currently active modules from the core game settings.
- * @returns {any}
+ * @returns {any} - The currently-active module configuration.
  */
-export function retrieveCurrentModuleConfiguration()
+export function getCurrentModuleConfiguration()
 {
 	return game.settings.get('core', 'moduleConfiguration');
 }
 
 /**
  * Gets the saved, currently-active module profile from the game settings.
- * @returns {any}
+ * @returns {*} - The currently-active module profile.
  */
-export function retrieveActiveProfile()
+export function getActiveProfile()
 {
 	const activeProfileName = SettingsUtils.getSetting(SettingKey.ACTIVE_PROFILE_NAME);
 	const profiles = SettingsUtils.getSetting(SettingKey.PROFILES);
@@ -61,59 +61,87 @@ export function retrieveActiveProfile()
 	return profiles.find(profile => profile.name === activeProfileName);
 }
 
-// TODO
-export function retrieveAllProfiles()
+/**
+ * Gets a saved profile from the game settings with the corresponding name.
+ * @param profileName {String} - The name of the profile to return.
+ * @returns {*}
+ */
+export function getProfileByName(profileName)
+{
+	const profiles = getAllProfiles();
+
+	return profiles.find(profile => profile.name === profileName);
+}
+
+/**
+ * Gets the array of all saved profiles from the game settings.
+ * @returns {Array<*>} - An array of the saved module profiles.
+ */
+export function getAllProfiles()
 {
 	return SettingsUtils.getSetting(SettingKey.PROFILES);
 }
 
-// TODO - this needs fixed
-export function retrieveProfile(profileName)
+/**
+ * Sets the active profile name within the game settings.
+ * @param profileName {String} - The name of the profile to get.
+ * @returns {Promise<*>}
+ */
+export function setActiveProfileName(profileName)
 {
-	return retrieveAllProfiles()[profileName];
+	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
+}
+
+/**
+ * Saves the given profile in the game settings.
+ * @param profileName {String} - The name of the profile to save.
+ * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether or not they're active.
+ * @throws Error - When a profile exists with the given profileName
+ */
+export function saveProfile(profileName, modules)
+{
+	const profiles = getAllProfiles();
+
+	if (profiles.some(profile => profile.name === profileName))
+	{
+		throw new Error(`Profile "${profileName}" already exists!`);
+	}
+
+	profiles.push({name: profileName, modules: modules});
+	// TODO - return
+	return SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
 }
 
 // TODO
 //	- expect data in this format
 //	{
 //		name: String
-//		modules: Object (module list)
+//		modules: Object (module <String, boolean> map)
 //	}
 /**
- * Saves the current profile settings.
- * @param {string} profileId
- * @param updatedProfile {any}
+ * Saves the current profile settings to an existing profile.
+ * @param profileName {String} - The name of the profile to update.
+ * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether or not they're active.
+ * @throws Error - When a profile name is passed and none exists.
  */
-export function updateProfile(updatedProfile)
+export function updateProfile(profileName, modules)
 {
-	const profileId = convertToCamelCase(updatedProfile.name);
+	const savedProfiles = SettingsUtils.getSetting(SettingKey.PROFILES);
+	const matchingProfileIndex = savedProfiles.findIndex(profile => profile.name === profileName);
 
-	const allSavedProfiles = SettingsUtils.getSetting(SettingKey.PROFILES);
-	const savedProfile = allSavedProfiles[profileId] ?? {};
+	if (!savedProfiles[matchingProfileIndex])
+	{
+		throw new Error(`Profile "${profileName}" does not exist!`);
+	}
 
-	allSavedProfiles[profileId] = mergeObject(savedProfile, updatedProfile, {overwrite: true, inplace: false});
+	savedProfiles[matchingProfileIndex] = {name: profileName, modules: modules};
 
-	return SettingsUtils.setSetting(SettingKey.PROFILES, allSavedProfiles);
-}
-
-// TODO
-export function updateActiveProfileName(profileName)
-{
-	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
-}
-
-
-// TODO - move somewhere else, or don't export
-export function convertToCamelCase(input)
-{
-	const camelCase = input.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
-
-	return camelCase.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\[\]\\\/]/gi, '');
+	return SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
 }
 
 function buildDefaultProfile()
 {
-	const savedModuleConfiguration = retrieveCurrentModuleConfiguration();
+	const savedModuleConfiguration = getCurrentModuleConfiguration();
 
 	return {
 		name: DEFAULT_PROFILE_NAME,
@@ -124,7 +152,7 @@ function buildDefaultProfile()
 // TODO
 export function resetProfiles()
 {
-	updateActiveProfileName([DEFAULT_PROFILE_NAME]).then(() =>
+	setActiveProfileName(DEFAULT_PROFILE_NAME).then(() =>
 	{
 		return SettingsUtils.setSetting(SettingKey.PROFILES, undefined);
 	});

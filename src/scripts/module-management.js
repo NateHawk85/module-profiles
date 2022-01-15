@@ -106,7 +106,7 @@ function modifyModuleListElements()
 function updateStatusButtons()
 {
 	// TODO - clean up
-	const saved = Settings.retrieveActiveProfile();
+	const saved = Settings.getActiveProfile();
 	const isUpToDate = isActiveProfileUpToDate();
 
 	// TODO - find current profile name
@@ -137,7 +137,7 @@ function updateStatusButtons()
 
 function isActiveProfileUpToDate()
 {
-	const saved = Settings.retrieveActiveProfile();
+	const saved = Settings.getActiveProfile();
 	const unsaved = findUnsavedModuleStatuses();
 
 	return Object.entries(unsaved).every(([moduleId, unsavedStatus]) => saved.modules[moduleId] === unsavedStatus);

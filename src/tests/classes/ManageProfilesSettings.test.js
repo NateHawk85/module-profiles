@@ -16,7 +16,7 @@ describe('defaultOptions', () =>
 {
 	test('WHEN called THEN returns options', () =>
 	{
-		expect(ManageProfilesSettings.defaultOptions).toEqual({
+		expect(ManageProfilesSettings.defaultOptions).toStrictEqual({
 			title: 'Manage Profiles',
 			id: 'manage-profiles',
 			template: 'modules/module-profiles/templates/manage-profiles.hbs',

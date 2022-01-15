@@ -4,12 +4,12 @@ import * as Settings from './settings.js';
 export function registerApi()
 {
 	const api = {
-		retrieveActiveProfile: Settings.retrieveActiveProfile,
-		retrieveAllProfiles: Settings.retrieveAllProfiles,
-		retrieveProfile: Settings.retrieveProfile,
+		getActiveProfile: Settings.getActiveProfile,
+		getAllProfiles: Settings.getAllProfiles,
+		getProfileByName: Settings.getProfileByName,
 		updateProfile: Settings.updateProfile,
-		retrieveCurrentModuleConfiguration: Settings.retrieveCurrentModuleConfiguration,
-		updateActiveProfileId: Settings.updateActiveProfileName,
+		getCurrentModuleConfiguration: Settings.getCurrentModuleConfiguration,
+		setActiveProfileName: Settings.setActiveProfileName,
 		resetProfiles: Settings.resetProfiles
 	};
 
