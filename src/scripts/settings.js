@@ -6,7 +6,8 @@ const DEFAULT_PROFILE_NAME = 'Default Profile';
 export const SettingKey = {
 	MANAGE_PROFILES: 'manageProfiles',
 	PROFILES: 'profiles',
-	ACTIVE_PROFILE_NAME: 'activeProfileName'
+	ACTIVE_PROFILE_NAME: 'activeProfileName',
+	REGISTER_API: 'registerAPI'
 };
 
 /**
@@ -38,6 +39,21 @@ export function registerSettings()
 		type: String,
 		scope: 'world'
 	});
+
+	SettingsUtils.registerSetting(SettingKey.REGISTER_API, {
+		name: 'Register API',
+		hint: 'Make this module\'s API (ModuleProfiles.api.*function()*) available. If you don\'t write code, you probably don\'t need this.',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: false
+	});
+
+	// TODO - test
+	if (getAllProfiles().length === 0)
+	{
+		resetProfiles();
+	}
 }
 
 /**
@@ -92,6 +108,27 @@ export function setActiveProfileName(profileName)
 	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
 }
 
+// TODO - implement, do in place of "set active profile name"
+export function loadProfile(profileName)
+{
+	const profile = getProfileByName(profileName);
+
+	if (!profile)
+	{
+		throw new Error('You dummy!');
+	}
+
+	const onSetActiveProfileName = SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
+	const onSave = onSetActiveProfileName.then(() => setCoreModuleConfiguration(profile.modules));
+	onSave.then(() => window.location.reload());
+}
+
+// TODO - probably don't need to expose, but... whatever. probs test
+export async function setCoreModuleConfiguration(modules)
+{
+	await game.settings.set('core', 'moduleConfiguration', modules);
+}
+
 /**
  * Saves the given profile in the game settings.
  * @param profileName {String} - The name of the profile to save.
@@ -108,16 +145,9 @@ export function saveProfile(profileName, modules)
 	}
 
 	profiles.push({name: profileName, modules: modules});
-	// TODO - return
 	return SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
 }
 
-// TODO
-//	- expect data in this format
-//	{
-//		name: String
-//		modules: Object (module <String, boolean> map)
-//	}
 /**
  * Saves the current profile settings to an existing profile.
  * @param profileName {String} - The name of the profile to update.
@@ -137,6 +167,20 @@ export function updateProfile(profileName, modules)
 	savedProfiles[matchingProfileIndex] = {name: profileName, modules: modules};
 
 	return SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
+}
+
+// TODO - test
+
+export function deleteProfile(profileName)
+{
+	const savedProfiles = getAllProfiles();
+
+	if (!savedProfiles.some(profile => profile.name === profileName))
+	{
+		throw new Error(`Profile "${profileName}" does not exist!`);
+	}
+
+	return SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles.filter(profile => profile.name !== profileName));
 }
 
 function buildDefaultProfile()

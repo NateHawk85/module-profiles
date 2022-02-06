@@ -33,7 +33,8 @@
   "jest": {
     "setupFiles": [
       "./src/tests/mocks/mock-foundry.js"
-    ]
+    ],
+    "testEnvironment": "jsdom"
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3"

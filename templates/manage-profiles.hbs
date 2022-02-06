@@ -24,14 +24,20 @@
 		</tr>
 		</thead>
 		<tbody>
-		{{#each things}}
+		{{#each profiles}}
 			<tr class="flexrow"> <!-- TODO - highlight active profile -->
-				<td class="profile-name-column">{{title}}</td>
-				<td class="icon-column"><a class="fa fa-power-off"></a></td> <!-- TODO - prompt user 'are you sure? any changes made to the current profile will be unsaved -->
-				<td class="icon-column"><a class="fa fa-edit"></a></td> <!-- TODO - pop open window to edit name of profile + selected module list -->
-				<td class="icon-column"><a class="fa fa-copy"></a></td> <!-- TODO - copy module profile, with '(Copy) at the end -->
-				<td class="icon-column"><a class="fa fa-file-export"></a></td> <!-- TODO - export functionality (or just remove it) -->
-				<td class="icon-column"><a class="fa fa-trash"></a></td> <!-- TODO - 'are you sure?' -->
+				<td class="profile-name-column">{{name}}</td>
+				<td class="icon-column"><a class="fa fa-power-off" onclick="game.modules.get('module-profiles').api.activationCallback('{{name}}');"></a></td>
+				<td class="icon-column"><a class="fa fa-edit" onclick="game.modules.get('module-profiles').api.editCallback();"></a></td>
+				<td class="icon-column"><a class="fa fa-copy"></a></td>
+				<td class="icon-column"><a class="fa fa-file-export"></a></td>
+				<td class="icon-column"><a class="fa fa-trash" onclick="game.modules.get('module-profiles').api.deleteCallback('{{name}}');"></a></td>
+				<!-- TODO - janky as hell -->
+				 <!-- TODO - prompt user 'are you sure? any changes made to the current profile will be unsaved -->
+				 <!-- TODO - pop open window to edit name of profile + selected module list -->
+				 <!-- TODO - copy module profile, with '(Copy) at the end -->
+				 <!-- TODO - export functionality (or just remove it) -->
+				 <!-- TODO - 'are you sure?' -->
 			</tr>
 		{{/each}}
 		</tbody>

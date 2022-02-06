@@ -1,4 +1,4 @@
-import * as SettingsUtils from '../scripts/settings-utils.js';
+import * as SettingsUtils from '../../scripts/settings-utils.js';
 import {when} from 'jest-when';
 
 const MODULE_NAME = 'module-profiles';
@@ -116,5 +116,24 @@ describe('registerMenu', () =>
 			SettingsUtils.registerMenu(key, configuration);
 
 			expect(game.settings.registerMenu).toHaveBeenCalledWith(MODULE_NAME, key, configuration);
+		});
+});
+
+describe('registerAPI', () =>
+{
+	test.each([
+		{name: undefined, exampleCall: () => console.log('Hello!')},
+		{exampleCall: () => {}, name: () => console.log('Another function!')},
+	])
+		('WHEN called THEN registers the API under the module\'s ID: %s', (value) =>
+		{
+			const mockAPI = {
+				api: jest.fn()
+			};
+			when(game.modules.get).calledWith(MODULE_NAME).mockReturnValue(mockAPI);
+
+			SettingsUtils.registerAPI(value);
+
+			expect(game.modules.get(MODULE_NAME).api).toStrictEqual(value);
 		});
 });

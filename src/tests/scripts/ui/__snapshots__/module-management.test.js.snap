@@ -1,0 +1,2156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modifyModuleManagementRender WHEN user is GM THEN adds UI elements and matches snapshot for profile: AllDisabled 1`] = `
+"<div id=\\"module-management\\" class=\\"app window-app form\\" data-appid=\\"40\\" style=\\"z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;\\">
+	<header class=\\"window-header flexrow draggable\\">
+		<h4 class=\\"window-title\\">Module Management</h4>
+		<a class=\\"header-button close\\"><i class=\\"fas fa-times\\"></i>Close</a>
+	</header>
+
+	<section class=\\"window-content\\">
+		<form autocomplete=\\"off\\">
+			<p class=\\"notes\\">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class=\\"list-filters\\">
+				<input type=\\"text\\" name=\\"search\\" placeholder=\\"Filter Modules\\" value=\\"\\">
+				<a class=\\"filter active\\" data-filter=\\"all\\">All Modules (42)</a>
+				<a class=\\"filter\\" data-filter=\\"active\\">Active Modules (0)</a>
+				<a class=\\"filter\\" data-filter=\\"inactive\\">Inactive Modules (42)</a>
+				<button type=\\"button\\" class=\\"expand\\">
+					<i class=\\"fa fa-angle-double-up\\"></i>
+				</button>
+			</nav>
+
+			<ul id=\\"module-list\\" class=\\"directory-list package-list\\">
+				<li class=\\"package flexcol\\" data-module-name=\\"about-time\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"about-time\\" data-dtype=\\"Boolean\\">About Time</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"advanced-macros\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"advanced-macros\\" data-dtype=\\"Boolean\\">Advanced Macros</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"chat-images\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"chat-images\\" data-dtype=\\"Boolean\\">Chat Images</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 2.5.5</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"combat-utility-belt\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"combat-utility-belt\\" data-dtype=\\"Boolean\\">Combat Utility Belt</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 1.8.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"compendium-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"compendium-folders\\" data-dtype=\\"Boolean\\">Compendium Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"5e-training\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"5e-training\\" data-dtype=\\"Boolean\\">Crash's Tracking &amp; Training (5e)</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.6.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"CustomSharedCompendiums\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"CustomSharedCompendiums\\" data-dtype=\\"Boolean\\">Custom Shared Compendiums</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (3.0.0)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"cycle-token-stack\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"cycle-token-stack\\" data-dtype=\\"Boolean\\">Cycle Token Stack</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.6.5)</span>
+						<span class=\\"tag version\\">Version 0.5.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"df-settings-clarity\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"df-settings-clarity\\" data-dtype=\\"Boolean\\">DF Settings Clarity</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.7)</span>
+						<span class=\\"tag version\\">Version 3.2.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dfreds-droppables\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dfreds-droppables\\" data-dtype=\\"Boolean\\">DFreds Droppables</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dice-so-nice\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dice-so-nice\\" data-dtype=\\"Boolean\\">Dice So Nice!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.3.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dnd5e-helpers\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dnd5e-helpers\\" data-dtype=\\"Boolean\\">DnD5e Helpers</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dae\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dae\\" data-dtype=\\"Boolean\\">Dynamic effects using Active Effects</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.76</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"easy-target\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"easy-target\\" data-dtype=\\"Boolean\\">Easy Target</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"find-the-culprit\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"find-the-culprit\\" data-dtype=\\"Boolean\\">Find the culprit</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 1.4.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"forien-copy-environment\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"forien-copy-environment\\" data-dtype=\\"Boolean\\">Forien's Copy Environment</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"keybind-lib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"keybind-lib\\" data-dtype=\\"Boolean\\">Keybind Lib</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 0.3.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"scene-packer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"scene-packer\\" data-dtype=\\"Boolean\\">Library: Scene Packer</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.3.25</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lib-wrapper\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lib-wrapper\\" data-dtype=\\"Boolean\\">libWrapper</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.11.0.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lootsheetnpc5e\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lootsheetnpc5e\\" data-dtype=\\"Boolean\\">Loot Sheet NPC 5e</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 3.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"macro-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"macro-folders\\" data-dtype=\\"Boolean\\">Macro Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.3.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"midi-qol\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"midi-qol\\" data-dtype=\\"Boolean\\">Midi QOL</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.100</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"mob-attack-tool\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"mob-attack-tool\\" data-dtype=\\"Boolean\\">Mob Attack Tool</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.3.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"module-profiles\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"module-profiles\\" data-dtype=\\"Boolean\\">Module Profiles</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"monks-tokenbar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"monks-tokenbar\\" data-dtype=\\"Boolean\\">Monk's TokenBar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.236)</span>
+						<span class=\\"tag version\\">Version 1.0.57</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"Next-Up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"Next-Up\\" data-dtype=\\"Boolean\\">Next Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.2)</span>
+						<span class=\\"tag version\\">Version 0.1.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"perfect-vision\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"perfect-vision\\" data-dtype=\\"Boolean\\">Perfect Vision</label>
+						<span class=\\"tag version\\">Version 3.2.12</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"pin-cushion\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"pin-cushion\\" data-dtype=\\"Boolean\\">Pin Cushion</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 1.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"polyglot\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"polyglot\\" data-dtype=\\"Boolean\\">Polyglot</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.7.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"popout\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"popout\\" data-dtype=\\"Boolean\\">PopOut!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 2.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"quick-insert\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"quick-insert\\" data-dtype=\\"Boolean\\">Quick Insert - Search Widget</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 2.6.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"foundryvtt-simple-calendar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"foundryvtt-simple-calendar\\" data-dtype=\\"Boolean\\">Simple Calendar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version v1.3.75</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"smalltime\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"smalltime\\" data-dtype=\\"Boolean\\">SmallTime</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13.9</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"socketlib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"socketlib\\" data-dtype=\\"Boolean\\">socketlib</label>
+						<span class=\\"tag version\\">Version 1.0.10</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"tidy-ui_game-settings\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"tidy-ui_game-settings\\" data-dtype=\\"Boolean\\">Tidy UI - Game Settings</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.1.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"times-up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"times-up\\" data-dtype=\\"Boolean\\">Times Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.30</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-action-hud\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-action-hud\\" data-dtype=\\"Boolean\\">Token Action HUD</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-health\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-health\\" data-dtype=\\"Boolean\\">Token Health</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.9)</span>
+						<span class=\\"tag version\\">Version 0.5.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-mold\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-mold\\" data-dtype=\\"Boolean\\">Token Mold</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.233)</span>
+						<span class=\\"tag version\\">Version 2.14.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"vtta-tokenizer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"vtta-tokenizer\\" data-dtype=\\"Boolean\\">Tokenizer</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 3.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dd-import\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dd-import\\" data-dtype=\\"Boolean\\">Universal Battlemap Importer</label>
+						<span class=\\"tag version\\">Version 2.2.1</span>
+					</div>
+
+				</li>
+			</ul><div class=\\"module-profiles-footer-row\\"><button class=\\"module-profiles-status-button\\" style=\\"flex-basis: 130%;\\" disabled=\\"\\"><i class=\\"fa fa-check-circle\\" style=\\"color: mediumseagreen\\"></i><b>Only Module Profiles Enabled</b> is up to date</button><button style=\\"flex-basis: 80%;\\"><i class=\\"fa fa-plus\\"></i> Create Module Profile</button><button><i class=\\"fa fa-cog\\"></i> Manage Module Profiles</button></div>
+
+			<footer class=\\"flexrow\\">
+				<button type=\\"submit\\" name=\\"submit\\" value=\\"1\\">
+					<i class=\\"far fa-save\\"></i> Save Module Settings
+				</button>
+				<button type=\\"button\\" name=\\"deactivate\\">
+					<i class=\\"fas fa-ban\\"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>"
+`;
+
+exports[`modifyModuleManagementRender WHEN user is GM THEN adds UI elements and matches snapshot for profile: AllEnabled 1`] = `
+"<div id=\\"module-management\\" class=\\"app window-app form\\" data-appid=\\"40\\" style=\\"z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;\\">
+	<header class=\\"window-header flexrow draggable\\">
+		<h4 class=\\"window-title\\">Module Management</h4>
+		<a class=\\"header-button close\\"><i class=\\"fas fa-times\\"></i>Close</a>
+	</header>
+
+	<section class=\\"window-content\\">
+		<form autocomplete=\\"off\\">
+			<p class=\\"notes\\">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class=\\"list-filters\\">
+				<input type=\\"text\\" name=\\"search\\" placeholder=\\"Filter Modules\\" value=\\"\\">
+				<a class=\\"filter active\\" data-filter=\\"all\\">All Modules (42)</a>
+				<a class=\\"filter\\" data-filter=\\"active\\">Active Modules (0)</a>
+				<a class=\\"filter\\" data-filter=\\"inactive\\">Inactive Modules (42)</a>
+				<button type=\\"button\\" class=\\"expand\\">
+					<i class=\\"fa fa-angle-double-up\\"></i>
+				</button>
+			</nav>
+
+			<ul id=\\"module-list\\" class=\\"directory-list package-list\\">
+				<li class=\\"package flexcol\\" data-module-name=\\"about-time\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"about-time\\" data-dtype=\\"Boolean\\">About Time</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"advanced-macros\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"advanced-macros\\" data-dtype=\\"Boolean\\">Advanced Macros</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"chat-images\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"chat-images\\" data-dtype=\\"Boolean\\">Chat Images</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 2.5.5</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"combat-utility-belt\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"combat-utility-belt\\" data-dtype=\\"Boolean\\">Combat Utility Belt</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 1.8.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"compendium-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"compendium-folders\\" data-dtype=\\"Boolean\\">Compendium Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"5e-training\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"5e-training\\" data-dtype=\\"Boolean\\">Crash's Tracking &amp; Training (5e)</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.6.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"CustomSharedCompendiums\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"CustomSharedCompendiums\\" data-dtype=\\"Boolean\\">Custom Shared Compendiums</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (3.0.0)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"cycle-token-stack\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"cycle-token-stack\\" data-dtype=\\"Boolean\\">Cycle Token Stack</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.6.5)</span>
+						<span class=\\"tag version\\">Version 0.5.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"df-settings-clarity\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"df-settings-clarity\\" data-dtype=\\"Boolean\\">DF Settings Clarity</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.7)</span>
+						<span class=\\"tag version\\">Version 3.2.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dfreds-droppables\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dfreds-droppables\\" data-dtype=\\"Boolean\\">DFreds Droppables</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dice-so-nice\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dice-so-nice\\" data-dtype=\\"Boolean\\">Dice So Nice!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.3.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dnd5e-helpers\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dnd5e-helpers\\" data-dtype=\\"Boolean\\">DnD5e Helpers</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dae\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dae\\" data-dtype=\\"Boolean\\">Dynamic effects using Active Effects</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.76</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"easy-target\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"easy-target\\" data-dtype=\\"Boolean\\">Easy Target</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"find-the-culprit\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"find-the-culprit\\" data-dtype=\\"Boolean\\">Find the culprit</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 1.4.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"forien-copy-environment\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"forien-copy-environment\\" data-dtype=\\"Boolean\\">Forien's Copy Environment</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"keybind-lib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"keybind-lib\\" data-dtype=\\"Boolean\\">Keybind Lib</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 0.3.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"scene-packer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"scene-packer\\" data-dtype=\\"Boolean\\">Library: Scene Packer</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.3.25</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lib-wrapper\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lib-wrapper\\" data-dtype=\\"Boolean\\">libWrapper</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.11.0.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lootsheetnpc5e\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lootsheetnpc5e\\" data-dtype=\\"Boolean\\">Loot Sheet NPC 5e</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 3.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"macro-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"macro-folders\\" data-dtype=\\"Boolean\\">Macro Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.3.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"midi-qol\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"midi-qol\\" data-dtype=\\"Boolean\\">Midi QOL</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.100</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"mob-attack-tool\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"mob-attack-tool\\" data-dtype=\\"Boolean\\">Mob Attack Tool</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.3.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"module-profiles\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"module-profiles\\" data-dtype=\\"Boolean\\">Module Profiles</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"monks-tokenbar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"monks-tokenbar\\" data-dtype=\\"Boolean\\">Monk's TokenBar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.236)</span>
+						<span class=\\"tag version\\">Version 1.0.57</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"Next-Up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"Next-Up\\" data-dtype=\\"Boolean\\">Next Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.2)</span>
+						<span class=\\"tag version\\">Version 0.1.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"perfect-vision\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"perfect-vision\\" data-dtype=\\"Boolean\\">Perfect Vision</label>
+						<span class=\\"tag version\\">Version 3.2.12</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"pin-cushion\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"pin-cushion\\" data-dtype=\\"Boolean\\">Pin Cushion</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 1.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"polyglot\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"polyglot\\" data-dtype=\\"Boolean\\">Polyglot</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.7.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"popout\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"popout\\" data-dtype=\\"Boolean\\">PopOut!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 2.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"quick-insert\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"quick-insert\\" data-dtype=\\"Boolean\\">Quick Insert - Search Widget</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 2.6.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"foundryvtt-simple-calendar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"foundryvtt-simple-calendar\\" data-dtype=\\"Boolean\\">Simple Calendar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version v1.3.75</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"smalltime\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"smalltime\\" data-dtype=\\"Boolean\\">SmallTime</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13.9</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"socketlib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"socketlib\\" data-dtype=\\"Boolean\\">socketlib</label>
+						<span class=\\"tag version\\">Version 1.0.10</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"tidy-ui_game-settings\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"tidy-ui_game-settings\\" data-dtype=\\"Boolean\\">Tidy UI - Game Settings</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.1.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"times-up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"times-up\\" data-dtype=\\"Boolean\\">Times Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.30</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-action-hud\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-action-hud\\" data-dtype=\\"Boolean\\">Token Action HUD</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-health\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-health\\" data-dtype=\\"Boolean\\">Token Health</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.9)</span>
+						<span class=\\"tag version\\">Version 0.5.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-mold\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-mold\\" data-dtype=\\"Boolean\\">Token Mold</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.233)</span>
+						<span class=\\"tag version\\">Version 2.14.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"vtta-tokenizer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"vtta-tokenizer\\" data-dtype=\\"Boolean\\">Tokenizer</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 3.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dd-import\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dd-import\\" data-dtype=\\"Boolean\\">Universal Battlemap Importer</label>
+						<span class=\\"tag version\\">Version 2.2.1</span>
+					</div>
+
+				</li>
+			</ul><div class=\\"module-profiles-footer-row\\"><button class=\\"module-profiles-status-button\\" style=\\"flex-basis: 130%; background-color: orangered;\\"><i class=\\"far fa-save\\"></i> Save changes to <b>Only Module Profiles Enabled</b></button><button style=\\"flex-basis: 80%;\\"><i class=\\"fa fa-plus\\"></i> Create Module Profile</button><button><i class=\\"fa fa-cog\\"></i> Manage Module Profiles</button></div>
+
+			<footer class=\\"flexrow\\">
+				<button type=\\"submit\\" name=\\"submit\\" value=\\"1\\">
+					<i class=\\"far fa-save\\"></i> Save Module Settings
+				</button>
+				<button type=\\"button\\" name=\\"deactivate\\">
+					<i class=\\"fas fa-ban\\"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>"
+`;
+
+exports[`modifyModuleManagementRender WHEN user is GM THEN adds UI elements and matches snapshot for profile: OnlyModuleProfilesAndTidyUIEnabled 1`] = `
+"<div id=\\"module-management\\" class=\\"app window-app form\\" data-appid=\\"40\\" style=\\"z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;\\">
+	<header class=\\"window-header flexrow draggable\\">
+		<h4 class=\\"window-title\\">Module Management</h4>
+		<a class=\\"header-button close\\"><i class=\\"fas fa-times\\"></i>Close</a>
+	</header>
+
+	<section class=\\"window-content\\">
+		<form autocomplete=\\"off\\">
+			<p class=\\"notes\\">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class=\\"list-filters\\">
+				<input type=\\"text\\" name=\\"search\\" placeholder=\\"Filter Modules\\" value=\\"\\">
+				<a class=\\"filter active\\" data-filter=\\"all\\">All Modules (42)</a>
+				<a class=\\"filter\\" data-filter=\\"active\\">Active Modules (0)</a>
+				<a class=\\"filter\\" data-filter=\\"inactive\\">Inactive Modules (42)</a>
+				<button type=\\"button\\" class=\\"expand\\">
+					<i class=\\"fa fa-angle-double-up\\"></i>
+				</button>
+			</nav>
+
+			<ul id=\\"module-list\\" class=\\"directory-list package-list\\">
+				<li class=\\"package flexcol\\" data-module-name=\\"about-time\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"about-time\\" data-dtype=\\"Boolean\\">About Time</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"advanced-macros\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"advanced-macros\\" data-dtype=\\"Boolean\\">Advanced Macros</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"chat-images\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"chat-images\\" data-dtype=\\"Boolean\\">Chat Images</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 2.5.5</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"combat-utility-belt\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"combat-utility-belt\\" data-dtype=\\"Boolean\\">Combat Utility Belt</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 1.8.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"compendium-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"compendium-folders\\" data-dtype=\\"Boolean\\">Compendium Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"5e-training\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"5e-training\\" data-dtype=\\"Boolean\\">Crash's Tracking &amp; Training (5e)</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.6.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"CustomSharedCompendiums\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"CustomSharedCompendiums\\" data-dtype=\\"Boolean\\">Custom Shared Compendiums</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (3.0.0)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"cycle-token-stack\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"cycle-token-stack\\" data-dtype=\\"Boolean\\">Cycle Token Stack</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.6.5)</span>
+						<span class=\\"tag version\\">Version 0.5.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"df-settings-clarity\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"df-settings-clarity\\" data-dtype=\\"Boolean\\">DF Settings Clarity</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.7)</span>
+						<span class=\\"tag version\\">Version 3.2.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dfreds-droppables\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dfreds-droppables\\" data-dtype=\\"Boolean\\">DFreds Droppables</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dice-so-nice\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dice-so-nice\\" data-dtype=\\"Boolean\\">Dice So Nice!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.3.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dnd5e-helpers\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dnd5e-helpers\\" data-dtype=\\"Boolean\\">DnD5e Helpers</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dae\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dae\\" data-dtype=\\"Boolean\\">Dynamic effects using Active Effects</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.76</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"easy-target\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"easy-target\\" data-dtype=\\"Boolean\\">Easy Target</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"find-the-culprit\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"find-the-culprit\\" data-dtype=\\"Boolean\\">Find the culprit</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 1.4.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"forien-copy-environment\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"forien-copy-environment\\" data-dtype=\\"Boolean\\">Forien's Copy Environment</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"keybind-lib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"keybind-lib\\" data-dtype=\\"Boolean\\">Keybind Lib</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 0.3.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"scene-packer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"scene-packer\\" data-dtype=\\"Boolean\\">Library: Scene Packer</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.3.25</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lib-wrapper\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lib-wrapper\\" data-dtype=\\"Boolean\\">libWrapper</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.11.0.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lootsheetnpc5e\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lootsheetnpc5e\\" data-dtype=\\"Boolean\\">Loot Sheet NPC 5e</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 3.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"macro-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"macro-folders\\" data-dtype=\\"Boolean\\">Macro Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.3.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"midi-qol\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"midi-qol\\" data-dtype=\\"Boolean\\">Midi QOL</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.100</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"mob-attack-tool\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"mob-attack-tool\\" data-dtype=\\"Boolean\\">Mob Attack Tool</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.3.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"module-profiles\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"module-profiles\\" data-dtype=\\"Boolean\\">Module Profiles</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"monks-tokenbar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"monks-tokenbar\\" data-dtype=\\"Boolean\\">Monk's TokenBar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.236)</span>
+						<span class=\\"tag version\\">Version 1.0.57</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"Next-Up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"Next-Up\\" data-dtype=\\"Boolean\\">Next Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.2)</span>
+						<span class=\\"tag version\\">Version 0.1.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"perfect-vision\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"perfect-vision\\" data-dtype=\\"Boolean\\">Perfect Vision</label>
+						<span class=\\"tag version\\">Version 3.2.12</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"pin-cushion\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"pin-cushion\\" data-dtype=\\"Boolean\\">Pin Cushion</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 1.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"polyglot\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"polyglot\\" data-dtype=\\"Boolean\\">Polyglot</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.7.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"popout\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"popout\\" data-dtype=\\"Boolean\\">PopOut!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 2.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"quick-insert\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"quick-insert\\" data-dtype=\\"Boolean\\">Quick Insert - Search Widget</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 2.6.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"foundryvtt-simple-calendar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"foundryvtt-simple-calendar\\" data-dtype=\\"Boolean\\">Simple Calendar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version v1.3.75</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"smalltime\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"smalltime\\" data-dtype=\\"Boolean\\">SmallTime</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13.9</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"socketlib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"socketlib\\" data-dtype=\\"Boolean\\">socketlib</label>
+						<span class=\\"tag version\\">Version 1.0.10</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"tidy-ui_game-settings\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"tidy-ui_game-settings\\" data-dtype=\\"Boolean\\">Tidy UI - Game Settings</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.1.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"times-up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"times-up\\" data-dtype=\\"Boolean\\">Times Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.30</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-action-hud\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-action-hud\\" data-dtype=\\"Boolean\\">Token Action HUD</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-health\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-health\\" data-dtype=\\"Boolean\\">Token Health</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.9)</span>
+						<span class=\\"tag version\\">Version 0.5.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-mold\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-mold\\" data-dtype=\\"Boolean\\">Token Mold</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.233)</span>
+						<span class=\\"tag version\\">Version 2.14.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"vtta-tokenizer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"vtta-tokenizer\\" data-dtype=\\"Boolean\\">Tokenizer</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 3.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dd-import\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dd-import\\" data-dtype=\\"Boolean\\">Universal Battlemap Importer</label>
+						<span class=\\"tag version\\">Version 2.2.1</span>
+					</div>
+
+				</li>
+			</ul><div class=\\"module-profiles-footer-row\\"><button class=\\"module-profiles-status-button\\" style=\\"flex-basis: 130%; background-color: orangered;\\"><i class=\\"far fa-save\\"></i> Save changes to <b>Only Module Profiles Enabled</b></button><button style=\\"flex-basis: 80%;\\"><i class=\\"fa fa-plus\\"></i> Create Module Profile</button><button><i class=\\"fa fa-cog\\"></i> Manage Module Profiles</button></div>
+
+			<footer class=\\"flexrow\\">
+				<button type=\\"submit\\" name=\\"submit\\" value=\\"1\\">
+					<i class=\\"far fa-save\\"></i> Save Module Settings
+				</button>
+				<button type=\\"button\\" name=\\"deactivate\\">
+					<i class=\\"fas fa-ban\\"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>"
+`;
+
+exports[`modifyModuleManagementRender WHEN user is GM THEN adds UI elements and matches snapshot for profile: OnlyModuleProfilesEnabled 1`] = `
+"<div id=\\"module-management\\" class=\\"app window-app form\\" data-appid=\\"40\\" style=\\"z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;\\">
+	<header class=\\"window-header flexrow draggable\\">
+		<h4 class=\\"window-title\\">Module Management</h4>
+		<a class=\\"header-button close\\"><i class=\\"fas fa-times\\"></i>Close</a>
+	</header>
+
+	<section class=\\"window-content\\">
+		<form autocomplete=\\"off\\">
+			<p class=\\"notes\\">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class=\\"list-filters\\">
+				<input type=\\"text\\" name=\\"search\\" placeholder=\\"Filter Modules\\" value=\\"\\">
+				<a class=\\"filter active\\" data-filter=\\"all\\">All Modules (42)</a>
+				<a class=\\"filter\\" data-filter=\\"active\\">Active Modules (0)</a>
+				<a class=\\"filter\\" data-filter=\\"inactive\\">Inactive Modules (42)</a>
+				<button type=\\"button\\" class=\\"expand\\">
+					<i class=\\"fa fa-angle-double-up\\"></i>
+				</button>
+			</nav>
+
+			<ul id=\\"module-list\\" class=\\"directory-list package-list\\">
+				<li class=\\"package flexcol\\" data-module-name=\\"about-time\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"about-time\\" data-dtype=\\"Boolean\\">About Time</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"advanced-macros\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"advanced-macros\\" data-dtype=\\"Boolean\\">Advanced Macros</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"chat-images\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"chat-images\\" data-dtype=\\"Boolean\\">Chat Images</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 2.5.5</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"combat-utility-belt\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"combat-utility-belt\\" data-dtype=\\"Boolean\\">Combat Utility Belt</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 1.8.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"compendium-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"compendium-folders\\" data-dtype=\\"Boolean\\">Compendium Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"5e-training\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"5e-training\\" data-dtype=\\"Boolean\\">Crash's Tracking &amp; Training (5e)</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.6.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"CustomSharedCompendiums\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"CustomSharedCompendiums\\" data-dtype=\\"Boolean\\">Custom Shared Compendiums</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (3.0.0)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"cycle-token-stack\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"cycle-token-stack\\" data-dtype=\\"Boolean\\">Cycle Token Stack</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.6.5)</span>
+						<span class=\\"tag version\\">Version 0.5.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"df-settings-clarity\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"df-settings-clarity\\" data-dtype=\\"Boolean\\">DF Settings Clarity</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.7)</span>
+						<span class=\\"tag version\\">Version 3.2.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dfreds-droppables\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dfreds-droppables\\" data-dtype=\\"Boolean\\">DFreds Droppables</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dice-so-nice\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dice-so-nice\\" data-dtype=\\"Boolean\\">Dice So Nice!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.3.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dnd5e-helpers\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dnd5e-helpers\\" data-dtype=\\"Boolean\\">DnD5e Helpers</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dae\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dae\\" data-dtype=\\"Boolean\\">Dynamic effects using Active Effects</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.76</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"easy-target\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"easy-target\\" data-dtype=\\"Boolean\\">Easy Target</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"find-the-culprit\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"find-the-culprit\\" data-dtype=\\"Boolean\\">Find the culprit</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 1.4.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"forien-copy-environment\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"forien-copy-environment\\" data-dtype=\\"Boolean\\">Forien's Copy Environment</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"keybind-lib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"keybind-lib\\" data-dtype=\\"Boolean\\">Keybind Lib</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 0.3.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"scene-packer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"scene-packer\\" data-dtype=\\"Boolean\\">Library: Scene Packer</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.3.25</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lib-wrapper\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lib-wrapper\\" data-dtype=\\"Boolean\\">libWrapper</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.11.0.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lootsheetnpc5e\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lootsheetnpc5e\\" data-dtype=\\"Boolean\\">Loot Sheet NPC 5e</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 3.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"macro-folders\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"macro-folders\\" data-dtype=\\"Boolean\\">Macro Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.3.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"midi-qol\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"midi-qol\\" data-dtype=\\"Boolean\\">Midi QOL</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.100</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"mob-attack-tool\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"mob-attack-tool\\" data-dtype=\\"Boolean\\">Mob Attack Tool</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.3.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"module-profiles\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"module-profiles\\" data-dtype=\\"Boolean\\">Module Profiles</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"monks-tokenbar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"monks-tokenbar\\" data-dtype=\\"Boolean\\">Monk's TokenBar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.236)</span>
+						<span class=\\"tag version\\">Version 1.0.57</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"Next-Up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"Next-Up\\" data-dtype=\\"Boolean\\">Next Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.2)</span>
+						<span class=\\"tag version\\">Version 0.1.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"perfect-vision\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"perfect-vision\\" data-dtype=\\"Boolean\\">Perfect Vision</label>
+						<span class=\\"tag version\\">Version 3.2.12</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"pin-cushion\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"pin-cushion\\" data-dtype=\\"Boolean\\">Pin Cushion</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 1.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"polyglot\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"polyglot\\" data-dtype=\\"Boolean\\">Polyglot</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.7.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"popout\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"popout\\" data-dtype=\\"Boolean\\">PopOut!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 2.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"quick-insert\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"quick-insert\\" data-dtype=\\"Boolean\\">Quick Insert - Search Widget</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 2.6.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"foundryvtt-simple-calendar\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"foundryvtt-simple-calendar\\" data-dtype=\\"Boolean\\">Simple Calendar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version v1.3.75</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"smalltime\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"smalltime\\" data-dtype=\\"Boolean\\">SmallTime</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13.9</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"socketlib\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"socketlib\\" data-dtype=\\"Boolean\\">socketlib</label>
+						<span class=\\"tag version\\">Version 1.0.10</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"tidy-ui_game-settings\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"tidy-ui_game-settings\\" data-dtype=\\"Boolean\\">Tidy UI - Game Settings</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.1.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"times-up\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"times-up\\" data-dtype=\\"Boolean\\">Times Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.30</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-action-hud\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-action-hud\\" data-dtype=\\"Boolean\\">Token Action HUD</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-health\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-health\\" data-dtype=\\"Boolean\\">Token Health</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.9)</span>
+						<span class=\\"tag version\\">Version 0.5.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-mold\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-mold\\" data-dtype=\\"Boolean\\">Token Mold</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.233)</span>
+						<span class=\\"tag version\\">Version 2.14.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"vtta-tokenizer\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"vtta-tokenizer\\" data-dtype=\\"Boolean\\">Tokenizer</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 3.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dd-import\\">
+					<div class=\\"package-overview flexrow\\"><span class=\\"module-profiles-status-container\\"><span class=\\"module-profiles-status module-profiles-status-saved\\"></span></span>
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dd-import\\" data-dtype=\\"Boolean\\">Universal Battlemap Importer</label>
+						<span class=\\"tag version\\">Version 2.2.1</span>
+					</div>
+
+				</li>
+			</ul><div class=\\"module-profiles-footer-row\\"><button class=\\"module-profiles-status-button\\" style=\\"flex-basis: 130%; background-color: orangered;\\"><i class=\\"far fa-save\\"></i> Save changes to <b>Only Module Profiles Enabled</b></button><button style=\\"flex-basis: 80%;\\"><i class=\\"fa fa-plus\\"></i> Create Module Profile</button><button><i class=\\"fa fa-cog\\"></i> Manage Module Profiles</button></div>
+
+			<footer class=\\"flexrow\\">
+				<button type=\\"submit\\" name=\\"submit\\" value=\\"1\\">
+					<i class=\\"far fa-save\\"></i> Save Module Settings
+				</button>
+				<button type=\\"button\\" name=\\"deactivate\\">
+					<i class=\\"fas fa-ban\\"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>"
+`;
+
+exports[`modifyModuleManagementRender WHEN user is not GM THEN does nothing 1`] = `
+"<div id=\\"module-management\\" class=\\"app window-app form\\" data-appid=\\"40\\" style=\\"z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;\\">
+	<header class=\\"window-header flexrow draggable\\">
+		<h4 class=\\"window-title\\">Module Management</h4>
+		<a class=\\"header-button close\\"><i class=\\"fas fa-times\\"></i>Close</a>
+	</header>
+
+	<section class=\\"window-content\\">
+		<form autocomplete=\\"off\\">
+			<p class=\\"notes\\">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class=\\"list-filters\\">
+				<input type=\\"text\\" name=\\"search\\" placeholder=\\"Filter Modules\\" value=\\"\\">
+				<a class=\\"filter active\\" data-filter=\\"all\\">All Modules (42)</a>
+				<a class=\\"filter\\" data-filter=\\"active\\">Active Modules (0)</a>
+				<a class=\\"filter\\" data-filter=\\"inactive\\">Inactive Modules (42)</a>
+				<button type=\\"button\\" class=\\"expand\\">
+					<i class=\\"fa fa-angle-double-up\\"></i>
+				</button>
+			</nav>
+
+			<ul id=\\"module-list\\" class=\\"directory-list package-list\\">
+				<li class=\\"package flexcol\\" data-module-name=\\"about-time\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"about-time\\" data-dtype=\\"Boolean\\">About Time</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"advanced-macros\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"advanced-macros\\" data-dtype=\\"Boolean\\">Advanced Macros</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"chat-images\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"chat-images\\" data-dtype=\\"Boolean\\">Chat Images</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 2.5.5</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"combat-utility-belt\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"combat-utility-belt\\" data-dtype=\\"Boolean\\">Combat Utility Belt</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 1.8.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"compendium-folders\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"compendium-folders\\" data-dtype=\\"Boolean\\">Compendium Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"5e-training\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"5e-training\\" data-dtype=\\"Boolean\\">Crash's Tracking &amp; Training (5e)</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.6.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"CustomSharedCompendiums\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"CustomSharedCompendiums\\" data-dtype=\\"Boolean\\">Custom Shared Compendiums</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (3.0.0)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"cycle-token-stack\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"cycle-token-stack\\" data-dtype=\\"Boolean\\">Cycle Token Stack</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.6.5)</span>
+						<span class=\\"tag version\\">Version 0.5.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"df-settings-clarity\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"df-settings-clarity\\" data-dtype=\\"Boolean\\">DF Settings Clarity</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.7)</span>
+						<span class=\\"tag version\\">Version 3.2.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dfreds-droppables\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dfreds-droppables\\" data-dtype=\\"Boolean\\">DFreds Droppables</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dice-so-nice\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dice-so-nice\\" data-dtype=\\"Boolean\\">Dice So Nice!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.3.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dnd5e-helpers\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dnd5e-helpers\\" data-dtype=\\"Boolean\\">DnD5e Helpers</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 4.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dae\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dae\\" data-dtype=\\"Boolean\\">Dynamic effects using Active Effects</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.76</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"easy-target\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"easy-target\\" data-dtype=\\"Boolean\\">Easy Target</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"find-the-culprit\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"find-the-culprit\\" data-dtype=\\"Boolean\\">Find the culprit</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (1.0.0)</span>
+						<span class=\\"tag version\\">Version 1.4.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"forien-copy-environment\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"forien-copy-environment\\" data-dtype=\\"Boolean\\">Forien's Copy Environment</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"keybind-lib\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"keybind-lib\\" data-dtype=\\"Boolean\\">Keybind Lib</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 0.3.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"scene-packer\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"scene-packer\\" data-dtype=\\"Boolean\\">Library: Scene Packer</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.3.25</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lib-wrapper\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lib-wrapper\\" data-dtype=\\"Boolean\\">libWrapper</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.11.0.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"lootsheetnpc5e\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"lootsheetnpc5e\\" data-dtype=\\"Boolean\\">Loot Sheet NPC 5e</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 3.4.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"macro-folders\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"macro-folders\\" data-dtype=\\"Boolean\\">Macro Folders</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.3.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"midi-qol\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"midi-qol\\" data-dtype=\\"Boolean\\">Midi QOL</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.100</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"mob-attack-tool\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"mob-attack-tool\\" data-dtype=\\"Boolean\\">Mob Attack Tool</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.3.13</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"module-profiles\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"module-profiles\\" data-dtype=\\"Boolean\\">Module Profiles</label>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"monks-tokenbar\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"monks-tokenbar\\" data-dtype=\\"Boolean\\">Monk's TokenBar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.236)</span>
+						<span class=\\"tag version\\">Version 1.0.57</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"Next-Up\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"Next-Up\\" data-dtype=\\"Boolean\\">Next Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.2)</span>
+						<span class=\\"tag version\\">Version 0.1.14</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"perfect-vision\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"perfect-vision\\" data-dtype=\\"Boolean\\">Perfect Vision</label>
+						<span class=\\"tag version\\">Version 3.2.12</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"pin-cushion\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"pin-cushion\\" data-dtype=\\"Boolean\\">Pin Cushion</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.6)</span>
+						<span class=\\"tag version\\">Version 1.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"polyglot\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"polyglot\\" data-dtype=\\"Boolean\\">Polyglot</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.7.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"popout\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"popout\\" data-dtype=\\"Boolean\\">PopOut!</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 2.4</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"quick-insert\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"quick-insert\\" data-dtype=\\"Boolean\\">Quick Insert - Search Widget</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 2.6.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"foundryvtt-simple-calendar\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"foundryvtt-simple-calendar\\" data-dtype=\\"Boolean\\">Simple Calendar</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version v1.3.75</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"smalltime\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"smalltime\\" data-dtype=\\"Boolean\\">SmallTime</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 1.13.9</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"socketlib\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"socketlib\\" data-dtype=\\"Boolean\\">socketlib</label>
+						<span class=\\"tag version\\">Version 1.0.10</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"tidy-ui_game-settings\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"tidy-ui_game-settings\\" data-dtype=\\"Boolean\\">Tidy UI - Game Settings</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.8.9)</span>
+						<span class=\\"tag version\\">Version 0.1.28</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"times-up\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"times-up\\" data-dtype=\\"Boolean\\">Times Up</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 0.8.30</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-action-hud\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-action-hud\\" data-dtype=\\"Boolean\\">Token Action HUD</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag version\\">Version 2.0.7</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-health\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-health\\" data-dtype=\\"Boolean\\">Token Health</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (0.9)</span>
+						<span class=\\"tag version\\">Version 0.5.1</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"token-mold\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"token-mold\\" data-dtype=\\"Boolean\\">Token Mold</label>
+						<span class=\\"tag compendium\\">Compendium</span>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.233)</span>
+						<span class=\\"tag version\\">Version 2.14.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"vtta-tokenizer\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"vtta-tokenizer\\" data-dtype=\\"Boolean\\">Tokenizer</label>
+						<span class=\\"tag languages\\">Localization</span>
+						<span class=\\"tag unknown\\">Compatibility Risk (9.238)</span>
+						<span class=\\"tag version\\">Version 3.5.0</span>
+					</div>
+
+				</li>
+				<li class=\\"package flexcol\\" data-module-name=\\"dd-import\\">
+					<div class=\\"package-overview flexrow\\">
+						<label class=\\"package-title checkbox\\">
+							<input type=\\"checkbox\\" class=\\"active\\" name=\\"dd-import\\" data-dtype=\\"Boolean\\">Universal Battlemap Importer</label>
+						<span class=\\"tag version\\">Version 2.2.1</span>
+					</div>
+
+				</li>
+			</ul>
+
+			<footer class=\\"flexrow\\">
+				<button type=\\"submit\\" name=\\"submit\\" value=\\"1\\">
+					<i class=\\"far fa-save\\"></i> Save Module Settings
+				</button>
+				<button type=\\"button\\" name=\\"deactivate\\">
+					<i class=\\"fas fa-ban\\"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>"
+`;

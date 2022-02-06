@@ -1,6 +1,7 @@
 import * as Settings from '../scripts/settings.js';
 
-export class ManageProfilesSettings extends FormApplication
+// TODO - this whole class is a test
+export class ViewProfileModules extends FormApplication
 {
 	static get defaultOptions()
 	{
@@ -8,9 +9,9 @@ export class ManageProfilesSettings extends FormApplication
 		const options = super.defaultOptions ?? {};
 		options.classes ??= [];
 		options.classes.push('module-profiles-form');
-		options.title = 'Manage Module Profiles';
-		options.id = 'manage-profiles';
-		options.template = 'modules/module-profiles/templates/manage-profiles.hbs';
+		options.title = 'View Profile Modules';
+		options.id = 'create-new-profile';
+		options.template = 'modules/module-profiles/templates/view-profile-modules.hbs';
 		options.resizable = true;
 
 		return options;
@@ -19,16 +20,10 @@ export class ManageProfilesSettings extends FormApplication
 	// TODO - test
 	getData(options = {})
 	{
-		const profiles = Settings.getAllProfiles();
-
+		const activeProfile = Settings.getActiveProfile();
 		return {
-			profiles: profiles.map(profile =>
-			{
-				return {
-					name: profile.name,
-					modules: profile.modules
-				}
-			})
+			name: activeProfile.name,
+			modules: Object.entries(activeProfile.modules).map(keyValuePair => ({moduleName: keyValuePair[0], isActive: keyValuePair[1]}))
 		}
 	}
 

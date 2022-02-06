@@ -1,0 +1,8 @@
+<form id="module-profiles-management-window">
+	<!-- TODO - this is temporary -->
+	{{#each modules}}
+		<label for="isActive-{{moduleName}}">{{moduleName}}</label>
+		<input name="isActive-{{moduleName}}" id="isActive-{{moduleName}}" type="checkbox" {{#if isActive}}checked{{/if}} />
+		<br />
+	{{/each}}
+</form>

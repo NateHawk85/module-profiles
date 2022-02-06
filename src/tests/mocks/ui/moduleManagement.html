@@ -1,0 +1,94 @@
+<div id="module-management" class="app window-app form" data-appid="40" style="z-index: 100; width: 680px; height: 750px; left: 757.5px; top: 117px;">
+	<header class="window-header flexrow draggable">
+		<h4 class="window-title">Module Management</h4>
+		<a class="header-button close"><i class="fas fa-times"></i>Close</a>
+	</header>
+
+	<section class="window-content">
+		<form autocomplete="off">
+			<p class="notes">
+				Use this form to configure which Modules are active within your current World. Submitting changes to active modules will cause the current
+				session to reload.
+			</p>
+
+			<nav class="list-filters">
+				<input type="text" name="search" placeholder="Filter Modules" value="">
+				<a class="filter active" data-filter="all">All Modules (42)</a>
+				<a class="filter" data-filter="active">Active Modules (0)</a>
+				<a class="filter" data-filter="inactive">Inactive Modules (42)</a>
+				<button type="button" class="expand">
+					<i class="fa fa-angle-double-up"></i>
+				</button>
+			</nav>
+
+			<ul id="module-list" class="directory-list package-list">
+				<li class="package flexcol" data-module-name="about-time">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="about-time" data-dtype="Boolean">About Time</label>
+						<span class="tag languages">Localization</span>
+						<span class="tag version">Version 1.0.6</span>
+					</div>
+
+				</li>
+				<li class="package flexcol" data-module-name="advanced-macros">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="advanced-macros" data-dtype="Boolean">Advanced Macros</label>
+						<span class="tag compendium">Compendium</span>
+						<span class="tag languages">Localization</span>
+						<span class="tag version">Version 1.13</span>
+					</div>
+
+				</li>
+				<li class="package flexcol" data-module-name="compendium-folders">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="compendium-folders" data-dtype="Boolean">Compendium Folders</label>
+						<span class="tag languages">Localization</span>
+						<span class="tag version">Version 2.4.1</span>
+					</div>
+
+				</li>
+				<li class="package flexcol" data-module-name="CustomSharedCompendiums">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="CustomSharedCompendiums" data-dtype="Boolean">Custom Shared Compendiums</label>
+						<span class="tag compendium">Compendium</span>
+						<span class="tag unknown">Compatibility Risk (3.0.0)</span>
+						<span class="tag version">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class="package flexcol" data-module-name="module-profiles">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="module-profiles" data-dtype="Boolean">Module Profiles</label>
+						<span class="tag unknown">Compatibility Risk (0.8.9)</span>
+						<span class="tag version">Version 1.0.0</span>
+					</div>
+
+				</li>
+				<li class="package flexcol" data-module-name="tidy-ui_game-settings">
+					<div class="package-overview flexrow">
+						<label class="package-title checkbox">
+							<input type="checkbox" class="active" name="tidy-ui_game-settings" data-dtype="Boolean">Tidy UI - Game Settings</label>
+						<span class="tag languages">Localization</span>
+						<span class="tag unknown">Compatibility Risk (0.8.9)</span>
+						<span class="tag version">Version 0.1.28</span>
+					</div>
+
+				</li>
+			</ul>
+
+			<footer class="flexrow">
+				<button type="submit" name="submit" value="1">
+					<i class="far fa-save"></i> Save Module Settings
+				</button>
+				<button type="button" name="deactivate">
+					<i class="fas fa-ban"></i> Deactivate All Modules
+				</button>
+			</footer>
+		</form>
+	</section>
+</div>

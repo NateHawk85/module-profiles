@@ -1,4 +1,4 @@
-const MODULE_NAME = 'module-profiles';
+const MODULE_ID = 'module-profiles';
 
 /**
  * Gets the value of a game setting.
@@ -7,7 +7,7 @@ const MODULE_NAME = 'module-profiles';
  */
 export function getSetting(settingKey)
 {
-	return game.settings.get(MODULE_NAME, settingKey);
+	return game.settings.get(MODULE_ID, settingKey);
 }
 
 /**
@@ -18,7 +18,7 @@ export function getSetting(settingKey)
  */
 export function setSetting(settingKey, value)
 {
-	return game.settings.set(MODULE_NAME, settingKey, value);
+	return game.settings.set(MODULE_ID, settingKey, value);
 }
 
 /**
@@ -28,7 +28,7 @@ export function setSetting(settingKey, value)
  */
 export function registerSetting(settingKey, configuration)
 {
-	game.settings.register(MODULE_NAME, settingKey, configuration);
+	game.settings.register(MODULE_ID, settingKey, configuration);
 }
 
 /**
@@ -38,5 +38,15 @@ export function registerSetting(settingKey, configuration)
  */
 export function registerMenu(menuKey, configuration)
 {
-	game.settings.registerMenu(MODULE_NAME, menuKey, configuration);
+	game.settings.registerMenu(MODULE_ID, menuKey, configuration);
+}
+
+
+/**
+ * Registers an API for the current module, accessible by `game.modules.get(MODULE_ID).api.*function()*`.
+ * @param api {Object} - The API to expose.
+ */
+export function registerAPI(api)
+{
+	game.modules.get(MODULE_ID).api = api;
 }

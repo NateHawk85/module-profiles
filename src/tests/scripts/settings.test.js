@@ -1,13 +1,13 @@
-import * as Settings from '../scripts/settings.js';
-import {SettingKey} from '../scripts/settings.js';
-import * as SettingsUtils from '../scripts/settings-utils.js';
-import {ManageProfilesSettings} from '../classes/ManageProfilesSettings.js';
+import * as Settings from '../../scripts/settings.js';
+import {getProfileByName, SettingKey} from '../../scripts/settings.js';
+import * as SettingsUtils from '../../scripts/settings-utils.js';
+import {ManageProfilesSettings} from '../../classes/ManageProfilesSettings.js';
 import {when} from 'jest-when';
 
 const DEFAULT_PROFILE_NAME = 'Default Profile';
 const DEFAULT_PROFILE = {name: DEFAULT_PROFILE_NAME, modules: undefined};
 
-jest.mock('../scripts/settings-utils.js', () => ({
+jest.mock('../../scripts/settings-utils.js', () => ({
 	registerMenu: jest.fn(),
 	registerSetting: jest.fn(),
 	getSetting: jest.fn(),
@@ -72,6 +72,20 @@ describe('registerSettings', () =>
 			default: DEFAULT_PROFILE_NAME,
 			type: String,
 			scope: 'world'
+		});
+	});
+
+	test('WHEN called THEN the "Register API" setting is registered', () =>
+	{
+		Settings.registerSettings();
+
+		expect(SettingsUtils.registerSetting).toHaveBeenCalledWith(Settings.SettingKey.REGISTER_API, {
+			name: 'Register API',
+			hint: 'Make this module\'s API ("ModuleProfiles.api.*function()*") available. If you don\'t write code, you probably don\'t need this.',
+			scope: 'world',
+			config: true,
+			type: Boolean,
+			default: false
 		});
 	});
 });
@@ -245,24 +259,23 @@ describe('getAllProfiles', () =>
 		});
 });
 
-describe('setActiveProfileName', () =>
+describe('loadProfile', () =>
 {
+	// TODO - continue testing
 	test.each([DEFAULT_PROFILE_NAME, 'A Profile Name'])
-		('WHEN called THEN calls SettingsUtils.setSetting for active profile name: %s', (value) =>
+		('WHEN called THEN calls Settings.getProfileByName for profile with the given name: %s', (value) =>
 		{
-			Settings.setActiveProfileName(value);
+			// TODO - still in progress
+			const getProfileByNameSpy = jest.spyOn(require('../../scripts/settings.js'), 'getProfileByName');
 
-			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(Settings.SettingKey.ACTIVE_PROFILE_NAME, value);
-		});
+			when(SettingsUtils.setSetting).calledWith(SettingKey.ACTIVE_PROFILE_NAME, value).mockReturnValue(Promise.resolve(value));
+			when(game.settings.set).calledWith('core', 'moduleConfiguration', expect.any(Object)).mockReturnValue(Promise.resolve(DEFAULT_PROFILE));
 
-	test.each(['response 1', 'response 2'])
-		('WHEN called THEN returns what SettingsUtils.setSetting returns: %s', (value) =>
-		{
-			when(SettingsUtils.setSetting).calledWith(SettingKey.ACTIVE_PROFILE_NAME, value).mockReturnValue(value);
+			Settings.loadProfile(value);
 
-			const response = Settings.setActiveProfileName(value);
+			expect(getProfileByNameSpy).toHaveBeenCalledWith(value);
 
-			expect(response).toStrictEqual(value);
+			getProfileByNameSpy.mockRestore();
 		});
 });
 
@@ -422,13 +435,13 @@ describe('updateProfile', () =>
 	])
 		('WHEN called and profile exists with name THEN calls SettingsUtils.setSetting to save and overwrite the current profile: %s, %o, %o, %o',
 			(profileName, modules, profiles, expected) =>
-		{
-			when(SettingsUtils.getSetting).calledWith(Settings.SettingKey.PROFILES).mockReturnValue(profiles);
+			{
+				when(SettingsUtils.getSetting).calledWith(Settings.SettingKey.PROFILES).mockReturnValue(profiles);
 
-			Settings.updateProfile(profileName, modules);
+				Settings.updateProfile(profileName, modules);
 
-			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(Settings.SettingKey.PROFILES, expected);
-		});
+				expect(SettingsUtils.setSetting).toHaveBeenCalledWith(Settings.SettingKey.PROFILES, expected);
+			});
 
 	test.each([
 		'a return value', [{name: 'A profile', modules: undefined}]
