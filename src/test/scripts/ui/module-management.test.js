@@ -1,17 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import * as Settings from '../../../scripts/settings.js';
-import * as ModuleManagement from '../../../scripts/ui/module-management.js';
+import {Settings} from '../../../js/classes/Settings.js';
+import * as ModuleManagement from '../../../js/scripts/ui/module-management.js';
 import {Profiles} from '../../mocks/profiles/profiles.js';
 
-jest.mock('../../../scripts/settings.js', () => ({
-	getActiveProfile: jest.fn()
-}));
-
+// TODO - fix tests due to Settings refactoring
 beforeEach(() =>
 {
 	game.user.isGM = true;
-	Settings.getActiveProfile.mockReturnValue(Profiles.OnlyModuleProfilesEnabled);
+	settings.getActiveProfile.mockReturnValue(Profiles.OnlyModuleProfilesEnabled);
 });
 
 // TODO - test better

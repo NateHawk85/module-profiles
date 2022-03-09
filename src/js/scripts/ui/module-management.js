@@ -1,10 +1,15 @@
-import * as Settings from './../settings.js';
+import {Settings} from '../../classes/Settings.js';
 import {ManageProfilesSettings} from '../../classes/ManageProfilesSettings.js';
 import {CreateModuleProfile} from '../../classes/CreateModuleProfile.js';
+
+// TODO - turn into a class?
+
+const settings = new Settings();
 
 // TODO - test all
 export function modifyModuleManagementRender(app, html, data)
 {
+	console.log('modifying stuff');
 	if (game.user?.isGM)
 	{
 		addFooterElements();
@@ -25,6 +30,8 @@ function addFooterElements()
 
 	// Add elements just below the module list
 	const moduleList = document.getElementById('module-list');
+	console.log('module-list: ');
+	console.log(moduleList);
 	moduleList.after(preFooterDiv);
 
 	// Update status of status buttons
@@ -62,15 +69,21 @@ function addFooterElements()
 
 function modifyModuleListElements()
 {
-	const activeProfile = Settings.getActiveProfile();
-	const modules = document.getElementById('module-management').querySelectorAll('li');
+	const activeProfile = settings.getActiveProfile();
+	const modules = document.getElementById('module-management').querySelectorAll('li'); // TODO - make sure you're picking up the right modules
 
 	// Add status icons and add an "update" event listener to each module in the list
 	modules.forEach(module =>
 	{
 		let statusIconContainer = createModuleStatusIcon();
-		module.children[0].prepend(statusIconContainer);
-		module.addEventListener('input', () => updateProfileStatus(activeProfile, modules));
+		if (module.children.length > 0)
+		{
+			module.children[0].prepend(statusIconContainer);
+			module.addEventListener('input', () => updateProfileStatus(activeProfile, modules));
+		} else
+		{
+			console.log(module); // TODO - what's going on here? Why is there a module with no children?
+		}
 	});
 
 	function createModuleStatusIcon()
@@ -85,17 +98,20 @@ function modifyModuleListElements()
 	{
 		modules.forEach(module =>
 		{
-			const statusIcon = module.children[0].children[0].firstChild;
-			const checkbox = module.children[0].children[1].children[0];
+			if (module.children[0] && module.children[0].children[1] && module.children[0].children[1].children[0]) // TODO - appropriately handle this
+			{
+				const statusIcon = module.children[0].children[0].firstChild;
+				const checkbox = module.children[0].children[1].children[0];
 
-			if (profile.modules[checkbox.attributes.name.value] === checkbox.checked)
-			{
-				statusIcon.classList.remove('module-profiles-status-changed');
-				statusIcon.classList.add('module-profiles-status-saved');
-			} else
-			{
-				statusIcon.classList.remove('module-profiles-status-saved');
-				statusIcon.classList.add('module-profiles-status-changed');
+				if (profile.modules[checkbox.attributes.name.value] === checkbox.checked)
+				{
+					statusIcon.classList.remove('module-profiles-status-changed');
+					statusIcon.classList.add('module-profiles-status-saved');
+				} else
+				{
+					statusIcon.classList.remove('module-profiles-status-saved');
+					statusIcon.classList.add('module-profiles-status-changed');
+				}
 			}
 		});
 
@@ -106,7 +122,7 @@ function modifyModuleListElements()
 function updateStatusButtons()
 {
 	// TODO - clean up
-	const activeProfile = Settings.getActiveProfile();
+	const activeProfile = settings.getActiveProfile();
 	const isUpToDate = isProfileUpToDate(activeProfile);
 
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
@@ -123,7 +139,7 @@ function updateStatusButtons()
 			button.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
-				const result = Settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
+				const result = settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
 				result.then(() =>
 				{
 					updateStatusButtons();
@@ -162,7 +178,7 @@ function findUnsavedModuleStatuses()
 // TODO - uhhhhh
 export function test()
 {
-	const activeProfile = Settings.getActiveProfile();
+	const activeProfile = settings.getActiveProfile();
 	document.getElementById('module-management').querySelectorAll('li').forEach(module =>
 	{
 		const statusIcon = module.children[0].children[0].firstChild;
@@ -197,7 +213,7 @@ export function test()
 			button.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
-				const result = Settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
+				const result = settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
 				result.then(() =>
 				{
 					updateStatusButtons();

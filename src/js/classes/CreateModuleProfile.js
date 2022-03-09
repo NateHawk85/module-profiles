@@ -1,7 +1,9 @@
-import * as Settings from '../scripts/settings.js';
+import {Settings} from './Settings.js';
 
 export class CreateModuleProfile extends FormApplication
 {
+	settings = new Settings();
+
 	static get defaultOptions()
 	{
 		// TODO - go back to json-style objects
@@ -20,18 +22,16 @@ export class CreateModuleProfile extends FormApplication
 	getData(options = {})
 	{
 		// TODO - don't need?
-		const currentModuleConfiguration = Settings.getCurrentModuleConfiguration();
+		const currentModuleConfiguration = this.settings.getCurrentModuleConfiguration();
 		const modulesAsArray = Object.entries(currentModuleConfiguration);
 
 		return {
 			modules: modulesAsArray.map(keyValuePair =>
 			{
-				const response = {
+				return {
 					moduleName: keyValuePair[0],
 					isActive: keyValuePair[1]
-				}
-
-				return response;
+				};
 			})
 		}
 
@@ -45,7 +45,7 @@ export class CreateModuleProfile extends FormApplication
 		html.find('#moduleProfilesCreateNewSubmit')[0].addEventListener('click', () =>
 		{
 			const profileName = document.getElementById('moduleProfilesCreateName').value;
-			Settings.saveProfile(profileName, Settings.getCurrentModuleConfiguration());
+			this.settings.saveProfile(profileName, this.settings.getCurrentModuleConfiguration());
 		});
 	}
 

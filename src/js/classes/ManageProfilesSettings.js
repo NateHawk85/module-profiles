@@ -1,17 +1,18 @@
-import * as Settings from '../scripts/settings.js';
+import {Settings} from './Settings.js';
 
-// TODO - this whole class is a test
-export class ViewProfileModules extends FormApplication
+export class ManageProfilesSettings extends FormApplication
 {
+	settings = new Settings();
+
 	static get defaultOptions()
 	{
 		// TODO - go back to json-style objects
 		const options = super.defaultOptions ?? {};
 		options.classes ??= [];
 		options.classes.push('module-profiles-form');
-		options.title = 'View Profile Modules';
-		options.id = 'create-new-profile';
-		options.template = 'modules/module-profiles/templates/view-profile-modules.hbs';
+		options.title = 'Manage Module Profiles';
+		options.id = 'manage-profiles';
+		options.template = 'modules/module-profiles/templates/manage-profiles.hbs';
 		options.resizable = true;
 
 		return options;
@@ -20,10 +21,16 @@ export class ViewProfileModules extends FormApplication
 	// TODO - test
 	getData(options = {})
 	{
-		const activeProfile = Settings.getActiveProfile();
+		const profiles = this.settings.getAllProfiles();
+
 		return {
-			name: activeProfile.name,
-			modules: Object.entries(activeProfile.modules).map(keyValuePair => ({moduleName: keyValuePair[0], isActive: keyValuePair[1]}))
+			profiles: profiles.map(profile =>
+			{
+				return {
+					name: profile.name,
+					modules: profile.modules
+				}
+			})
 		}
 	}
 

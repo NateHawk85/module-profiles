@@ -13,6 +13,6 @@
     "src/styles/module-profiles-styles.css"
   ],
   "esmodules": [
-    "./src/scripts/main.js"
+    "./src/js/scripts/main.js"
   ]
 }

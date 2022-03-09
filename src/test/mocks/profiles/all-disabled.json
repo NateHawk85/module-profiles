@@ -37,7 +37,6 @@
 		"token-mold": false,
 		"dd-import": false,
 		"monks-tokenbar": false,
-		"plutonium": false,
 		"dae": false,
 		"CustomSharedCompendiums": false,
 		"scene-packer": false,
@@ -55,6 +54,6 @@
 		"chat-images": false,
 		"popout": false,
 		"times-up": false,
-		"module-profiles": true
+		"module-profiles": false
 	}
 }

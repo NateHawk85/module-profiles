@@ -1,6 +1,6 @@
 import * as API from '../../scripts/api.js';
 import * as SettingsUtils from '../../scripts/settings-utils.js';
-import * as Settings from '../../scripts/settings.js';
+import * as Settings from '../../classes/Settings.js';
 
 
 jest.mock('../../scripts/settings-utils.js', () => ({

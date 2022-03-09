@@ -32,7 +32,8 @@
   },
   "jest": {
     "setupFiles": [
-      "./src/tests/mocks/mock-foundry.js"
+      "./src/test/mocks/mock-foundry.js",
+      "./src/test/mocks/mock-window.js"
     ],
     "testEnvironment": "jsdom"
   },

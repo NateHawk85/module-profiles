@@ -1,5 +1,5 @@
-import {ManageProfilesSettings} from '../../classes/ManageProfilesSettings.js';
-import {getSetting} from '../../scripts/settings-utils.js';
+import {ManageProfilesSettings} from '../.././js/classes/ManageProfilesSettings.js';
+import {getSetting} from '../../js/scripts/settings-utils.js';
 
 jest.mock('../../scripts/settings-utils.js', () => ({
 	getSetting: jest.fn()
