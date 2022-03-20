@@ -35,7 +35,13 @@ export class ManageProfilesSettings extends FormApplication
 	}
 
 
-	// SettingsUtils.getSetting('someTestKey');
+	// TODO - implement this for all the options
+	activateListeners(html)
+	{
+		return super.activateListeners(html);
+	}
+
+// SettingsUtils.getSetting('someTestKey');
 	// return {
 	// 	things: [
 	// 		{

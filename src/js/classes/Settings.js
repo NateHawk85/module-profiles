@@ -42,6 +42,7 @@ export class Settings
 			scope: 'world'
 		});
 
+		// TODO - can probably remove this setting
 		SettingsUtils.registerSetting(SettingKey.REGISTER_API, {
 			name: 'Register API',
 			hint: 'Make this module\'s API (ModuleProfiles.api.*function()*) available. If you don\'t write code, you probably don\'t need this.',
@@ -93,7 +94,7 @@ export class Settings
 	/**
 	 * Gets a saved profile from the game settings with the corresponding name.
 	 * @param profileName {String} - The name of the profile to return.
-	 * @returns {*}
+	 * @returns {*} // TODO
 	 */
 	getProfileByName(profileName)
 	{
@@ -112,28 +113,22 @@ export class Settings
 	}
 
 	/**
-	 * Sets the active profile name within the game settings.
-	 * @param profileName {String} - The name of the profile to get.
-	 * @returns {Promise<*>}
+	 * Loads the profile with the given name, then reloads the page.
+	 * @param profileName {String} - The name of the profile to load.
+	 * @returns {void}
 	 */
-	setActiveProfileName(profileName)
-	{
-		return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
-	}
-
-	// TODO - implement, do in place of "set active profile name"
 	async loadProfile(profileName)
 	{
 		const profile = this.getProfileByName(profileName);
 
 		if (!profile)
 		{
-			throw new Error('You dummy!');
+			throw new Error(`Profile "${profileName}" does not exist!`);
 		}
 
-		const onSetActiveProfileName = SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profileName);
-		const onSave = onSetActiveProfileName.then(() => this.setCoreModuleConfiguration(profile.modules));
-		onSave.then(() => window.location.reload());
+		SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profile.name)
+					 .then(() => this.setCoreModuleConfiguration(profile.modules))
+					 .then(() => SettingsUtils.reloadWindow());
 	}
 
 	// TODO - probably don't need to expose, but... whatever. probs test
@@ -195,12 +190,10 @@ export class Settings
 		return SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles.filter(profile => profile.name !== profileName));
 	}
 
-	// TODO
+	// TODO - test
 	resetProfiles()
 	{
-		this.setActiveProfileName(DEFAULT_PROFILE_NAME).then(() =>
-		{
-			return SettingsUtils.setSetting(SettingKey.PROFILES, undefined);
-		});
+		return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, DEFAULT_PROFILE_NAME)
+							.then(() => SettingsUtils.setSetting(SettingKey.PROFILES, undefined));
 	}
 }

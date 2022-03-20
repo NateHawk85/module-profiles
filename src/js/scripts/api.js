@@ -18,7 +18,6 @@ export function registerApi()
 		getProfileByName: settings.getProfileByName,
 		updateProfile: settings.updateProfile,
 		getCurrentModuleConfiguration: settings.getCurrentModuleConfiguration,
-		setActiveProfileName: settings.setActiveProfileName,
 		resetProfiles: settings.resetProfiles,
 		deleteProfile: settings.deleteProfile,
 		saveProfile: settings.saveProfile, // TODO?

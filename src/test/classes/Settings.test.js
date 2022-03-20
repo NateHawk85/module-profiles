@@ -12,7 +12,8 @@ jest.mock('../../js/scripts/settings-utils.js', () => ({
 	registerMenu: jest.fn(),
 	registerSetting: jest.fn(),
 	getSetting: jest.fn(),
-	setSetting: jest.fn()
+	setSetting: jest.fn(),
+	reloadWindow: jest.fn()
 }));
 
 beforeEach(() =>
@@ -294,24 +295,28 @@ describe('loadProfile', () =>
 			expect(spies.getProfileByName).toHaveBeenCalledWith(value);
 		});
 
-	test('WHEN profile does not exist THEN throws error', async () =>
-	{
-		buildSpyFunctionsForLoadProfile(DEFAULT_PROFILE_NAME, undefined);
-
-		const functionCall = () => settings.loadProfile(DEFAULT_PROFILE_NAME);
-
-		await expect(functionCall).rejects.toThrow(Error);
-		await expect(functionCall).rejects.toThrow(`You dummy!`); // TODO - update error message
-	});
-
 	test.each([DEFAULT_PROFILE_NAME, 'A Profile Name'])
-		('WHEN profile exists THEN calls SettingsUtils.setSetting to save active profile name: %s', (value) =>
+		('WHEN profile does not exist THEN throws error: %s', async (value) =>
 		{
-			buildSpyFunctionsForLoadProfile(value, DEFAULT_PROFILE);
+			buildSpyFunctionsForLoadProfile(value, undefined);
 
-			settings.loadProfile(value);
+			const functionCall = () => settings.loadProfile(value);
 
-			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.ACTIVE_PROFILE_NAME, value);
+			await expect(functionCall).rejects.toThrow(Error);
+			await expect(functionCall).rejects.toThrow(`Profile "${value}" does not exist!`);
+		});
+
+	test.each([
+		[DEFAULT_PROFILE_NAME, DEFAULT_PROFILE],
+		['A Profile Name', {name: 'A Profile Name', modules: undefined}]
+	])
+		('WHEN profile exists THEN calls SettingsUtils.setSetting to save active profile name: %s, %o', (profileName, profile) =>
+		{
+			buildSpyFunctionsForLoadProfile(profileName, profile);
+
+			settings.loadProfile(profileName);
+
+			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.ACTIVE_PROFILE_NAME, profileName);
 		});
 
 	test.each(
@@ -334,7 +339,7 @@ describe('loadProfile', () =>
 
 		await settings.loadProfile(DEFAULT_PROFILE_NAME);
 
-		expect(window.location.reload).toHaveBeenCalled();
+		expect(SettingsUtils.reloadWindow).toHaveBeenCalled();
 	});
 
 	function buildSpyFunctionsForLoadProfile(profileName, profile)
@@ -350,182 +355,181 @@ describe('loadProfile', () =>
 			setCoreModuleConfiguration: setCoreModuleConfigurationSpy
 		};
 	}
-})
-	;
+});
 
-	describe('saveProfile', () =>
-	{
-		test.each([
-			[
-				[DEFAULT_PROFILE],
-				DEFAULT_PROFILE_NAME
-			],
-			[
-				[{name: 'Another Profile Name', modules: undefined}],
-				'Another Profile Name'
-			],
-			[
-				[DEFAULT_PROFILE, {name: 'Another Profile Name', modules: undefined}],
-				DEFAULT_PROFILE_NAME
-			],
+describe('saveProfile', () =>
+{
+	test.each([
+		[
+			[DEFAULT_PROFILE],
+			DEFAULT_PROFILE_NAME
+		],
+		[
+			[{name: 'Another Profile Name', modules: undefined}],
+			'Another Profile Name'
+		],
+		[
+			[DEFAULT_PROFILE, {name: 'Another Profile Name', modules: undefined}],
+			DEFAULT_PROFILE_NAME
+		],
 
-		])
-			('WHEN called and profile already exists THEN throws error: %o, %s', (profiles, profileName) =>
+	])
+		('WHEN called and profile already exists THEN throws error: %o, %s', (profiles, profileName) =>
+		{
+			when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
+
+			const functionCall = () => settings.saveProfile(profileName, DEFAULT_PROFILE.modules);
+
+			expect(functionCall).toThrow(Error);
+			expect(functionCall).toThrow(`Profile "${profileName}" already exists!`);
+		});
+
+	test.each([
+		[DEFAULT_PROFILE_NAME, DEFAULT_PROFILE.modules],
+		['A Profile Name That Does Not Currently Exist', undefined]
+	])
+		('WHEN called and no profiles exist THEN calls SettingsUtils.setSetting to save profile: %s, %o', (profileName, modules) =>
+		{
+			when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue([]);
+
+			settings.saveProfile(profileName, modules);
+
+			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, [{name: profileName, modules: modules}])
+		});
+
+	test.each([
+		['Brand New Profile', DEFAULT_PROFILE.modules],
+		['A Profile Name That Does Not Currently Exist', undefined]
+	])
+		('WHEN called with a profile name that does not exist THEN calls SettingsUtils.setSetting to save profile: %s, %o', (profileName, modules) =>
+		{
+			settings.saveProfile(profileName, modules);
+
+			const expectedProfilesArray = [DEFAULT_PROFILE, {name: profileName, modules: modules}]
+			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, expectedProfilesArray);
+		});
+
+	test.each([
+		[
+			'Profile 1',
+			{moduleA: true, moduleB: false},
+			[DEFAULT_PROFILE],
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}]
+		],
+		[
+			'Profile 1',
+			{moduleA: false, moduleB: true},
+			[DEFAULT_PROFILE],
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: false, moduleB: true}}]
+		],
+		[
+			'Profile 2',
+			{moduleA: false},
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleA: false}}]
+		],
+		[
+			'Profile 2',
+			{moduleC: true},
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: true}}]
+		]
+	])
+		('WHEN called with a profile name that does not exist THEN calls SettingsUtils.setSetting to save without overwriting the current profile array: ' +
+			'%s, %o, %o, %s', (profileName, modules, profiles, expected) =>
+		{
+			when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
+
+			settings.saveProfile(profileName, modules);
+
+			expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, expected);
+		});
+
+	test.each([
+		[DEFAULT_PROFILE],
+		[{name: 'A Different Profile', modules: undefined}]
+	])
+		('WHEN called and no matching profile exists THEN returns what SettingsUtils.setSetting returns: %s', (value) =>
+		{
+			when(SettingsUtils.setSetting).calledWith(SettingKey.PROFILES, expect.any(Object)).mockReturnValue(value);
+
+			const response = settings.saveProfile('Brand New Profile', undefined);
+
+			expect(response).toStrictEqual(value);
+		});
+});
+
+describe('updateProfile', () =>
+{
+	test.each([
+		[
+			[DEFAULT_PROFILE],
+			'Another Profile Name'
+		],
+		[
+			[{name: 'Another Profile Name', modules: undefined}],
+			DEFAULT_PROFILE_NAME
+		],
+		[
+			[DEFAULT_PROFILE, {name: 'Another Profile Name', modules: undefined}],
+			'Yet Another Profile Name'
+		],
+	])
+		('WHEN called and no profiles exist with name THEN throws error: %o, %s', (profiles, profileName) =>
+		{
+			when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
+
+			const functionCall = () => settings.updateProfile(profileName, DEFAULT_PROFILE.modules);
+
+			expect(functionCall).toThrow(Error);
+			expect(functionCall).toThrow(`Profile "${profileName}" does not exist!`);
+		});
+
+	test.each([
+		[
+			DEFAULT_PROFILE_NAME,
+			{moduleA: true, moduleB: false},
+			[DEFAULT_PROFILE],
+			[{name: DEFAULT_PROFILE_NAME, modules: {moduleA: true, moduleB: false}}]
+		],
+		[
+			'Profile 1',
+			{moduleA: false, moduleB: true},
+			[{name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
+			[{name: 'Profile 1', modules: {moduleA: false, moduleB: true}}]
+		],
+		[
+			'Profile 2',
+			{moduleA: false},
+			[DEFAULT_PROFILE, {name: 'Profile 2', modules: {moduleA: true, moduleB: false}}],
+			[DEFAULT_PROFILE, {name: 'Profile 2', modules: {moduleA: false}}]
+		],
+		[
+			'Profile 2',
+			{moduleC: true},
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: false}}],
+			[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: true}}]
+		]
+	])
+		('WHEN called and profile exists with name THEN calls SettingsUtils.setSetting to save and overwrite the current profile: %s, %o, %o, %o',
+			(profileName, modules, profiles, expected) =>
 			{
 				when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
 
-				const functionCall = () => settings.saveProfile(profileName, DEFAULT_PROFILE.modules);
-
-				expect(functionCall).toThrow(Error);
-				expect(functionCall).toThrow(`Profile "${profileName}" already exists!`);
-			});
-
-		test.each([
-			[DEFAULT_PROFILE_NAME, DEFAULT_PROFILE.modules],
-			['A Profile Name That Does Not Currently Exist', undefined]
-		])
-			('WHEN called and no profiles exist THEN calls SettingsUtils.setSetting to save profile: %s, %o', (profileName, modules) =>
-			{
-				when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue([]);
-
-				settings.saveProfile(profileName, modules);
-
-				expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, [{name: profileName, modules: modules}])
-			});
-
-		test.each([
-			['Brand New Profile', DEFAULT_PROFILE.modules],
-			['A Profile Name That Does Not Currently Exist', undefined]
-		])
-			('WHEN called with a profile name that does not exist THEN calls SettingsUtils.setSetting to save profile: %s, %o', (profileName, modules) =>
-			{
-				settings.saveProfile(profileName, modules);
-
-				const expectedProfilesArray = [DEFAULT_PROFILE, {name: profileName, modules: modules}]
-				expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, expectedProfilesArray);
-			});
-
-		test.each([
-			[
-				'Profile 1',
-				{moduleA: true, moduleB: false},
-				[DEFAULT_PROFILE],
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}]
-			],
-			[
-				'Profile 1',
-				{moduleA: false, moduleB: true},
-				[DEFAULT_PROFILE],
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: false, moduleB: true}}]
-			],
-			[
-				'Profile 2',
-				{moduleA: false},
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleA: false}}]
-			],
-			[
-				'Profile 2',
-				{moduleC: true},
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: true}}]
-			]
-		])
-			('WHEN called with a profile name that does not exist THEN calls SettingsUtils.setSetting to save without overwriting the current profile array: ' +
-				'%s, %o, %o, %s', (profileName, modules, profiles, expected) =>
-			{
-				when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
-
-				settings.saveProfile(profileName, modules);
+				settings.updateProfile(profileName, modules);
 
 				expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, expected);
 			});
 
-		test.each([
-			[DEFAULT_PROFILE],
-			[{name: 'A Different Profile', modules: undefined}]
-		])
-			('WHEN called and no matching profile exists THEN returns what SettingsUtils.setSetting returns: %s', (value) =>
-			{
-				when(SettingsUtils.setSetting).calledWith(SettingKey.PROFILES, expect.any(Object)).mockReturnValue(value);
+	test.each([
+		'a return value', [{name: 'A profile', modules: undefined}]
+	])
+		('WHEN called and profile exists with name THEN returns what SettingsUtils.setSetting returns: %s', (value) =>
+		{
+			when(SettingsUtils.setSetting).calledWith(SettingKey.PROFILES, expect.any(Object)).mockReturnValue(value);
 
-				const response = settings.saveProfile('Brand New Profile', undefined);
+			const actual = settings.updateProfile(DEFAULT_PROFILE_NAME, undefined);
 
-				expect(response).toStrictEqual(value);
-			});
-	});
-
-	describe('updateProfile', () =>
-	{
-		test.each([
-			[
-				[DEFAULT_PROFILE],
-				'Another Profile Name'
-			],
-			[
-				[{name: 'Another Profile Name', modules: undefined}],
-				DEFAULT_PROFILE_NAME
-			],
-			[
-				[DEFAULT_PROFILE, {name: 'Another Profile Name', modules: undefined}],
-				'Yet Another Profile Name'
-			],
-		])
-			('WHEN called and no profiles exist with name THEN throws error: %o, %s', (profiles, profileName) =>
-			{
-				when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
-
-				const functionCall = () => settings.updateProfile(profileName, DEFAULT_PROFILE.modules);
-
-				expect(functionCall).toThrow(Error);
-				expect(functionCall).toThrow(`Profile "${profileName}" does not exist!`);
-			});
-
-		test.each([
-			[
-				DEFAULT_PROFILE_NAME,
-				{moduleA: true, moduleB: false},
-				[DEFAULT_PROFILE],
-				[{name: DEFAULT_PROFILE_NAME, modules: {moduleA: true, moduleB: false}}]
-			],
-			[
-				'Profile 1',
-				{moduleA: false, moduleB: true},
-				[{name: 'Profile 1', modules: {moduleA: true, moduleB: false}}],
-				[{name: 'Profile 1', modules: {moduleA: false, moduleB: true}}]
-			],
-			[
-				'Profile 2',
-				{moduleA: false},
-				[DEFAULT_PROFILE, {name: 'Profile 2', modules: {moduleA: true, moduleB: false}}],
-				[DEFAULT_PROFILE, {name: 'Profile 2', modules: {moduleA: false}}]
-			],
-			[
-				'Profile 2',
-				{moduleC: true},
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: false}}],
-				[DEFAULT_PROFILE, {name: 'Profile 1', modules: {moduleA: true, moduleB: false}}, {name: 'Profile 2', modules: {moduleC: true}}]
-			]
-		])
-			('WHEN called and profile exists with name THEN calls SettingsUtils.setSetting to save and overwrite the current profile: %s, %o, %o, %o',
-				(profileName, modules, profiles, expected) =>
-				{
-					when(SettingsUtils.getSetting).calledWith(SettingKey.PROFILES).mockReturnValue(profiles);
-
-					settings.updateProfile(profileName, modules);
-
-					expect(SettingsUtils.setSetting).toHaveBeenCalledWith(SettingKey.PROFILES, expected);
-				});
-
-		test.each([
-			'a return value', [{name: 'A profile', modules: undefined}]
-		])
-			('WHEN called and profile exists with name THEN returns what SettingsUtils.setSetting returns: %s', (value) =>
-			{
-				when(SettingsUtils.setSetting).calledWith(SettingKey.PROFILES, expect.any(Object)).mockReturnValue(value);
-
-				const actual = settings.updateProfile(DEFAULT_PROFILE_NAME, undefined);
-
-				expect(actual).toStrictEqual(value);
-			});
-	});
+			expect(actual).toStrictEqual(value);
+		});
+});

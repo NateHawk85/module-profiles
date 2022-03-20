@@ -19,7 +19,6 @@ describe('registerApi', () =>
 			getProfileByName: Settings.getProfileByName,
 			updateProfile: Settings.updateProfile,
 			getCurrentModuleConfiguration: Settings.getCurrentModuleConfiguration,
-			setActiveProfileName: Settings.setActiveProfileName,
 			resetProfiles: Settings.resetProfiles
 		});
 	});
