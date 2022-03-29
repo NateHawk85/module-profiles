@@ -1,4 +1,4 @@
-import * as StatusButtonScripts from '../../../scripts/ui/status-button-scripts.js';
+import * as StatusButtonScripts from '../../../../js/scripts/ui/status-button-scripts.js';
 
 describe('refreshStatusIcons', () =>
 {

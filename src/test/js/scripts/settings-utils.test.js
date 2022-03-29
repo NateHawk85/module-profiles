@@ -1,4 +1,4 @@
-import * as SettingsUtils from '../../js/scripts/settings-utils.js';
+import * as SettingsUtils from '../../../js/scripts/settings-utils.js';
 import {when} from 'jest-when';
 
 const MODULE_NAME = 'module-profiles';
@@ -140,7 +140,7 @@ describe('registerAPI', () =>
 
 describe('reloadWindow', () =>
 {
-	test('WHEN called THEN calls window.location.reload()', () =>
+	test('WHEN called THEN calls window.location.reload', () =>
 	{
 		SettingsUtils.reloadWindow();
 

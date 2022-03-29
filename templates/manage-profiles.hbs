@@ -1,4 +1,4 @@
-<form id="module-profiles-management-window">
+<form id="module-profiles-manage-profiles-form">
 	<!------------------------------ Header ------------------------------>
 	<h2 class="module-profiles-header">Manage Module Profiles</h2>
 	<hr>
@@ -27,34 +27,27 @@
 		{{#each profiles}}
 			<tr class="flexrow"> <!-- TODO - highlight active profile -->
 				<td class="profile-name-column">{{name}}</td>
-				<td class="icon-column"><a class="fa fa-power-off" onclick="game.modules.get('module-profiles').api.activationCallback('{{name}}');"></a></td>
-				<td class="icon-column"><a class="fa fa-edit" onclick="game.modules.get('module-profiles').api.editCallback();"></a></td>
-				<td class="icon-column"><a class="fa fa-copy"></a></td>
-				<td class="icon-column"><a class="fa fa-file-export"></a></td>
-				<td class="icon-column"><a class="fa fa-trash" onclick="game.modules.get('module-profiles').api.deleteCallback('{{name}}');"></a></td>
-				<!-- TODO - janky as hell -->
-				 <!-- TODO - prompt user 'are you sure? any changes made to the current profile will be unsaved ('Don't ask me again' checkbox, can override
-				 in settings as well -->
-				 <!-- TODO - pop open window to edit name of profile + selected module list -->
-				 <!-- TODO - copy module profile, with '(Copy) at the end -->
-				 <!-- TODO - export functionality (or just remove it) -->
-				 <!-- TODO - 'are you sure?' -->
+				<td class="icon-column"><a class="fa fa-power-off module-profiles-activate-profile" data-profile-name="{{name}}"></a></td>
+				<td class="icon-column"><a class="fa fa-edit module-profiles-edit-profile"></a></td>
+				<td class="icon-column"><a class="fa fa-copy module-profiles-copy-profile"></a></td>
+				<td class="icon-column"><a class="fa fa-file-export module-profiles-export-profile"></a></td>
+				<td class="icon-column"><a class="fa fa-trash module-profiles-delete-profile"></a></td>
 			</tr>
 		{{/each}}
 		</tbody>
 	</table>
 	<div class="flexrow right-aligned">
-		<a><i class="fa fa-plus"></i> <b>Add New</b></a>
+		<a id=module-profiles-manage-profiles-create-new><i class="fa fa-plus"></i> <b>Create New</b></a>
 	</div>
 
 	<!------------------------------ Footer ------------------------------>
 	<hr>
 	<div class="flexrow">
 		<button type="submit" name="submit">
-			<i class="fa fa-check"></i> Save Changes
-		</button>
-		<button type="submit" name="submit">
 			<i class="fa fa-ban"></i> Cancel
+		</button>
+		<button type="submit" name="submit"> <!-- TODO - save changes vs cancel? Only save changes on 'Save Changes' clicked? Nah, don't give button option -->
+			<i class="fa fa-check"></i> Save Changes
 		</button>
 	</div>
 </form>

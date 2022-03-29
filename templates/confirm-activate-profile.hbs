@@ -1,0 +1,21 @@
+<form id="module-profiles-confirm-activate-profile-form">
+	<!------------------------------ Header ------------------------------>
+	<h3 class="module-profiles-header">Are you sure you want to activate "<b>{{profileNameToActivate}}</b>"? Doing so will discard any current changes made to
+									   "<b>{{activeProfileName}}</b>".
+	</h3>
+	<hr>
+
+	<!------------------------------ Content ------------------------------>
+	<label for="moduleProfilesDontAskToConfirmActivateProfile">Don't ask me again (can be reset in module settings)</label>
+	<input type="checkbox" name="moduleProfilesDontAskToConfirmActivateProfile" id="moduleProfilesDontAskToConfirmActivateProfile" />
+	<!------------------------------ Footer ------------------------------>
+	<hr>
+	<div class="flexrow">
+		<button type="submit" name="moduleProfilesCancel" id="moduleProfilesCancel">
+			<i class="fa fa-ban"></i> Cancel
+		</button>
+		<button type="submit" name="moduleProfilesActivateProfileSubmit" id="moduleProfilesActivateProfileSubmit">
+			<i class="fa fa-check"></i> Activate Profile
+		</button>
+	</div>
+</form>

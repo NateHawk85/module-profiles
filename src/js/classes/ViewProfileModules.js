@@ -1,10 +1,8 @@
-import {Settings} from './Settings.js';
+import * as Settings from '../scripts/settings.js';
 
 // TODO - this whole class is a test
 export class ViewProfileModules extends FormApplication
 {
-	settings = new Settings();
-
 	static get defaultOptions()
 	{
 		// TODO - go back to json-style objects
@@ -22,7 +20,7 @@ export class ViewProfileModules extends FormApplication
 	// TODO - test
 	getData(options = {})
 	{
-		const activeProfile = this.settings.getActiveProfile();
+		const activeProfile = Settings.getActiveProfile();
 		return {
 			name: activeProfile.name,
 			modules: Object.entries(activeProfile.modules).map(keyValuePair => ({moduleName: keyValuePair[0], isActive: keyValuePair[1]}))

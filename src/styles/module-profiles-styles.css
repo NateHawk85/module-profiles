@@ -101,32 +101,28 @@
 
 /* ------------------------------ Module Profiles Management Window ------------------------------ */
 
-#module-profiles-management-window .module-profiles-header {
+#module-profiles-manage-profiles-form .module-profiles-header {
     text-align: center;
     border-bottom: none;
 }
 
-#module-profiles-management-window .profile-name-column {
+#module-profiles-manage-profiles-form .profile-name-column {
     flex: 0 0 50%;
     text-align: left;
     font-weight: bold;
 }
 
-#module-profiles-management-window .icon-column {
+#module-profiles-manage-profiles-form .icon-column {
     justify-content: flex-end;
     text-align: center;
     font-weight: bold;
 }
 
-#module-profiles-management-window .fa-power-off {
+#module-profiles-manage-profiles-form .fa-power-off {
     color: green;
 }
 
-#module-profiles-management-window .right-aligned {
+#module-profiles-manage-profiles-form .right-aligned {
     justify-content: flex-end;
     text-align: right;
-}
-
-.module-profiles-form {
-    min-width: 550px;
 }

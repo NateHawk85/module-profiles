@@ -1,12 +1,22 @@
-import {Settings} from '../../classes/Settings.js';
-import {ManageProfilesSettings} from '../../classes/ManageProfilesSettings.js';
-import {CreateModuleProfile} from '../../classes/CreateModuleProfile.js';
+import * as Settings from '../settings.js';
+import * as ModuleManagement from './module-management.js';
+import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm.js';
+import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm.js';
+
+const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
 // TODO - turn into a class?
-
-const settings = new Settings();
+// TODO - disable normal 'click' events on new buttons, see if you can implement these options with the ModuleManagement class in Foundry
+// TODO - seems to be an issue with this
+//  onClickHyperlink(event) {
+//     const a = event.target.closest("a[href]");  <-- Finds closest a tag, tries to refresh the
+//     if ( !a || (a.href === "javascript:void(0)") ) return;
+//     event.preventDefault();
+//     window.open(a.href, "_blank");
+//   }
 
 // TODO - test all
+// TODO - make sure to check statuses on initial load
 export function modifyModuleManagementRender(app, html, data)
 {
 	console.log('modifying stuff');
@@ -40,6 +50,7 @@ function addFooterElements()
 	function buildStatusButton()
 	{
 		const statusButton = document.createElement('button');
+		statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
 		statusButton.classList.add('module-profiles-status-button');
 		statusButton.style.flexBasis = '130%';
 
@@ -49,9 +60,10 @@ function addFooterElements()
 	function buildCreateModuleProfileButton()
 	{
 		const createModuleProfileButton = document.createElement('button');
+		createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
 		createModuleProfileButton.innerHTML = '<i class="fa fa-plus"></i> Create Module Profile</button>';
 		createModuleProfileButton.style.flexBasis = '80%';
-		createModuleProfileButton.addEventListener('click', () => new CreateModuleProfile().render(true));
+		createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
 		return createModuleProfileButton;
 	}
@@ -60,8 +72,13 @@ function addFooterElements()
 	{
 		// TODO - bug, when status button is "Save changes to...", clicking this reloads page
 		const manageProfilesButton = document.createElement('button');
+		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
 		manageProfilesButton.innerHTML = '<i class="fa fa-cog"></i> Manage Module Profiles</button>';
-		manageProfilesButton.addEventListener('click', () => new ManageProfilesSettings().render(true));
+		manageProfilesButton.addEventListener('click', (event) =>
+		{
+			event.preventDefault();
+			new ManageModuleProfilesSettingsForm().render(true);
+		});
 
 		return manageProfilesButton;
 	}
@@ -69,17 +86,17 @@ function addFooterElements()
 
 function modifyModuleListElements()
 {
-	const activeProfile = settings.getActiveProfile();
-	const modules = document.getElementById('module-management').querySelectorAll('li'); // TODO - make sure you're picking up the right modules
+	const activeProfile = Settings.getActiveProfile();
+	const moduleElements = document.querySelectorAll('#module-management li[data-module-name]'); // TODO - NodeList, not Array
 
 	// Add status icons and add an "update" event listener to each module in the list
-	modules.forEach(module =>
+	moduleElements.forEach(module =>
 	{
 		let statusIconContainer = createModuleStatusIcon();
 		if (module.children.length > 0)
 		{
 			module.children[0].prepend(statusIconContainer);
-			module.addEventListener('input', () => updateProfileStatus(activeProfile, modules));
+			module.addEventListener('input', () => updateProfileStatus(activeProfile, moduleElements));
 		} else
 		{
 			console.log(module); // TODO - what's going on here? Why is there a module with no children?
@@ -98,7 +115,8 @@ function modifyModuleListElements()
 	{
 		modules.forEach(module =>
 		{
-			if (module.children[0] && module.children[0].children[1] && module.children[0].children[1].children[0]) // TODO - appropriately handle this
+			// TODO - what's this do tho?
+			if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
 			{
 				const statusIcon = module.children[0].children[0].firstChild;
 				const checkbox = module.children[0].children[1].children[0];
@@ -122,8 +140,8 @@ function modifyModuleListElements()
 function updateStatusButtons()
 {
 	// TODO - clean up
-	const activeProfile = settings.getActiveProfile();
-	const isUpToDate = isProfileUpToDate(activeProfile);
+	const activeProfile = Settings.getActiveProfile();
+	const isUpToDate = ModuleManagement.unsavedChangesExistOn(activeProfile);
 
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>
@@ -139,7 +157,7 @@ function updateStatusButtons()
 			button.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
-				const result = settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
+				const result = Settings.saveChangesToProfile(activeProfile.name, findUnsavedModuleStatuses());
 				result.then(() =>
 				{
 					updateStatusButtons();
@@ -151,11 +169,21 @@ function updateStatusButtons()
 	});
 }
 
-function isProfileUpToDate(profile)
+// TODO - test
+// TODO - pass in profile name, not profile
+export function unsavedChangesExistOn(profile)
 {
+
 	const unsavedProfile = findUnsavedModuleStatuses();
 
-	return Object.entries(unsavedProfile).every(([moduleId, unsavedStatus]) => profile.modules[moduleId] === unsavedStatus);
+	return Object.entries(unsavedProfile).some(([moduleId, unsavedStatus]) => profile.modules[moduleId] !== unsavedStatus);
+}
+
+// TODO - test
+export function isModuleManagementWindowOpen()
+{
+	// TODO - implement
+	return document.getElementById('module-management') != null;
 }
 
 function findUnsavedModuleStatuses()
@@ -178,7 +206,7 @@ function findUnsavedModuleStatuses()
 // TODO - uhhhhh
 export function test()
 {
-	const activeProfile = settings.getActiveProfile();
+	const activeProfile = Settings.getActiveProfile();
 	document.getElementById('module-management').querySelectorAll('li').forEach(module =>
 	{
 		const statusIcon = module.children[0].children[0].firstChild;
@@ -197,7 +225,7 @@ export function test()
 
 	// updateStatusButtons();
 
-	const isUpToDate = isProfileUpToDate(activeProfile);
+	const isUpToDate = ModuleManagement.unsavedChangesExistOn(activeProfile);
 
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>
@@ -213,7 +241,7 @@ export function test()
 			button.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
-				const result = settings.updateProfile(activeProfile.name, findUnsavedModuleStatuses());
+				const result = Settings.saveChangesToProfile(activeProfile.name, findUnsavedModuleStatuses());
 				result.then(() =>
 				{
 					updateStatusButtons();
@@ -224,6 +252,7 @@ export function test()
 		button.disabled = isUpToDate;
 	});
 }
+
 //
 // Hooks.on('closeDialog', (app, html) =>
 // {
