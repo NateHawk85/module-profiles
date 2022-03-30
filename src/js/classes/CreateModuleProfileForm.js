@@ -24,6 +24,6 @@ export default class CreateModuleProfileForm extends FormApplication
 			return null;
 		}
 
-		return Settings.createProfile(formData.moduleProfilesCreateNewProfileName, Settings.getCurrentModuleConfiguration());
+		return await Settings.createProfile(formData.moduleProfilesCreateNewProfileName, Settings.getCurrentModuleConfiguration());
 	}
 }

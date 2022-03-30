@@ -1,9 +1,12 @@
 import * as Settings from '../scripts/settings.js';
 import * as ProfileInteractions from '../scripts/profile-interactions.js';
 import CreateModuleProfileForm from './CreateModuleProfileForm.js';
+import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm.js';
 
 export default class ManageModuleProfilesSettingsForm extends FormApplication
 {
+	static FORM_ID = 'module-profiles-manage-profiles';
+
 	static get defaultOptions()
 	{
 		const parent = super.defaultOptions;
@@ -12,7 +15,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		return {
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
-			id: 'module-profiles-manage-profiles',
+			id: this.FORM_ID,
 			template: 'modules/module-profiles/templates/manage-profiles.hbs',
 			title: 'Manage Module Profiles',
 			width: 660
@@ -33,14 +36,21 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			super.activateListeners(html);
 		}
 
-		const elements = document.getElementsByClassName('module-profiles-activate-profile');
-		Array.from(elements).forEach(element => element.addEventListener('click', () =>
+		const createNewProfileElement = document.getElementById('module-profiles-manage-profiles-create-new');
+		createNewProfileElement?.addEventListener('click', () => new CreateModuleProfileForm().render(true));
+
+		const activateProfileElements = document.getElementsByClassName('module-profiles-activate-profile');
+		Array.from(activateProfileElements).forEach(element => element.addEventListener('click', () =>
 		{
 			ProfileInteractions.activateProfile(element.dataset.profileName);
 		}));
 
-		const createNew = document.getElementById('module-profiles-manage-profiles-create-new');
-		createNew.addEventListener('click', () => new CreateModuleProfileForm().render(true));
+		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
+		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
+		{
+			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true);
+		}));
+
 
 		addClickEventToElementsWithClass(ProfileInteractions.deleteProfile, 'module-profiles-delete-profile');
 
@@ -57,11 +67,12 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		}
 	}
 
-	// TODO - do you need to do anything with this?
-	async _updateObject(event, formData)
-	{
-		console.log('event | formData');
-		console.log(event);
-		console.log(formData);
-	}
+	async _updateObject(event, formData) {}
+}
+
+export function reRenderManageModuleProfilesWindows()
+{
+	Object.values(ui.windows)
+		  .filter(element => element.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
+		  .forEach(element => element.render(true));
 }

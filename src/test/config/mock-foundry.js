@@ -1,6 +1,7 @@
 globalThis.Hooks = {
 	once: jest.fn(),
-	on: jest.fn()
+	on: jest.fn(),
+	callAll: jest.fn()
 };
 
 globalThis.game = {

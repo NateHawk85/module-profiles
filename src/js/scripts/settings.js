@@ -3,6 +3,7 @@ import * as SettingsUtils from './settings-utils.js';
 import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm.js';
 
 const DEFAULT_PROFILE_NAME = 'Default Profile';
+export const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
 
 export const SettingKey = {
 	MANAGE_PROFILES: 'manageProfiles',
@@ -145,7 +146,7 @@ export async function activateProfile(profileName)
  * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether they're active.
  * @throws Error - When a profile exists with the given profileName
  */
-export function createProfile(profileName, modules)
+export async function createProfile(profileName, modules)
 {
 	if (!profileName)
 	{
@@ -171,7 +172,11 @@ export function createProfile(profileName, modules)
 
 	const profiles = Settings.getAllProfiles();
 	profiles.push({ name: profileName, modules: modules });
-	return SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
+
+	const response = SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
+	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
+
+	return response;
 }
 
 /**
@@ -180,7 +185,7 @@ export function createProfile(profileName, modules)
  * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether or not they're active.
  * @throws Error - When a profile name is passed and no profiles exist with that name.
  */
-export function saveChangesToProfile(profileName, modules)
+export async function saveChangesToProfile(profileName, modules)
 {
 	const savedProfiles = Settings.getAllProfiles();
 	const matchingProfileIndex = savedProfiles.findIndex(profile => profile.name === profileName);
@@ -194,7 +199,10 @@ export function saveChangesToProfile(profileName, modules)
 
 	savedProfiles[matchingProfileIndex] = { name: profileName, modules: modules };
 
-	return SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
+	const response = SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
+	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
+
+	return response;
 }
 
 /**
@@ -203,7 +211,7 @@ export function saveChangesToProfile(profileName, modules)
  * @returns {Promise<*>} - The resulting value of the updated profiles setting.
  * @throws {Error} - When no profile with the given name exists.
  */
-export function deleteProfile(profileName)
+export async function deleteProfile(profileName)
 {
 	if (!Settings.getProfileByName(profileName))
 	{
@@ -219,6 +227,8 @@ export function deleteProfile(profileName)
 	{
 		SettingsUtils.reloadWindow();
 	}
+
+	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
 
 	return response;
 }

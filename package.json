@@ -37,7 +37,7 @@
       "<rootDir>/src/test/config/constants.js"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/test/config/globalTestConfig.js"
+      "<rootDir>/src/test/config/global-test-config.js"
     ],
     "testEnvironment": "jsdom",
     "clearMocks": true,

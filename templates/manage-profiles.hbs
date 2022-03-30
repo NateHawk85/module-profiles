@@ -28,10 +28,10 @@
 			<tr class="flexrow"> <!-- TODO - highlight active profile -->
 				<td class="profile-name-column">{{name}}</td>
 				<td class="icon-column"><a class="fa fa-power-off module-profiles-activate-profile" data-profile-name="{{name}}"></a></td>
-				<td class="icon-column"><a class="fa fa-edit module-profiles-edit-profile"></a></td>
-				<td class="icon-column"><a class="fa fa-copy module-profiles-copy-profile"></a></td>
-				<td class="icon-column"><a class="fa fa-file-export module-profiles-export-profile"></a></td>
-				<td class="icon-column"><a class="fa fa-trash module-profiles-delete-profile"></a></td>
+				<td class="icon-column"><a class="fa fa-edit module-profiles-edit-profile" data-profile-name="{{name}}"></a></td>
+				<td class="icon-column"><a class="fa fa-copy module-profiles-copy-profile" data-profile-name="{{name}}"></a></td>
+				<td class="icon-column"><a class="fa fa-file-export module-profiles-export-profile" data-profile-name="{{name}}"></a></td>
+				<td class="icon-column"><a class="fa fa-trash module-profiles-delete-profile" data-profile-name="{{name}}"></a></td>
 			</tr>
 		{{/each}}
 		</tbody>

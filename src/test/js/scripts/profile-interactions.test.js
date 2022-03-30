@@ -35,7 +35,6 @@ describe('activateProfile', () =>
 
 				expect(ConfirmActivateProfileForm).toHaveBeenCalledTimes(1);
 				expect(ConfirmActivateProfileForm).toHaveBeenCalledWith(value);
-
 				const instance = ConfirmActivateProfileForm.mock.instances[0];
 				expect(instance.render).toHaveBeenCalledWith(true);
 			});

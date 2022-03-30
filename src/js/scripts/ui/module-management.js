@@ -173,7 +173,6 @@ function updateStatusButtons()
 // TODO - pass in profile name, not profile
 export function unsavedChangesExistOn(profile)
 {
-
 	const unsavedProfile = findUnsavedModuleStatuses();
 
 	return Object.entries(unsavedProfile).some(([moduleId, unsavedStatus]) => profile.modules[moduleId] !== unsavedStatus);

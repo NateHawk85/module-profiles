@@ -19,7 +19,7 @@ export default class ConfirmActivateProfileForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: 'module-profiles-confirm-activate-profile',
-			template: 'modules/module-profiles/templates/confirm-activate-profile.hbs', // TODO - implement or get rid of "don't ask me again" box
+			template: 'modules/module-profiles/templates/confirm-activate-profile.hbs',
 			title: 'Confirm Activate Profile',
 			width: 660
 		};

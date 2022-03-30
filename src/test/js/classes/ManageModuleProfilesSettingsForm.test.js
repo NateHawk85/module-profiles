@@ -1,8 +1,9 @@
 import * as Settings from '../../../js/scripts/settings.js';
 import * as ProfileInteractions from '../../../js/scripts/profile-interactions.js';
-import ManageModuleProfilesSettingsForm from '../../../js/classes/ManageModuleProfilesSettingsForm.js';
+import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFunctions from '../../../js/classes/ManageModuleProfilesSettingsForm.js';
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import CreateModuleProfileForm from '../../../js/classes/CreateModuleProfileForm.js';
+import ConfirmDeleteProfileForm from '../../../js/classes/ConfirmDeleteProfileForm.js';
 
 const FORM_ID = 'module-profiles-manage-profiles';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/manage-profiles.hbs';
@@ -23,6 +24,7 @@ const FORM_APPLICATION_DEFAULT_OPTIONS = {
 jest.mock('../../../js/scripts/settings.js');
 jest.mock('../../../js/scripts/profile-interactions.js');
 jest.mock('../../../js/classes/CreateModuleProfileForm.js');
+jest.mock('../../../js/classes/ConfirmDeleteProfileForm.js');
 
 let manageModuleProfilesSettingsForm;
 
@@ -31,6 +33,11 @@ beforeEach(() =>
 	manageModuleProfilesSettingsForm = new ManageModuleProfilesSettingsForm();
 
 	jest.spyOn(FormApplication, 'defaultOptions', 'get').mockImplementation(() => FORM_APPLICATION_DEFAULT_OPTIONS);
+});
+
+afterAll(() =>
+{
+	ui.windows = jest.fn();
 });
 
 describe('defaultOptions', () =>
@@ -107,6 +114,23 @@ describe('getData', () =>
 
 describe('activateListeners', () =>
 {
+	describe('module-profiles-manage-profiles-create-new', () =>
+	{
+		test('WHEN element with "module-profiles-manage-profiles-create-new" id exists THEN adds createProfile click event to element', () =>
+		{
+			const element = document.createElement('a');
+			element.id = CREATE_PROFILE_CLASS;
+			document.body.append(element);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element.click();
+
+			expect(CreateModuleProfileForm).toHaveBeenCalledTimes(1);
+			const instance = CreateModuleProfileForm.mock.instances[0];
+			expect(instance.render).toHaveBeenCalledWith(true);
+		});
+	});
+
 	describe('module-profiles-activate-profile', () =>
 	{
 		test('WHEN element does not have "module-profiles-activate-profile" class THEN does not add activateProfile click event to element', () =>
@@ -183,6 +207,106 @@ describe('activateListeners', () =>
 
 			element2.click();
 			expect(ProfileInteractions.activateProfile).toHaveBeenCalledWith('A Different Profile Name');
+		});
+	});
+
+	describe('module-profiles-delete-profile', () =>
+	{
+		test('WHEN element does not have "module-profiles-delete-profile" class THEN does not add deleteProfile click event to element', () =>
+		{
+			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-delete-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(0);
+		});
+
+		test('WHEN multiple elements do not have "module-profiles-delete-profile" class THEN does not add deleteProfile click event to elements', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, ['not-delete-profile']);
+			const element2 = addElementWith(DEFAULT_PROFILE_NAME, ['another-not-delete-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element1.click();
+			element2.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(0);
+		});
+
+		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+			('WHEN element has "module-profiles-delete-profile" class THEN adds deleteProfile click event for one element with class', (value) =>
+			{
+				const element = addElementWith(value, [DELETE_PROFILE_CLASS]);
+
+				manageModuleProfilesSettingsForm.activateListeners();
+				element.click();
+				expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(1);
+				expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith(value);
+				const instance = ConfirmDeleteProfileForm.mock.instances[0];
+				expect(instance.render).toHaveBeenCalledWith(true);
+			});
+
+		test('WHEN elements have "module-profiles-delete-profile" class THEN adds deleteProfile click event for many elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS]);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(1);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = ConfirmDeleteProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(2);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = ConfirmDeleteProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
+		});
+
+		test('WHEN some elements have "module-profiles-delete-profile" class THEN only adds deleteProfile click event to elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS]);
+			const element3 = addElementWith('A Third Profile Name', ['some-other-class-name']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(1);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = ConfirmDeleteProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(2);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = ConfirmDeleteProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
+
+			element3.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(2);
+		});
+
+		test('WHEN elements have other classes than "module-profiles-delete-profile" THEN adds deleteProfile click event for elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS, 'some-other-class']);
+			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS, 'fa-power-off']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(1);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = ConfirmDeleteProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledTimes(2);
+			expect(ConfirmDeleteProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = ConfirmDeleteProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
 		});
 	});
 
@@ -390,91 +514,6 @@ describe('activateListeners', () =>
 		});
 	});
 
-	describe('module-profiles-delete-profile', () =>
-	{
-		test('WHEN element does not have "module-profiles-delete-profile" class THEN does not add deleteProfile click event to element', () =>
-		{
-			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-delete-profile']);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element.addEventListener).toHaveBeenCalledTimes(0);
-		});
-
-		test('WHEN multiple elements do not have "module-profiles-delete-profile" class THEN does not add deleteProfile click event to elements', () =>
-		{
-			const element1 = addElementWith(DEFAULT_PROFILE_NAME, ['not-delete-profile']);
-			const element2 = addElementWith(DEFAULT_PROFILE_NAME, ['another-not-delete-profile']);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element1.addEventListener).toHaveBeenCalledTimes(0);
-			expect(element2.addEventListener).toHaveBeenCalledTimes(0);
-		});
-
-		test('WHEN element has "module-profiles-delete-profile" class THEN adds deleteProfile click event for one element with class', () =>
-		{
-			const element = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS]);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-		});
-
-		test('WHEN elements have "module-profiles-delete-profile" class THEN adds deleteProfile click event for many elements with class', () =>
-		{
-			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS]);
-			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS]);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element1.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-			expect(element2.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-		});
-
-		test('WHEN some elements have "module-profiles-delete-profile" class THEN only adds deleteProfile click event to elements with class', () =>
-		{
-			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS]);
-			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS]);
-			const element3 = addElementWith('A Third Profile Name', ['some-other-class-name']);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element1.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-			expect(element2.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-			expect(element3.addEventListener).toHaveBeenCalledTimes(0);
-		});
-
-		test('WHEN elements have other classes than "module-profiles-delete-profile" THEN adds deleteProfile click event for elements with class', () =>
-		{
-			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DELETE_PROFILE_CLASS, 'some-other-class']);
-			const element2 = addElementWith('A Different Profile Name', [DELETE_PROFILE_CLASS, 'fa-power-off']);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-
-			expect(element1.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-			expect(element2.addEventListener).toHaveBeenCalledWith('click', ProfileInteractions.deleteProfile);
-		});
-	});
-
-	describe('module-profiles-manage-profiles-create-new', () =>
-	{
-		test('WHEN element with "module-profiles-manage-profiles-create-new" id exists THEN adds createProfile click event to element', () =>
-		{
-			const element = document.createElement('a');
-			element.id = CREATE_PROFILE_CLASS;
-			document.body.append(element);
-
-			manageModuleProfilesSettingsForm.activateListeners();
-			element.click();
-
-			expect(CreateModuleProfileForm).toHaveBeenCalledTimes(1);
-
-			const instance = CreateModuleProfileForm.mock.instances[0];
-			expect(instance.render).toHaveBeenCalledWith(true);
-		});
-	});
-
 	function addElementWith(profileName, classes)
 	{
 		const element = document.createElement('a');
@@ -486,4 +525,77 @@ describe('activateListeners', () =>
 
 		return element;
 	}
+});
+
+describe('reRenderManageModuleProfilesWindows', () =>
+{
+	test('WHEN one ManageModuleProfilesSettingsForm exists on ui.windows THEN re-renders single window', () =>
+	{
+		ui.windows = {
+			51: {
+				options: {
+					id: ManageModuleProfilesSettingsForm.FORM_ID
+				},
+				render: jest.fn()
+			}
+		};
+
+		ManageModuleProfilesSettingsFormFunctions.reRenderManageModuleProfilesWindows();
+
+		expect(ui.windows[51].render).toHaveBeenCalledWith(true);
+	});
+
+	test('WHEN multiple ManageModuleProfilesSettingsForm exists on ui.windows THEN re-renders multiple windows', () =>
+	{
+		ui.windows = {
+			51: {
+				options: {
+					id: ManageModuleProfilesSettingsForm.FORM_ID
+				},
+				render: jest.fn()
+			},
+			55: {
+				options: {
+					id: ManageModuleProfilesSettingsForm.FORM_ID
+				},
+				render: jest.fn()
+			},
+			56: {
+				options: {
+					id: ManageModuleProfilesSettingsForm.FORM_ID
+				},
+				render: jest.fn()
+			}
+		};
+
+		ManageModuleProfilesSettingsFormFunctions.reRenderManageModuleProfilesWindows();
+
+		expect(ui.windows[51].render).toHaveBeenCalledWith(true);
+		expect(ui.windows[55].render).toHaveBeenCalledWith(true);
+		expect(ui.windows[56].render).toHaveBeenCalledWith(true);
+	});
+
+	test('WHEN one ManageModuleProfilesSettingsForm exists on ui.windows and other forms exist THEN only re-renders on ManageModuleProfilesSettingsForm window',
+		() =>
+		{
+			ui.windows = {
+				51: {
+					options: {
+						id: ManageModuleProfilesSettingsForm.FORM_ID
+					},
+					render: jest.fn()
+				},
+				52: {
+					options: {
+						id: 'some-other-form-id'
+					},
+					render: jest.fn()
+				}
+			};
+
+			ManageModuleProfilesSettingsFormFunctions.reRenderManageModuleProfilesWindows();
+
+			expect(ui.windows[51].render).toHaveBeenCalledWith(true);
+			expect(ui.windows[52].render).toHaveBeenCalledTimes(0);
+		});
 });
