@@ -1,19 +1,28 @@
 import * as Settings from '../settings.js';
-import * as ModuleManagement from './module-management.js';
+import * as ModuleManagementScripts from './module-management-scripts.js';
 import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm.js';
 import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm.js';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
-// TODO - turn into a class?
-// TODO - disable normal 'click' events on new buttons, see if you can implement these options with the ModuleManagement class in Foundry
-// TODO - seems to be an issue with this
-//  onClickHyperlink(event) {
-//     const a = event.target.closest("a[href]");  <-- Finds closest a tag, tries to refresh the
-//     if ( !a || (a.href === "javascript:void(0)") ) return;
-//     event.preventDefault();
-//     window.open(a.href, "_blank");
-//   }
+// TODO - hook into the 'renderDialog' hook to refresh Module Management on close
+//		if (arg1.data.title === 'Dependencies')
+
+// TODO - hook into the 'closeDialog' hook to refresh Module Management on close
+// 		if (arg1.data.title === 'Dependencies')
+
+/**
+ * Determines if changes exist on the Module Management window that don't align with a given profile.
+ * @param {string} profileName
+ * @returns {boolean} - Whether unsaved changes exist on the profile with the given name.
+ */
+export function unsavedChangesExistOn(profileName)
+{
+	const savedProfile = Settings.getProfileByName(profileName);
+	const unsavedProfile = findUnsavedModuleStatuses();
+
+	return Object.entries(unsavedProfile).some(([moduleId, unsavedStatus]) => savedProfile.modules[moduleId] !== unsavedStatus);
+}
 
 // TODO - test all
 // TODO - make sure to check statuses on initial load
@@ -141,7 +150,7 @@ function updateStatusButtons()
 {
 	// TODO - clean up
 	const activeProfile = Settings.getActiveProfile();
-	const isUpToDate = ModuleManagement.unsavedChangesExistOn(activeProfile);
+	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);
 
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>
@@ -167,15 +176,6 @@ function updateStatusButtons()
 
 		button.disabled = isUpToDate;
 	});
-}
-
-// TODO - test
-// TODO - pass in profile name, not profile
-export function unsavedChangesExistOn(profile)
-{
-	const unsavedProfile = findUnsavedModuleStatuses();
-
-	return Object.entries(unsavedProfile).some(([moduleId, unsavedStatus]) => profile.modules[moduleId] !== unsavedStatus);
 }
 
 // TODO - test
@@ -224,7 +224,7 @@ export function test()
 
 	// updateStatusButtons();
 
-	const isUpToDate = ModuleManagement.unsavedChangesExistOn(activeProfile);
+	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);
 
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>

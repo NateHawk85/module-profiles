@@ -1,6 +1,6 @@
 import * as Settings from '../../../js/scripts/settings.js';
 import * as API from '../../../js/scripts/api.js';
-import * as ModuleManagement from '../../../js/scripts/ui/module-management.js';
+import * as ModuleManagementScripts from '../../../js/scripts/ui/module-management-scripts.js';
 import * as StatusButtonScripts from '../../../js/scripts/ui/status-button-scripts.js';
 import * as ManageModuleProfilesSettingsFormFunctions from '../../../js/classes/ManageModuleProfilesSettingsForm.js';
 
@@ -17,7 +17,7 @@ jest.mock('../../../js/scripts/settings.js', () => ({
 jest.mock('../../../js/scripts/api.js', () => ({
 	registerApi: registerApi
 }));
-jest.mock('../../../js/scripts/ui/module-management.js', () => ({
+jest.mock('../../../js/scripts/ui/module-management-scripts.js', () => ({
 	modifyModuleManagementRender: modifyModuleManagementRender
 }));
 jest.mock('../../../js/scripts/ui/status-button-scripts.js', () => ({
@@ -45,7 +45,7 @@ test('WHEN main.js is run THEN the module management render is modified', () =>
 {
 	require('../../../js/scripts/main.js');
 
-	expect(Hooks.on).toHaveBeenCalledWith('renderModuleManagement', ModuleManagement.modifyModuleManagementRender);
+	expect(Hooks.on).toHaveBeenCalledWith('renderModuleManagement', ModuleManagementScripts.modifyModuleManagementRender);
 });
 
 test('WHEN main.js is run THEN additional functionality is added to the "closeDialog" Hook for the Dependency popup', () =>

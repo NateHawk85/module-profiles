@@ -38,6 +38,6 @@ export default class ConfirmDeleteProfileForm extends FormApplication
 			return null;
 		}
 
-		await Settings.deleteProfile(this.profileNameToDelete);
+		return await Settings.deleteProfile(this.profileNameToDelete);
 	}
 }

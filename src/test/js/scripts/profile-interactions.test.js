@@ -1,14 +1,15 @@
 import * as ProfileInteractions from '../../../js/scripts/profile-interactions.js';
 import * as Settings from '../../../js/scripts/settings.js';
-import * as ModuleManagementScripts from '../../../js/scripts/ui/module-management.js';
+import * as ModuleManagementScripts from '../../../js/scripts/ui/module-management-scripts.js';
 import ConfirmActivateProfileForm from '../../../js/classes/ConfirmActivateProfileForm.js';
 import {DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import {when} from 'jest-when';
 
 jest.mock('../../../js/scripts/settings.js');
-jest.mock('../../../js/scripts/ui/module-management.js');
+jest.mock('../../../js/scripts/ui/module-management-scripts.js');
 jest.mock('../../../js/classes/ConfirmActivateProfileForm.js');
 
+// TODO - should pass current active profile name to `unsavedChangesExistOn`, not the profile name to activate
 describe('activateProfile', () =>
 {
 	describe('profileName does not exist', () =>

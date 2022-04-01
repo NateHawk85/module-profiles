@@ -51,20 +51,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true);
 		}));
 
-
-		addClickEventToElementsWithClass(ProfileInteractions.deleteProfile, 'module-profiles-delete-profile');
-
-
-		// TODO - pass in profile name instead of an event, make this cleaner
-		addClickEventToElementsWithClass(ProfileInteractions.editProfile, 'module-profiles-edit-profile');
-		addClickEventToElementsWithClass(ProfileInteractions.copyProfile, 'module-profiles-copy-profile');
-		addClickEventToElementsWithClass(ProfileInteractions.exportProfile, 'module-profiles-export-profile');
-
-		function addClickEventToElementsWithClass(callback, className)
-		{
-			const elements = document.getElementsByClassName(className);
-			Array.from(elements).forEach(element => element.addEventListener('click', callback));
-		}
+		// TODO - add events for edit, copy, export
 	}
 
 	async _updateObject(event, formData) {}
@@ -74,5 +61,5 @@ export function reRenderManageModuleProfilesWindows()
 {
 	Object.values(ui.windows)
 		  .filter(element => element.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
-		  .forEach(element => element.render(true));
+		  .forEach(element => element.render());
 }

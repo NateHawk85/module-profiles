@@ -1,14 +1,10 @@
 import * as Settings from './settings.js';
 import * as SettingsUtils from './settings-utils.js';
 import * as ProfileInteractions from './profile-interactions.js';
-import * as ModuleManagementScripts from './ui/module-management.js'; // TODO - rename?
+import * as ModuleManagementScripts from './ui/module-management-scripts.js';
 import {ViewProfileModules} from '../classes/ViewProfileModules.js';
 
-// TODO - you can probably turn this whole API into a class
-
 // TODO - make better
-
-// TODO - call via game.modules.get('module-profiles').api.*
 export function registerApi()
 {
 

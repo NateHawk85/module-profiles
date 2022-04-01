@@ -141,3 +141,18 @@ describe('_updateObject', () =>
 			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME, value);
 		});
 });
+
+describe('activateListeners', () =>
+{
+	test('WHEN called THEN calls focus on element with "moduleProfilesCreateNewProfileName" id', () =>
+	{
+		const element = document.createElement('input');
+		element.id = 'moduleProfilesCreateNewProfileName';
+		element.focus = jest.fn();
+		document.body.append(element);
+
+		createModuleProfileForm.activateListeners(undefined);
+
+		expect(element.focus).toHaveBeenCalledWith();
+	});
+});

@@ -17,6 +17,16 @@ export default class CreateModuleProfileForm extends FormApplication
 		};
 	}
 
+	activateListeners(html)
+	{
+		if (html)
+		{
+			super.activateListeners(html);
+		}
+
+		document.getElementById('moduleProfilesCreateNewProfileName').focus();
+	}
+
 	async _updateObject(event, formData)
 	{
 		if (event?.submitter?.id !== 'moduleProfilesCreateNewProfileSubmit')

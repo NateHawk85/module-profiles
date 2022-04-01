@@ -99,7 +99,7 @@ export function getActiveProfile()
 // TODO - update object type Typescript
 /**
  * Gets a saved profile from the game settings with the corresponding name.
- * @param profileName {String} - The name of the profile to return.
+ * @param profileName {string} - The name of the profile to return.
  * @returns {*} - The module profile with the given name, or `undefined` if none exists.
  */
 export function getProfileByName(profileName)
@@ -109,6 +109,7 @@ export function getProfileByName(profileName)
 	return profiles.find(profile => profile.name === profileName);
 }
 
+// TODO - update object type Typescript
 /**
  * Gets the array of all saved profiles from the game settings.
  * @returns {Array<*>} - An array of the saved module profiles.
@@ -120,7 +121,7 @@ export function getAllProfiles()
 
 /**
  * Activates the profile with the given name, then reloads the page.
- * @param {String} profileName - The name of the profile to load.
+ * @param {string} profileName - The name of the profile to load.
  * @returns {Promise<void>}
  * @throws {Error} - When profile name does not exist.
  */
@@ -140,10 +141,11 @@ export async function activateProfile(profileName)
 						.then(() => SettingsUtils.reloadWindow());
 }
 
+// TODO - update object type Typescript
 /**
  * Creates a new profile in the game settings.
- * @param profileName {String} - The name of the profile to create.
- * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether they're active.
+ * @param profileName {string} - The name of the profile to create.
+ * @param modules {Map<string, boolean>} - A map of modules, representing the modules and whether they're active.
  * @throws Error - When a profile exists with the given profileName
  */
 export async function createProfile(profileName, modules)
@@ -179,10 +181,11 @@ export async function createProfile(profileName, modules)
 	return response;
 }
 
+// TODO - update object type Typescript
 /**
  * Saves the current profile settings to an existing profile.
- * @param profileName {String} - The name of the profile to update.
- * @param modules {Map<String, boolean>} - A map of modules, representing the modules and whether or not they're active.
+ * @param profileName {string} - The name of the profile to update.
+ * @param modules {Map<string, boolean>} - A map of modules, representing the modules and whether or not they're active.
  * @throws Error - When a profile name is passed and no profiles exist with that name.
  */
 export async function saveChangesToProfile(profileName, modules)
@@ -205,9 +208,10 @@ export async function saveChangesToProfile(profileName, modules)
 	return response;
 }
 
+// TODO - update object type Typescript
 /**
  * Deletes the profile with the given name.
- * @param {String} profileName - The name of the profile to delete.
+ * @param {string} profileName - The name of the profile to delete.
  * @returns {Promise<*>} - The resulting value of the updated profiles setting.
  * @throws {Error} - When no profile with the given name exists.
  */
