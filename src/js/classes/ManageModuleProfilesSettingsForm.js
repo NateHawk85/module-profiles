@@ -2,6 +2,7 @@ import * as Settings from '../scripts/settings.js';
 import * as ProfileInteractions from '../scripts/profile-interactions.js';
 import CreateModuleProfileForm from './CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm.js';
+import EditModuleProfileForm from './EditModuleProfileForm.js';
 
 export default class ManageModuleProfilesSettingsForm extends FormApplication
 {
@@ -41,15 +42,15 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 		const activateProfileElements = document.getElementsByClassName('module-profiles-activate-profile');
 		Array.from(activateProfileElements).forEach(element => element.addEventListener('click', () =>
-		{
-			ProfileInteractions.activateProfile(element.dataset.profileName);
-		}));
+			ProfileInteractions.activateProfile(element.dataset.profileName)));
+
+		const editProfileElements = document.getElementsByClassName('module-profiles-edit-profile');
+		Array.from(editProfileElements).forEach(element => element.addEventListener('click', () =>
+			new EditModuleProfileForm(element.dataset.profileName).render(true)));
 
 		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
-		{
-			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true);
-		}));
+			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true)));
 
 		// TODO - add events for edit, copy, export
 	}

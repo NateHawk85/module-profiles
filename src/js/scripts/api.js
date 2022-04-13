@@ -2,7 +2,7 @@ import * as Settings from './settings.js';
 import * as SettingsUtils from './settings-utils.js';
 import * as ProfileInteractions from './profile-interactions.js';
 import * as ModuleManagementScripts from './ui/module-management-scripts.js';
-import {ViewProfileModules} from '../classes/ViewProfileModules.js';
+import EditModuleProfileForm from '../classes/EditModuleProfileForm.js';
 
 // TODO - make better
 export function registerApi()
@@ -25,10 +25,11 @@ export function registerApi()
 	SettingsUtils.registerAPI(api);
 }
 
+// TODO - copy this functionality over to the edit button, then delete
 function editCallback()
 {
 	ui.notifications.info(`Edit callback called`);
-	new ViewProfileModules().render(true);
+	new EditModuleProfileForm().render(true);
 	const modules = Settings.getActiveProfile().modules;
 	console.log('Current active profile saved modules: ');
 	console.log(modules);

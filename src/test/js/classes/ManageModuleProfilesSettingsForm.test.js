@@ -4,14 +4,16 @@ import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFu
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import CreateModuleProfileForm from '../../../js/classes/CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from '../../../js/classes/ConfirmDeleteProfileForm.js';
+import EditModuleProfileForm from '../../../js/classes/EditModuleProfileForm.js';
 
 const FORM_ID = 'module-profiles-manage-profiles';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/manage-profiles.hbs';
 const FORM_TITLE = 'Manage Module Profiles';
 const MODULE_PROFILES_FORM_CLASS = 'module-profiles-form';
+const CREATE_PROFILE_ID = 'module-profiles-manage-profiles-create-new';
 const ACTIVATE_PROFILE_CLASS = 'module-profiles-activate-profile';
+const EDIT_PROFILE_CLASS = 'module-profiles-edit-profile';
 const DELETE_PROFILE_CLASS = 'module-profiles-delete-profile';
-const CREATE_PROFILE_CLASS = 'module-profiles-manage-profiles-create-new';
 
 const FORM_APPLICATION_DEFAULT_OPTIONS = {
 	classes: [],
@@ -22,6 +24,7 @@ jest.mock('../../../js/scripts/settings.js');
 jest.mock('../../../js/scripts/profile-interactions.js');
 jest.mock('../../../js/classes/CreateModuleProfileForm.js');
 jest.mock('../../../js/classes/ConfirmDeleteProfileForm.js');
+jest.mock('../../../js/classes/EditModuleProfileForm.test.js');
 
 let manageModuleProfilesSettingsForm;
 
@@ -116,7 +119,7 @@ describe('activateListeners', () =>
 		test('WHEN element with "module-profiles-manage-profiles-create-new" id exists THEN adds createProfile click event to element', () =>
 		{
 			const element = document.createElement('a');
-			element.id = CREATE_PROFILE_CLASS;
+			element.id = CREATE_PROFILE_ID;
 			document.body.append(element);
 
 			manageModuleProfilesSettingsForm.activateListeners();
@@ -204,6 +207,106 @@ describe('activateListeners', () =>
 
 			element2.click();
 			expect(ProfileInteractions.activateProfile).toHaveBeenCalledWith('A Different Profile Name');
+		});
+	});
+
+	describe('module-profiles-edit-profile', () =>
+	{
+		test('WHEN element does not have "module-profiles-edit-profile" class THEN does not add editProfile click event to element', () =>
+		{
+			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-edit-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(0);
+		});
+
+		test('WHEN multiple elements do not have "module-profiles-edit-profile" class THEN does not add editProfile click event to elements', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, ['not-edit-profile']);
+			const element2 = addElementWith(DEFAULT_PROFILE_NAME, ['another-not-edit-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element1.click();
+			element2.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(0);
+		});
+
+		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+			('WHEN element has "module-profiles-edit-profile" class THEN adds editProfile click event for one element with class', (value) =>
+			{
+				const element = addElementWith(value, [EDIT_PROFILE_CLASS]);
+
+				manageModuleProfilesSettingsForm.activateListeners();
+				element.click();
+				expect(EditModuleProfileForm).toHaveBeenCalledTimes(1);
+				expect(EditModuleProfileForm).toHaveBeenCalledWith(value);
+				const instance = EditModuleProfileForm.mock.instances[0];
+				expect(instance.render).toHaveBeenCalledWith(true);
+			});
+
+		test('WHEN elements have "module-profiles-edit-profile" class THEN adds editProfile click event for many elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EDIT_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [EDIT_PROFILE_CLASS]);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(1);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = EditModuleProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(2);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = EditModuleProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
+		});
+
+		test('WHEN some elements have "module-profiles-edit-profile" class THEN only adds editProfile click event to elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EDIT_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [EDIT_PROFILE_CLASS]);
+			const element3 = addElementWith('A Third Profile Name', ['some-other-class-name']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(1);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = EditModuleProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(2);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = EditModuleProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
+
+			element3.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(2);
+		});
+
+		test('WHEN elements have other classes than "module-profiles-edit-profile" THEN adds editProfile click event for elements with class', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EDIT_PROFILE_CLASS, 'some-other-class']);
+			const element2 = addElementWith('A Different Profile Name', [EDIT_PROFILE_CLASS, 'fa-power-off']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(1);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			const instance1 = EditModuleProfileForm.mock.instances[0];
+			expect(instance1.render).toHaveBeenCalledWith(true);
+
+			element2.click();
+			expect(EditModuleProfileForm).toHaveBeenCalledTimes(2);
+			expect(EditModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
+			const instance2 = EditModuleProfileForm.mock.instances[1];
+			expect(instance2.render).toHaveBeenCalledWith(true);
 		});
 	});
 
