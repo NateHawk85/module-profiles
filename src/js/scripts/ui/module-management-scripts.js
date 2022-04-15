@@ -59,10 +59,13 @@ function addFooterElements()
 	// Update status of status buttons
 	updateStatusButtons();
 
+	// Update the height of the window with the new elements
+	forceModuleManagementWindowHeightResize();
+
 	function buildStatusButton()
 	{
 		const statusButton = document.createElement('button');
-		statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
+		statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 		statusButton.classList.add('module-profiles-status-button');
 		statusButton.style.flexBasis = '130%';
 
@@ -72,7 +75,8 @@ function addFooterElements()
 	function buildCreateModuleProfileButton()
 	{
 		const createModuleProfileButton = document.createElement('button');
-		createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
+		createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
+												   // submits form)
 		createModuleProfileButton.innerHTML = '<i class="fa fa-plus"></i> Create Module Profile</button>';
 		createModuleProfileButton.style.flexBasis = '80%';
 		createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
@@ -84,7 +88,8 @@ function addFooterElements()
 	{
 		// TODO - bug, when status button is "Save changes to...", clicking this reloads page
 		const manageProfilesButton = document.createElement('button');
-		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page?
+		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
+											  // form)
 		manageProfilesButton.innerHTML = '<i class="fa fa-cog"></i> Manage Module Profiles</button>';
 		manageProfilesButton.addEventListener('click', (event) =>
 		{
@@ -204,3 +209,10 @@ function findUnsavedModuleStatuses()
 	return moduleList;
 }
 
+// TODO
+function forceModuleManagementWindowHeightResize()
+{
+	Object.values(ui.windows)
+		  .filter(window => window.options.id === MODULE_MANAGEMENT_WINDOW_ID)
+		  .forEach(window => window.element[0].style.height = 'auto');
+}
