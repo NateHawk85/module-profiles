@@ -31,8 +31,11 @@ export function modifyModuleManagementRender(app, html, data)
 	console.log('modifying stuff');
 	if (game.user?.isGM)
 	{
+		const activeProfile = Settings.getActiveProfile();
 		addFooterElements();
-		modifyModuleListElements();
+		modifyModuleListElements(activeProfile);
+		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]');
+		updateProfileStatus(activeProfile, moduleElements);
 	}
 }
 
@@ -93,9 +96,8 @@ function addFooterElements()
 	}
 }
 
-function modifyModuleListElements()
+function modifyModuleListElements(activeProfile)
 {
-	const activeProfile = Settings.getActiveProfile();
 	const moduleElements = document.querySelectorAll('#module-management li[data-module-name]'); // TODO - NodeList, not Array
 
 	// Add status icons and add an "update" event listener to each module in the list
@@ -119,31 +121,31 @@ function modifyModuleListElements()
 		span.innerHTML = '<span class="module-profiles-status module-profiles-status-saved"></span>';
 		return span;
 	}
+}
 
-	function updateProfileStatus(profile, modules)
+function updateProfileStatus(profile, modules)
+{
+	modules.forEach(module =>
 	{
-		modules.forEach(module =>
+		// TODO - what's this do tho?
+		if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
 		{
-			// TODO - what's this do tho?
-			if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
+			const statusIcon = module.children[0].children[0].firstChild;
+			const checkbox = module.children[0].children[1].children[0];
+
+			if (profile.modules[checkbox.attributes.name.value] === checkbox.checked)
 			{
-				const statusIcon = module.children[0].children[0].firstChild;
-				const checkbox = module.children[0].children[1].children[0];
-
-				if (profile.modules[checkbox.attributes.name.value] === checkbox.checked)
-				{
-					statusIcon.classList.remove('module-profiles-status-changed');
-					statusIcon.classList.add('module-profiles-status-saved');
-				} else
-				{
-					statusIcon.classList.remove('module-profiles-status-saved');
-					statusIcon.classList.add('module-profiles-status-changed');
-				}
+				statusIcon.classList.remove('module-profiles-status-changed');
+				statusIcon.classList.add('module-profiles-status-saved');
+			} else
+			{
+				statusIcon.classList.remove('module-profiles-status-saved');
+				statusIcon.classList.add('module-profiles-status-changed');
 			}
-		});
+		}
+	});
 
-		updateStatusButtons();
-	}
+	updateStatusButtons();
 }
 
 function updateStatusButtons()
@@ -201,63 +203,4 @@ function findUnsavedModuleStatuses()
 
 	return moduleList;
 }
-
-// TODO - uhhhhh
-export function test()
-{
-	const activeProfile = Settings.getActiveProfile();
-	document.getElementById('module-management').querySelectorAll('li').forEach(module =>
-	{
-		const statusIcon = module.children[0].children[0].firstChild;
-		const checkbox = module.children[0].children[1].children[0];
-
-		if (activeProfile.modules[checkbox.attributes.name.value] === checkbox.checked)
-		{
-			statusIcon.classList.remove('module-profiles-status-changed');
-			statusIcon.classList.add('module-profiles-status-saved');
-		} else
-		{
-			statusIcon.classList.remove('module-profiles-status-saved');
-			statusIcon.classList.add('module-profiles-status-changed');
-		}
-	});
-
-	// updateStatusButtons();
-
-	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);
-
-	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
-	Array.from(profileButtons).forEach(button =>
-	{
-		if (isUpToDate)
-		{
-			button.style.backgroundColor = '';
-			button.innerHTML = `<i class="fa fa-check-circle" style="color: mediumseagreen"></i><b>${(activeProfile.name)}</b> is up to date`;
-		} else
-		{
-			button.style.backgroundColor = 'orangered';
-			button.innerHTML = `<i class="far fa-save"></i> Save changes to <b>${(activeProfile.name)}</b>`;
-			button.addEventListener('click', (event) =>
-			{
-				event.preventDefault();
-				const result = Settings.saveChangesToProfile(activeProfile.name, findUnsavedModuleStatuses());
-				result.then(() =>
-				{
-					updateStatusButtons();
-				});
-			});
-		}
-
-		button.disabled = isUpToDate;
-	});
-}
-
-//
-// Hooks.on('closeDialog', (app, html) =>
-// {
-// 	if (app.options.template === 'templates/hud/dialog.html')
-// 	{
-// 		test();
-// 	}
-// });
 
