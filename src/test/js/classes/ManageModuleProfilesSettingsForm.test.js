@@ -24,7 +24,7 @@ jest.mock('../../../js/scripts/settings.js');
 jest.mock('../../../js/scripts/profile-interactions.js');
 jest.mock('../../../js/classes/CreateModuleProfileForm.js');
 jest.mock('../../../js/classes/ConfirmDeleteProfileForm.js');
-jest.mock('../../../js/classes/EditModuleProfileForm.test.js');
+jest.mock('../../../js/classes/EditModuleProfileForm.js');
 
 let manageModuleProfilesSettingsForm;
 

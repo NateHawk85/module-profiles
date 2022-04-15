@@ -1,8 +1,14 @@
 import * as Settings from '../scripts/settings.js';
 
-// TODO - this whole class is a test
 export default class EditModuleProfileForm extends FormApplication
 {
+	constructor(profileName, object={}, options={})
+	{
+		super(object, options);
+
+		this.profileName = profileName;
+	}
+
 	static get defaultOptions()
 	{
 		const parent = super.defaultOptions;
@@ -19,23 +25,25 @@ export default class EditModuleProfileForm extends FormApplication
 		};
 	}
 
-	// TODO - test
 	getData(options = {})
 	{
-		const activeProfile = Settings.getActiveProfile();
+		// TODO - bug, need to pull in new modules that haven't been saved yet or else you can't edit them
+		const profile = Settings.getProfileByName(this.profileName);
 		return {
-			name: activeProfile.name,
-			modules: Object.entries(activeProfile.modules)
+			name: profile.name,
+			modules: Object.entries(profile.modules)
 						   .map(keyValuePair => ({moduleName: keyValuePair[0], isActive: keyValuePair[1]}))
 						   .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
 		}
 	}
 
-	// TODO - test
 	async _updateObject(event, formData)
 	{
-		console.log('event | formData')
-		console.log(event);
-		console.log(formData);
+		if (event?.submitter?.id !== 'moduleProfilesEditProfileSubmit')
+		{
+			return null;
+		}
+
+		await Settings.saveChangesToProfile(this.profileName, formData);
 	}
 }

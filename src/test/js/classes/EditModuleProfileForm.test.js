@@ -26,6 +26,18 @@ beforeEach(() =>
 	jest.spyOn(FormApplication, 'defaultOptions', 'get').mockImplementation(() => FORM_APPLICATION_DEFAULT_OPTIONS);
 });
 
+
+describe('constructor', () =>
+{
+	test.each([DEFAULT_PROFILE_NAME, 'A Different Profile'])
+		('WHEN called THEN creates form with correct profile name: %s', (value) =>
+		{
+			editModuleProfileForm = new EditModuleProfileForm(value);
+
+			expect(editModuleProfileForm.profileName).toStrictEqual(value);
+		});
+});
+
 describe('defaultOptions', () =>
 {
 	test('WHEN called THEN returns options', () =>
@@ -83,14 +95,127 @@ describe('defaultOptions', () =>
 	});
 });
 
+describe('getData', () =>
+{
+	beforeEach(() =>
+	{
+		Settings.getProfileByName.mockReturnValue(DEFAULT_PROFILE);
+	});
+
+	test.each([DEFAULT_PROFILE_NAME, 'A Different Profile'])
+		('WHEN called THEN calls Settings.getProfileByName with profile name: %s', (value) =>
+		{
+			editModuleProfileForm = new EditModuleProfileForm(value);
+
+			editModuleProfileForm.getData();
+
+			expect(Settings.getProfileByName).toHaveBeenCalledWith(value);
+		});
+
+	test('WHEN called THEN returns object based on what Settings.getProfileByName returns', () =>
+	{
+		editModuleProfileForm = new EditModuleProfileForm(DEFAULT_PROFILE_NAME);
+
+		const response = editModuleProfileForm.getData();
+
+		expect(response).toStrictEqual({
+			name: DEFAULT_PROFILE_NAME,
+			modules: [
+				{ moduleName: 'module-profiles', isActive: true },
+				{ moduleName: 'tidy-ui', isActive: false }
+			]
+		});
+	});
+
+	test('WHEN called THEN returns object based on what Settings.getProfileByName returns with alternate values', () =>
+	{
+		Settings.getProfileByName.mockReturnValue({
+			name: 'A Different Profile Name',
+			modules: {
+				'module-1': true,
+				'module-2': false,
+				'module-3': true
+			}
+		});
+
+		editModuleProfileForm = new EditModuleProfileForm(DEFAULT_PROFILE_NAME);
+
+		const response = editModuleProfileForm.getData();
+
+		expect(response).toStrictEqual({
+			name: 'A Different Profile Name',
+			modules: [
+				{ moduleName: 'module-1', isActive: true },
+				{ moduleName: 'module-2', isActive: false },
+				{ moduleName: 'module-3', isActive: true }
+			]
+		});
+	});
+
+	test('WHEN modules are not in alphabetical order THEN returns object with modules in alphabetical order', () =>
+	{
+		Settings.getProfileByName.mockReturnValue({
+			name: DEFAULT_PROFILE_NAME,
+			modules: {
+				'c-module': false,
+				'a-module': true,
+				'b-module': true
+			}
+		});
+
+		editModuleProfileForm = new EditModuleProfileForm(DEFAULT_PROFILE_NAME);
+
+		const response = editModuleProfileForm.getData();
+
+		expect(response).toStrictEqual({
+			name: DEFAULT_PROFILE_NAME,
+			modules: [
+				{ moduleName: 'a-module', isActive: true },
+				{ moduleName: 'b-module', isActive: true },
+				{ moduleName: 'c-module', isActive: false }
+			]
+		});
+	});
+
+	test('WHEN modules are not in alphabetical order THEN returns object with modules in alphabetical order with alternate values', () =>
+	{
+		Settings.getProfileByName.mockReturnValue({
+			name: 'A Different Profile Name',
+			modules: {
+				'5e-module': false,
+				'a-module': true,
+				'c-module': true,
+				'f-module': true,
+				'd-module': true,
+				'b-module': true
+			}
+		});
+
+		editModuleProfileForm = new EditModuleProfileForm(DEFAULT_PROFILE_NAME);
+
+		const response = editModuleProfileForm.getData();
+
+		expect(response).toStrictEqual({
+			name: 'A Different Profile Name',
+			modules: [
+				{ moduleName: '5e-module', isActive: false },
+				{ moduleName: 'a-module', isActive: true },
+				{ moduleName: 'b-module', isActive: true },
+				{ moduleName: 'c-module', isActive: true },
+				{ moduleName: 'd-module', isActive: true },
+				{ moduleName: 'f-module', isActive: true }
+			]
+		});
+	});
+});
+
 describe('_updateObject', () =>
 {
 	test('WHEN event.submitter is undefined THEN does nothing', async () =>
 	{
 		await editModuleProfileForm._updateObject({}, {});
 
-		// TODO
-		expect(Settings.createProfile).toHaveBeenCalledTimes(0);
+		expect(Settings.saveChangesToProfile).toHaveBeenCalledTimes(0);
 	});
 
 	test.each(['someOtherId', 'anotherRandomId', 'moduleProfilesEditProfileAlmostMatch', undefined])
@@ -104,60 +229,27 @@ describe('_updateObject', () =>
 
 			await editModuleProfileForm._updateObject(event, {});
 
-			// TODO
-			expect(Settings.createProfile).toHaveBeenCalledTimes(0);
+			expect(Settings.saveChangesToProfile).toHaveBeenCalledTimes(0);
 		});
 
-	// TODO
-	test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+	test.each([
+		[DEFAULT_PROFILE_NAME, DEFAULT_PROFILE.modules],
+		['A Different Profile Name', { 'a-module': true, 'b-module': false, 'c-module': true }],
+		['A Third Profile Name', { 'first-module-checkbox': false, 'second-module-checkbox': false }]
+	])
 		('WHEN event.submitter.id is "moduleProfilesEditProfileSubmit" THEN calls Settings.saveChangesToProfile with values from checkboxes: %s',
-			async (value) =>
+			async (profileName, modules) =>
 			{
+				editModuleProfileForm = new EditModuleProfileForm(profileName);
+
 				const event = {
 					submitter: {
 						id: SUBMIT_ELEMENT_ID
 					}
 				};
-				const formData = {
-					moduleProfilesCreateNewProfileName: value
-				};
 
-				await editModuleProfileForm._updateObject(event, formData);
+				await editModuleProfileForm._updateObject(event, modules);
 
-				expect(Settings.createProfile).toHaveBeenCalledWith(value, CURRENT_MODULE_CONFIGURATION);
+				expect(Settings.saveChangesToProfile).toHaveBeenCalledWith(profileName, modules);
 			});
-
-	test.each([CURRENT_MODULE_CONFIGURATION, { 'first-module': true, 'second-module': false, 'third-module': true }])
-		('WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with response from ' +
-			'Settings.getCurrentModuleConfiguration: %s', async (value) =>
-		{
-			Settings.getCurrentModuleConfiguration.mockReturnValue(value);
-			const event = {
-				submitter: {
-					id: SUBMIT_ELEMENT_ID
-				}
-			};
-			const formData = {
-				moduleProfilesCreateNewProfileName: DEFAULT_PROFILE_NAME
-			};
-
-			await editModuleProfileForm._updateObject(event, formData);
-
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME, value);
-		});
-});
-
-describe('activateListeners', () =>
-{
-	test('WHEN called THEN calls focus on element with "moduleProfilesCreateNewProfileName" id', () =>
-	{
-		const element = document.createElement('input');
-		element.id = 'moduleProfilesCreateNewProfileName';
-		element.focus = jest.fn();
-		document.body.append(element);
-
-		editModuleProfileForm.activateListeners(undefined);
-
-		expect(element.focus).toHaveBeenCalledWith();
-	});
 });
