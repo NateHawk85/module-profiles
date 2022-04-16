@@ -213,6 +213,6 @@ function findUnsavedModuleStatuses()
 function forceModuleManagementWindowHeightResize()
 {
 	Object.values(ui.windows)
-		  .filter(window => window.options.id === MODULE_MANAGEMENT_WINDOW_ID)
-		  .forEach(window => window.element[0].style.height = 'auto');
+		  .filter(app => app.options.id === MODULE_MANAGEMENT_WINDOW_ID)
+		  .forEach(app => app.element[0].style.height = 'auto');
 }

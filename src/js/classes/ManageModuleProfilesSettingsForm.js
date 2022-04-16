@@ -61,6 +61,6 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 export function reRenderManageModuleProfilesWindows()
 {
 	Object.values(ui.windows)
-		  .filter(element => element.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
-		  .forEach(element => element.render());
+		.filter(app => app.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
+		.forEach(app => app.render());
 }

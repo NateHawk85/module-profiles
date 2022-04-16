@@ -178,6 +178,8 @@ export async function createProfile(profileName, modules)
 	const response = SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
 
+	// TODO - notify ui.notifications
+
 	return response;
 }
 
@@ -204,6 +206,8 @@ export async function saveChangesToProfile(profileName, modules)
 
 	const response = SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
+
+	// TODO - notify ui.notifications
 
 	return response;
 }
@@ -233,6 +237,8 @@ export async function deleteProfile(profileName)
 	}
 
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
+
+	// TODO - notify ui.notifications
 
 	return response;
 }

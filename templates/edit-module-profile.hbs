@@ -1,7 +1,6 @@
 <form id="module-profiles-view-profile-modules-form">
 	<!------------------------------ Header ------------------------------>
 	<h2 class="module-profiles-header">{{name}}</h2>
-
 	<!------------------------------ Content ------------------------------>
 	{{#each modules}}
 		<input name="{{moduleName}}" id="isModuleActiveCheckbox-{{moduleName}}" type="checkbox" {{#if isActive}}checked{{/if}} />
