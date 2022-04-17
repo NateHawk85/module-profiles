@@ -2,7 +2,12 @@ import * as ModuleManagementScripts from './ui/module-management-scripts.js';
 import * as Settings from './settings.js';
 import ConfirmActivateProfileForm from '../classes/ConfirmActivateProfileForm.js';
 
-// TODO - jsdoc
+/**
+ * Activates the module profile with the given name.
+ * @param {string} profileName - The name of the module profile to activate.
+ * @param {boolean} shouldForce - When true, will activate the profile without checking if the user will lose any unsaved work.
+ * @returns {Application} - The confirmation Application when the user has work that may be overridden.
+ */
 export function activateProfile(profileName, shouldForce)
 {
 	if (!profileName)
@@ -18,17 +23,11 @@ export function activateProfile(profileName, shouldForce)
 		return new ConfirmActivateProfileForm(profileName).render(true);
 	} else
 	{
-		return Settings.activateProfile(profileName);
+		Settings.activateProfile(profileName);
 	}
 }
 
 // TODO - everything below this, make sure you know what their method signature is going to be before you continue with frontend stuff
-
-// TODO - pop open window to edit name of profile + selected module list
-// TODO - check api.editCallback()
-export function editProfile(someTypeOfObjectMaybe) {
-	return null;
-}
 
 // TODO - copy module profile, with '(Copy) at the end
 export function copyProfile(someTypeOfObjectMaybe) {

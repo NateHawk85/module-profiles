@@ -1,6 +1,7 @@
 import * as Settings from '../../../js/scripts/settings.js';
 import * as ProfileInteractions from '../../../js/scripts/profile-interactions.js';
 import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFunctions from '../../../js/classes/ManageModuleProfilesSettingsForm.js';
+import {forceManageModuleProfilesHeightResize} from '../../../js/classes/ManageModuleProfilesSettingsForm.js';
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import CreateModuleProfileForm from '../../../js/classes/CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from '../../../js/classes/ConfirmDeleteProfileForm.js';
@@ -493,4 +494,41 @@ describe('reRenderManageModuleProfilesWindows', () =>
 			expect(ui.windows[51].render).toHaveBeenCalledWith();
 			expect(ui.windows[52].render).toHaveBeenCalledTimes(0);
 		});
+});
+
+describe('forceManageModuleProfilesHeightResize', () =>
+{
+	test('WHEN app is undefined THEN does not throw error', () =>
+	{
+		forceManageModuleProfilesHeightResize(undefined);
+	});
+
+	test('WHEN app.element is undefined THEN does not throw error', () =>
+	{
+		const app = {};
+
+		forceManageModuleProfilesHeightResize(app);
+	});
+
+	test('WHEN app.element is empty THEN does not throw error', () =>
+	{
+		const app = {
+			element: []
+		};
+
+		forceManageModuleProfilesHeightResize(app);
+	});
+
+	test('WHEN called with correct parameters THEN adjust height of first element to auto', () =>
+	{
+		const element = document.createElement('div');
+		element.style.height = '1px';
+		const app = {
+			element: [element]
+		}
+
+		forceManageModuleProfilesHeightResize(app);
+
+		expect(element.style.height).toStrictEqual('auto');
+	});
 });

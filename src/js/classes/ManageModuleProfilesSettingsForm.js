@@ -4,6 +4,9 @@ import CreateModuleProfileForm from './CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm.js';
 import EditModuleProfileForm from './EditModuleProfileForm.js';
 
+export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
+export const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
+
 export default class ManageModuleProfilesSettingsForm extends FormApplication
 {
 	static FORM_ID = 'module-profiles-manage-profiles';
@@ -58,9 +61,29 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 	async _updateObject(event, formData) {}
 }
 
+/**
+ * Re-renders the ManageModuleProfiles windows. This can be useful because profiles can be added/removed while the window is open, and re-rendering the
+ * Application instance refreshes that data.
+ * @return {void}
+ */
 export function reRenderManageModuleProfilesWindows()
 {
 	Object.values(ui.windows)
-		.filter(app => app.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
-		.forEach(app => app.render());
+		  .filter(app => app.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
+		  .forEach(app => app.render());
+}
+
+// TODO - can be moved to somewhere more appropriate if shared
+/**
+ * Forces the application to refresh the size of its first element (aka, the window content). This is primarily to be used whenever an Application adds or
+ * removes elements so that the height of the Application is consistent with what is added.
+ * @param {Application} app - The Application that needs to be resized.
+ * @return {void}
+ */
+export function forceManageModuleProfilesHeightResize(app)
+{
+	if (app?.element?.length > 0)
+	{
+		app.element[0].style.height = 'auto';
+	}
 }

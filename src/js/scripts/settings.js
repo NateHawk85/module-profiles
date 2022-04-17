@@ -1,9 +1,8 @@
 import * as Settings from './settings.js';
 import * as SettingsUtils from './settings-utils.js';
-import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm.js';
+import ManageModuleProfilesSettingsForm, {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm.js';
 
 const DEFAULT_PROFILE_NAME = 'Default Profile';
-export const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
 
 export const SettingKey = {
 	MANAGE_PROFILES: 'manageProfiles',

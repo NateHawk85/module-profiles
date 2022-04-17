@@ -5,11 +5,14 @@ import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm.js';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
-// TODO - hook into the 'renderDialog' hook to refresh Module Management on close
-//		if (arg1.data.title === 'Dependencies')
-
-// TODO - hook into the 'closeDialog' hook to refresh Module Management on close
-// 		if (arg1.data.title === 'Dependencies')
+// TODO - test
+export function refreshModuleManagementStatusIcons(app)
+{
+	if (app.data.title === 'Dependencies')
+	{
+		updateActiveProfileStatuses();
+	}
+}
 
 /**
  * Determines if changes exist on the Module Management window that don't align with a given profile.
@@ -24,18 +27,24 @@ export function unsavedChangesExistOn(profileName)
 	return Object.entries(unsavedProfile).some(([moduleId, unsavedStatus]) => savedProfile.modules[moduleId] !== unsavedStatus);
 }
 
+/**
+ * Determines if the Module Management window is open.
+ * @returns {boolean} - Whether the Module Management window is open.
+ */
+export function isModuleManagementWindowOpen()
+{
+	return document.getElementById(MODULE_MANAGEMENT_WINDOW_ID) != null;
+}
+
 // TODO - test all
-// TODO - make sure to check statuses on initial load
 export function modifyModuleManagementRender(app, html, data)
 {
 	console.log('modifying stuff');
 	if (game.user?.isGM)
 	{
-		const activeProfile = Settings.getActiveProfile();
 		addFooterElements();
-		modifyModuleListElements(activeProfile);
-		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]');
-		updateProfileStatus(activeProfile, moduleElements);
+		modifyModuleListElements();
+		updateActiveProfileStatuses();
 	}
 }
 
@@ -86,7 +95,6 @@ function addFooterElements()
 
 	function buildManageProfilesButton()
 	{
-		// TODO - bug, when status button is "Save changes to...", clicking this reloads page
 		const manageProfilesButton = document.createElement('button');
 		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
 											  // form)
@@ -101,8 +109,9 @@ function addFooterElements()
 	}
 }
 
-function modifyModuleListElements(activeProfile)
+function modifyModuleListElements()
 {
+	const activeProfile = Settings.getActiveProfile();
 	const moduleElements = document.querySelectorAll('#module-management li[data-module-name]'); // TODO - NodeList, not Array
 
 	// Add status icons and add an "update" event listener to each module in the list
@@ -112,7 +121,7 @@ function modifyModuleListElements(activeProfile)
 		if (module.children.length > 0)
 		{
 			module.children[0].prepend(statusIconContainer);
-			module.addEventListener('input', () => updateProfileStatus(activeProfile, moduleElements));
+			module.addEventListener('input', () => updateActiveProfileStatuses(activeProfile, moduleElements));
 		} else
 		{
 			console.log(module); // TODO - what's going on here? Why is there a module with no children?
@@ -128,8 +137,11 @@ function modifyModuleListElements(activeProfile)
 	}
 }
 
-function updateProfileStatus(profile, modules)
+// TODO - test and hook up
+function updateActiveProfileStatuses()
 {
+	const activeProfile = Settings.getActiveProfile();
+	const modules = document.querySelectorAll('#module-management li[data-module-name]');
 	modules.forEach(module =>
 	{
 		// TODO - what's this do tho?
@@ -138,7 +150,7 @@ function updateProfileStatus(profile, modules)
 			const statusIcon = module.children[0].children[0].firstChild;
 			const checkbox = module.children[0].children[1].children[0];
 
-			if (profile.modules[checkbox.attributes.name.value] === checkbox.checked)
+			if (activeProfile.modules[checkbox.attributes.name.value] === checkbox.checked)
 			{
 				statusIcon.classList.remove('module-profiles-status-changed');
 				statusIcon.classList.add('module-profiles-status-saved');
@@ -185,13 +197,6 @@ function updateStatusButtons()
 	});
 }
 
-// TODO - test
-export function isModuleManagementWindowOpen()
-{
-	// TODO - implement
-	return document.getElementById('module-management') != null;
-}
-
 function findUnsavedModuleStatuses()
 {
 	const moduleCheckboxes = document.getElementById('module-list').querySelectorAll('input[type=checkbox]');
@@ -209,7 +214,7 @@ function findUnsavedModuleStatuses()
 	return moduleList;
 }
 
-// TODO
+// TODO - combine with 'forceManageModuleProfilesHeightResize'?
 function forceModuleManagementWindowHeightResize()
 {
 	Object.values(ui.windows)

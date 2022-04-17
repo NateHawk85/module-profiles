@@ -230,6 +230,30 @@ describe('unsavedChangesExistOn', () =>
 	}
 });
 
+describe('isModuleManagementWindowOpen', () =>
+{
+	test('WHEN module management window does not exist THEN returns false', () =>
+	{
+		document.body.innerHTML = '<div id="some-other-div"></div>';
+
+		expect(ModuleManagementScripts.isModuleManagementWindowOpen()).toStrictEqual(false);
+	});
+
+	test('WHEN module management window exists THEN returns true', () =>
+	{
+		document.body.innerHTML = '<div id="module-management"></div>';
+
+		expect(ModuleManagementScripts.isModuleManagementWindowOpen()).toStrictEqual(true);
+	});
+
+	test('WHEN module management window exists with other elements in document body THEN returns true', () =>
+	{
+		document.body.innerHTML = '<div id="some-other-div"><div id="module-management"></div></div>';
+
+		expect(ModuleManagementScripts.isModuleManagementWindowOpen()).toStrictEqual(true);
+	});
+});
+
 
 //
 // // TODO - test better
@@ -266,8 +290,3 @@ describe('unsavedChangesExistOn', () =>
 // // ui.windows = {
 // // 				aWindow: new ModuleManagement()
 // // 			};
-
-test('WHEN called THEN did something', () =>
-{
-	// TODO
-});
