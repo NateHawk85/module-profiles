@@ -28,9 +28,17 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 	getData(options = {})
 	{
+		const allProfiles = Settings.getAllProfiles();
+		const activeProfileName = Settings.getActiveProfile().name;
+
+        const profilesWithActiveFlag = allProfiles.map(profile => ({
+            ...profile,
+            isActive: activeProfileName === profile.name
+        }));
+
 		return {
-			profiles: Settings.getAllProfiles()
-		};
+			profiles: profilesWithActiveFlag
+		}
 	}
 
 	activateListeners(html)

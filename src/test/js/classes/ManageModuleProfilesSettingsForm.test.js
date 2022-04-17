@@ -97,20 +97,64 @@ describe('defaultOptions', () =>
 
 describe('getData', () =>
 {
-	test.each([
-		[DEFAULT_PROFILE],
-		[DEFAULT_PROFILE, { name: 'A New Profile', modules: undefined }]
-	])
-		('WHEN called THEN returns profiles with what Settings.getAllProfiles() returns: %s', (value) =>
-		{
-			Settings.getAllProfiles.mockReturnValue(value);
+	test('WHEN Settings.getActiveProfile matches profile THEN returns highlighted profile with what Settings.getAllProfiles returns', () =>
+    {
+        Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
+        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
 
-			const actual = manageModuleProfilesSettingsForm.getData();
+        const actual = manageModuleProfilesSettingsForm.getData();
 
-			expect(actual).toStrictEqual({
-				profiles: value
-			});
-		});
+        const expected = {
+            profiles: [
+                {
+                    ...DEFAULT_PROFILE,
+                    isActive: true
+                }
+            ]
+        }
+        expect(actual).toStrictEqual(expected);
+    });
+
+    test('WHEN Settings.getActiveProfile does not match profile THEN returns unhighlighted profiles with what Settings.getAllProfiles returns', () =>
+    {
+        Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', modules: undefined });
+        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
+
+        const actual = manageModuleProfilesSettingsForm.getData();
+
+        const expected = {
+            profiles: [
+                {
+                    ...DEFAULT_PROFILE,
+                    isActive: false
+                }
+            ]
+        }
+        expect(actual).toStrictEqual(expected);
+    });
+
+    test('WHEN Settings.getActiveProfile matches one of multiple THEN returns profiles with what Settings.getAllProfiles returns', () =>
+    {
+        Settings.getActiveProfile.mockReturnValue({ name: 'A New Profile', modules: undefined });
+        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE, { name: 'A New Profile', modules: undefined }]);
+
+        const actual = manageModuleProfilesSettingsForm.getData();
+
+        const expected = {
+            profiles: [
+                {
+                    ...DEFAULT_PROFILE,
+                    isActive: false
+                },
+				{
+					name: 'A New Profile',
+					modules: undefined,
+					isActive: true
+				}
+            ]
+        }
+        expect(actual).toStrictEqual(expected);
+    });
 });
 
 describe('activateListeners', () =>

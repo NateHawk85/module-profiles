@@ -24,8 +24,8 @@
 		</thead>
 		<tbody>
 		{{#each profiles}}
-			<tr class="flexrow"> <!-- TODO - highlight active profile -->
-				<td class="profile-name-column">{{name}}</td>
+            <tr class="flexrow" {{#if isActive}}style="background-color: lightgreen"{{/if}}>
+                <td class="profile-name-column">{{name}}</td>
 				<td class="icon-column"><a class="fa fa-power-off module-profiles-activate-profile" data-profile-name="{{name}}"></a></td>
 				<td class="icon-column"><a class="fa fa-edit module-profiles-edit-profile" data-profile-name="{{name}}"></a></td>
 				<td class="icon-column"><a class="fa fa-copy module-profiles-copy-profile" data-profile-name="{{name}}"></a></td>
