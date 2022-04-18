@@ -6,6 +6,8 @@ import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import CreateModuleProfileForm from '../../../js/classes/CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from '../../../js/classes/ConfirmDeleteProfileForm.js';
 import EditModuleProfileForm from '../../../js/classes/EditModuleProfileForm.js';
+import {Profiles} from '../../mocks/profiles/profiles.js';
+import {when} from 'jest-when';
 
 const FORM_ID = 'module-profiles-manage-profiles';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/manage-profiles.hbs';
@@ -14,6 +16,7 @@ const MODULE_PROFILES_FORM_CLASS = 'module-profiles-form';
 const CREATE_PROFILE_ID = 'module-profiles-manage-profiles-create-new';
 const ACTIVATE_PROFILE_CLASS = 'module-profiles-activate-profile';
 const EDIT_PROFILE_CLASS = 'module-profiles-edit-profile';
+const DUPLICATE_PROFILE_CLASS = 'module-profiles-duplicate-profile';
 const DELETE_PROFILE_CLASS = 'module-profiles-delete-profile';
 
 const FORM_APPLICATION_DEFAULT_OPTIONS = {
@@ -98,63 +101,63 @@ describe('defaultOptions', () =>
 describe('getData', () =>
 {
 	test('WHEN Settings.getActiveProfile matches profile THEN returns highlighted profile with what Settings.getAllProfiles returns', () =>
-    {
-        Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
-        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
+	{
+		Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
+		Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
 
-        const actual = manageModuleProfilesSettingsForm.getData();
+		const actual = manageModuleProfilesSettingsForm.getData();
 
-        const expected = {
-            profiles: [
-                {
-                    ...DEFAULT_PROFILE,
-                    isActive: true
-                }
-            ]
-        }
-        expect(actual).toStrictEqual(expected);
-    });
+		const expected = {
+			profiles: [
+				{
+					...DEFAULT_PROFILE,
+					isActive: true
+				}
+			]
+		};
+		expect(actual).toStrictEqual(expected);
+	});
 
-    test('WHEN Settings.getActiveProfile does not match profile THEN returns unhighlighted profiles with what Settings.getAllProfiles returns', () =>
-    {
-        Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', modules: undefined });
-        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
+	test('WHEN Settings.getActiveProfile does not match profile THEN returns unhighlighted profiles with what Settings.getAllProfiles returns', () =>
+	{
+		Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', modules: undefined });
+		Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE]);
 
-        const actual = manageModuleProfilesSettingsForm.getData();
+		const actual = manageModuleProfilesSettingsForm.getData();
 
-        const expected = {
-            profiles: [
-                {
-                    ...DEFAULT_PROFILE,
-                    isActive: false
-                }
-            ]
-        }
-        expect(actual).toStrictEqual(expected);
-    });
+		const expected = {
+			profiles: [
+				{
+					...DEFAULT_PROFILE,
+					isActive: false
+				}
+			]
+		};
+		expect(actual).toStrictEqual(expected);
+	});
 
-    test('WHEN Settings.getActiveProfile matches one of multiple THEN returns profiles with what Settings.getAllProfiles returns', () =>
-    {
-        Settings.getActiveProfile.mockReturnValue({ name: 'A New Profile', modules: undefined });
-        Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE, { name: 'A New Profile', modules: undefined }]);
+	test('WHEN Settings.getActiveProfile matches one of multiple THEN returns profiles with what Settings.getAllProfiles returns', () =>
+	{
+		Settings.getActiveProfile.mockReturnValue({ name: 'A New Profile', modules: undefined });
+		Settings.getAllProfiles.mockReturnValue([DEFAULT_PROFILE, { name: 'A New Profile', modules: undefined }]);
 
-        const actual = manageModuleProfilesSettingsForm.getData();
+		const actual = manageModuleProfilesSettingsForm.getData();
 
-        const expected = {
-            profiles: [
-                {
-                    ...DEFAULT_PROFILE,
-                    isActive: false
-                },
+		const expected = {
+			profiles: [
+				{
+					...DEFAULT_PROFILE,
+					isActive: false
+				},
 				{
 					name: 'A New Profile',
 					modules: undefined,
 					isActive: true
 				}
-            ]
-        }
-        expect(actual).toStrictEqual(expected);
-    });
+			]
+		};
+		expect(actual).toStrictEqual(expected);
+	});
 });
 
 describe('activateListeners', () =>
@@ -352,6 +355,130 @@ describe('activateListeners', () =>
 			expect(EditModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
 			const instance2 = EditModuleProfileForm.mock.instances[1];
 			expect(instance2.render).toHaveBeenCalledWith(true);
+		});
+	});
+
+	describe('module-profiles-duplicate-profile', () =>
+	{
+		test('WHEN element does not have "module-profiles-duplicate-profile" class THEN does not add duplicateProfile click event to element', () =>
+		{
+			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-duplicate-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(0);
+		});
+
+		test('WHEN multiple elements do not have "module-profiles-duplicate-profile" class THEN does not add duplicateProfile click event to elements', () =>
+		{
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, ['not-duplicate-profile']);
+			const element2 = addElementWith(DEFAULT_PROFILE_NAME, ['another-not-duplicate-profile']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element1.click();
+			element2.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(0);
+		});
+
+		test.each([
+			[DEFAULT_PROFILE_NAME, DEFAULT_PROFILE],
+			['A Different Profile Name', Profiles.MultipleOnlyModuleProfilesEnabled],
+			['A Third Profile Name', Profiles.MultipleOnlyModuleProfilesAndTidyUIEnabled]
+		])
+			('WHEN element has "module-profiles-duplicate-profile" class THEN calls Settings.createProfile with Settings.getProfileByName values: %s, %o',
+				(profileName, profile) =>
+				{
+					when(Settings.getProfileByName).calledWith(profileName).mockReturnValue(profile);
+					const element = addElementWith(profileName, [DUPLICATE_PROFILE_CLASS]);
+
+					manageModuleProfilesSettingsForm.activateListeners();
+					element.click();
+					expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+					expect(Settings.createProfile).toHaveBeenCalledWith(profile.name + ' (Copy)', profile.modules);
+				});
+
+		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+			('WHEN element has "module-profiles-duplicate-profile" class THEN adds duplicateProfile click event for one element with class', (value) =>
+			{
+				when(Settings.getProfileByName).calledWith(value).mockReturnValue(DEFAULT_PROFILE);
+				const element = addElementWith(value, [DUPLICATE_PROFILE_CLASS]);
+
+				manageModuleProfilesSettingsForm.activateListeners();
+				element.click();
+				expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+				expect(Settings.createProfile).toHaveBeenCalledWith(value + ' (Copy)', DEFAULT_PROFILE.modules);
+			});
+
+		test('WHEN elements have "module-profiles-duplicate-profile" class THEN adds duplicateProfile click event for many elements with class', () =>
+		{
+			when(Settings.getProfileByName).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(DEFAULT_PROFILE);
+			const differentProfileNameProfile = {
+				name: 'Something',
+				modules: {
+					'module-1': true
+				}
+			};
+			when(Settings.getProfileByName).calledWith('A Different Profile Name').mockReturnValue(differentProfileNameProfile);
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DUPLICATE_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [DUPLICATE_PROFILE_CLASS]);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+
+			element2.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
+			expect(Settings.createProfile).toHaveBeenCalledWith('Something (Copy)', differentProfileNameProfile.modules);
+		});
+
+		test('WHEN some elements have "module-profiles-duplicate-profile" class THEN only adds duplicateProfile click event to elements with class', () =>
+		{
+			when(Settings.getProfileByName).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(DEFAULT_PROFILE);
+			const differentProfileNameProfile = {
+				name: 'A Different Profile Name (Copy)',
+				modules: DEFAULT_PROFILE.modules
+			};
+			when(Settings.getProfileByName).calledWith('A Different Profile Name').mockReturnValue(differentProfileNameProfile);
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DUPLICATE_PROFILE_CLASS]);
+			const element2 = addElementWith('A Different Profile Name', [DUPLICATE_PROFILE_CLASS]);
+			const element3 = addElementWith('A Third Profile Name', ['some-other-class-name']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+
+			element2.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
+			expect(Settings.createProfile).toHaveBeenCalledWith('A Different Profile Name (Copy) (Copy)', differentProfileNameProfile.modules);
+
+			element3.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
+		});
+
+		test('WHEN elements have other classes than "module-profiles-duplicate-profile" THEN adds duplicateProfile click event for elements with class', () =>
+		{
+			when(Settings.getProfileByName).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(DEFAULT_PROFILE);
+			const differentProfileNameProfile = {
+				name: 'A Different Profile Name',
+				modules: DEFAULT_PROFILE.modules
+			};
+			when(Settings.getProfileByName).calledWith('A Different Profile Name').mockReturnValue(differentProfileNameProfile);
+			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [DUPLICATE_PROFILE_CLASS, 'some-other-class']);
+			const element2 = addElementWith('A Different Profile Name', [DUPLICATE_PROFILE_CLASS, 'fa-power-off']);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+
+			element1.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+
+			element2.click();
+			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
+			expect(Settings.createProfile).toHaveBeenCalledWith('A Different Profile Name (Copy)', differentProfileNameProfile.modules);
 		});
 	});
 
@@ -569,7 +696,7 @@ describe('forceManageModuleProfilesHeightResize', () =>
 		element.style.height = '1px';
 		const app = {
 			element: [element]
-		}
+		};
 
 		forceManageModuleProfilesHeightResize(app);
 

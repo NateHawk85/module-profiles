@@ -31,14 +31,14 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		const allProfiles = Settings.getAllProfiles();
 		const activeProfileName = Settings.getActiveProfile().name;
 
-        const profilesWithActiveFlag = allProfiles.map(profile => ({
-            ...profile,
-            isActive: activeProfileName === profile.name
-        }));
+		const profilesWithActiveFlag = allProfiles.map(profile => ({
+			...profile,
+			isActive: activeProfileName === profile.name
+		}));
 
 		return {
 			profiles: profilesWithActiveFlag
-		}
+		};
 	}
 
 	activateListeners(html)
@@ -59,11 +59,19 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		Array.from(editProfileElements).forEach(element => element.addEventListener('click', () =>
 			new EditModuleProfileForm(element.dataset.profileName).render(true)));
 
+		const duplicateProfileElements = document.getElementsByClassName('module-profiles-duplicate-profile');
+		Array.from(duplicateProfileElements).forEach(element => element.addEventListener('click', () =>
+		{
+			const profile = Settings.getProfileByName(element.dataset.profileName);
+			return Settings.createProfile(profile.name + ' (Copy)', profile.modules);
+		}));
+
 		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
 			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true)));
 
-		// TODO - add events for edit, copy, export
+		// TODO - add events for export
+		// TODO - add import profiles + export profiles functionality? Or just hide and publish, then worry about qol
 	}
 
 	async _updateObject(event, formData) {}
