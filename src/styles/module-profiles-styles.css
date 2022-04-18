@@ -126,3 +126,14 @@
     justify-content: flex-end;
     text-align: right;
 }
+
+/* ------------------------------ Export Window ------------------------------ */
+
+#module-profiles-view-profile-modules-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#module-profiles-view-profile-modules-form #export-module-profile {
+    height: 90%
+}

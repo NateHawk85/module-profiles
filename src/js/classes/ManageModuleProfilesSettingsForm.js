@@ -2,6 +2,7 @@ import * as Settings from '../scripts/settings.js';
 import * as ProfileInteractions from '../scripts/profile-interactions.js';
 import CreateModuleProfileForm from './CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm.js';
+import ExportModuleProfileForm from './ExportModuleProfileForm.js';
 import EditModuleProfileForm from './EditModuleProfileForm.js';
 
 export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
@@ -66,11 +67,14 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			return Settings.createProfile(profile.name + ' (Copy)', profile.modules);
 		}));
 
+		const exportProfileElements = document.getElementsByClassName('module-profiles-export-profile');
+		Array.from(exportProfileElements).forEach(element => element.addEventListener('click', () =>
+			new ExportModuleProfileForm(element.dataset.profileName).render(true)));
+
 		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
 			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true)));
 
-		// TODO - add events for export
 		// TODO - add import profiles + export profiles functionality? Or just hide and publish, then worry about qol
 	}
 
