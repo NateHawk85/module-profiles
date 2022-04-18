@@ -17,8 +17,9 @@ export function activateProfile(profileName, shouldForce)
 		throw new Error(errorMessage);
 	}
 
-	// TODO - should pass current active profile name to `unsavedChangesExistOn`, not the profile name to activate
-	if (!shouldForce && ModuleManagementScripts.isModuleManagementWindowOpen() && ModuleManagementScripts.unsavedChangesExistOn(profileName))
+	const activeProfile = Settings.getActiveProfile();
+
+	if (!shouldForce && ModuleManagementScripts.isModuleManagementWindowOpen() && ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name))
 	{
 		return new ConfirmActivateProfileForm(profileName).render(true);
 	} else

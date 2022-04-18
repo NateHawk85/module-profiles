@@ -2,7 +2,7 @@ import * as ProfileInteractions from '../../../js/scripts/profile-interactions.j
 import * as Settings from '../../../js/scripts/settings.js';
 import * as ModuleManagementScripts from '../../../js/scripts/ui/module-management-scripts.js';
 import ConfirmActivateProfileForm from '../../../js/classes/ConfirmActivateProfileForm.js';
-import {DEFAULT_PROFILE_NAME} from '../../config/constants.js';
+import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import {when} from 'jest-when';
 
 jest.mock('../../../js/scripts/settings.js');
@@ -24,25 +24,43 @@ describe('activateProfile', () =>
 		});
 	});
 
+	test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+		('WHEN ModuleManagement is open THEN ModuleManagementScripts.unsavedChangesExistOn is called with active profile name: %s', (value) =>
+		{
+			const activeProfile = {
+				name: value
+			};
+
+			ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
+			Settings.getActiveProfile.mockReturnValue(activeProfile);
+
+			ProfileInteractions.activateProfile(DEFAULT_PROFILE_NAME);
+
+			expect(ModuleManagementScripts.unsavedChangesExistOn).toHaveBeenCalledWith(value);
+		});
+
 	describe('changes detected', () =>
 	{
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
-			('WHEN ModuleManagement is open and changes detected THEN creates new LoadProfileConfirmationForm and calls render on it: %s', (value) =>
-			{
-				ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
-				when(ModuleManagementScripts.unsavedChangesExistOn).calledWith(value).mockReturnValue(true);
+			('WHEN ModuleManagement is open and changes detected THEN creates new LoadProfileConfirmationForm and calls render on it: %s',
+				(profileName) =>
+				{
+					ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
+					Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
+					when(ModuleManagementScripts.unsavedChangesExistOn).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(true);
 
-				ProfileInteractions.activateProfile(value);
+					ProfileInteractions.activateProfile(profileName);
 
-				expect(ConfirmActivateProfileForm).toHaveBeenCalledTimes(1);
-				expect(ConfirmActivateProfileForm).toHaveBeenCalledWith(value);
-				const instance = ConfirmActivateProfileForm.mock.instances[0];
-				expect(instance.render).toHaveBeenCalledWith(true);
-			});
+					expect(ConfirmActivateProfileForm).toHaveBeenCalledTimes(1);
+					expect(ConfirmActivateProfileForm).toHaveBeenCalledWith(profileName);
+					const instance = ConfirmActivateProfileForm.mock.instances[0];
+					expect(instance.render).toHaveBeenCalledWith(true);
+				});
 
 		test('WHEN ModuleManagement is open and changes detected THEN does not call Settings.loadProfile', () =>
 		{
 			ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
+			Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
 			when(ModuleManagementScripts.unsavedChangesExistOn).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(true);
 
 			ProfileInteractions.activateProfile(DEFAULT_PROFILE_NAME);
@@ -95,6 +113,7 @@ describe('activateProfile', () =>
 		test('WHEN ModuleManagement is open but no changes detected THEN does not create new LoadProfileConfirmationForm', () =>
 		{
 			ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
+			Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
 
 			ProfileInteractions.activateProfile(DEFAULT_PROFILE_NAME);
 
@@ -105,6 +124,7 @@ describe('activateProfile', () =>
 			('WHEN ModuleManagement is open but no changes detected THEN calls Settings.loadProfile with profile name: %s', (value) =>
 			{
 				ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
+				Settings.getActiveProfile.mockReturnValue(DEFAULT_PROFILE);
 
 				ProfileInteractions.activateProfile(value);
 
