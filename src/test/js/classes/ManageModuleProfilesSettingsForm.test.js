@@ -6,7 +6,6 @@ import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../../config/constants.js';
 import CreateModuleProfileForm from '../../../js/classes/CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from '../../../js/classes/ConfirmDeleteProfileForm.js';
 import EditModuleProfileForm from '../../../js/classes/EditModuleProfileForm.js';
-import ExportModuleProfileForm from '../../../js/classes/ExportModuleProfileForm.js';
 import {Profiles} from '../../mocks/profiles/profiles.js';
 import {when} from 'jest-when';
 
@@ -205,7 +204,7 @@ describe('activateListeners', () =>
 		});
 
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
-			('WHEN element has "module-profiles-activate-profile" class THEN adds activateProfile click event for one element with class', (value) =>
+			('WHEN element has "module-profiles-activate-profile" class THEN adds activateProfile click event for one element with class: %s', (value) =>
 			{
 				const element = addElementWith(value, [ACTIVATE_PROFILE_CLASS]);
 
@@ -284,7 +283,7 @@ describe('activateListeners', () =>
 		});
 
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
-			('WHEN element has "module-profiles-edit-profile" class THEN adds editProfile click event for one element with class', (value) =>
+			('WHEN element has "module-profiles-edit-profile" class THEN adds editProfile click event for one element with class: %s', (value) =>
 			{
 				const element = addElementWith(value, [EDIT_PROFILE_CLASS]);
 
@@ -487,101 +486,132 @@ describe('activateListeners', () =>
 
 	describe('module-profiles-export-profile', () =>
 	{
-		test('WHEN element does not have "module-profiles-export-profile" class THEN does not add exportProfile click event to element', () =>
+		beforeEach(() =>
+		{
+			navigator.clipboard = {
+				writeText: jest.fn()
+			};
+		});
+
+		test('WHEN element does not have "module-profiles-export-profile" class THEN does not add exportProfile click event to element', async () =>
 		{
 			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-export-profile']);
 
 			manageModuleProfilesSettingsForm.activateListeners();
-			element.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(0);
+			await element.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(0);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
+			expect(ui.notifications.info).toHaveBeenCalledTimes(0);
 		});
 
-		test('WHEN multiple elements do not have "module-profiles-export-profile" class THEN does not add exportProfile click event to elements', () =>
+		test('WHEN multiple elements do not have "module-profiles-export-profile" class THEN does not add exportProfile click event to elements', async () =>
 		{
 			const element1 = addElementWith(DEFAULT_PROFILE_NAME, ['not-export-profile']);
 			const element2 = addElementWith(DEFAULT_PROFILE_NAME, ['another-not-export-profile']);
 
 			manageModuleProfilesSettingsForm.activateListeners();
-			element1.click();
-			element2.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(0);
+			await element1.click();
+			await element2.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(0);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
+			expect(ui.notifications.info).toHaveBeenCalledTimes(0);
 		});
 
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
-			('WHEN element has "module-profiles-export-profile" class THEN adds exportProfile click event for one element with class', (value) =>
+			('WHEN element has "module-profiles-export-profile" class THEN adds exportProfile click event for one element with class: %s', async (value) =>
 			{
+				when(Settings.exportProfileByName).calledWith(value).mockReturnValue('A Value');
 				const element = addElementWith(value, [EXPORT_PROFILE_CLASS]);
 
 				manageModuleProfilesSettingsForm.activateListeners();
-				element.click();
-				expect(ExportModuleProfileForm).toHaveBeenCalledTimes(1);
-				expect(ExportModuleProfileForm).toHaveBeenCalledWith(value);
-				const instance = ExportModuleProfileForm.mock.instances[0];
-				expect(instance.render).toHaveBeenCalledWith(true);
+				await element.click();
+				expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
+				expect(Settings.exportProfileByName).toHaveBeenCalledWith(value);
+				expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+				expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Value');
+				expect(ui.notifications.info).toHaveBeenCalledTimes(1);
+				expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" copied to clipboard!`);
 			});
 
-		test('WHEN elements have "module-profiles-export-profile" class THEN adds exportProfile click event for many elements with class', () =>
+		test('WHEN elements have "module-profiles-export-profile" class THEN adds exportProfile click event for many elements with class', async () =>
 		{
+			Settings.exportProfileByName.mockReturnValue('A Different Value');
 			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EXPORT_PROFILE_CLASS]);
 			const element2 = addElementWith('A Different Profile Name', [EXPORT_PROFILE_CLASS]);
 
 			manageModuleProfilesSettingsForm.activateListeners();
 
-			element1.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(1);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			const instance1 = ExportModuleProfileForm.mock.instances[0];
-			expect(instance1.render).toHaveBeenCalledWith(true);
+			await element1.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Different Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
-			element2.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(2);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
-			const instance2 = ExportModuleProfileForm.mock.instances[1];
-			expect(instance2.render).toHaveBeenCalledWith(true);
+			await element2.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Different Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 		});
 
-		test('WHEN some elements have "module-profiles-export-profile" class THEN only adds exportProfile click event to elements with class', () =>
+		test('WHEN some elements have "module-profiles-export-profile" class THEN only adds exportProfile click event to elements with class', async () =>
 		{
+			Settings.exportProfileByName.mockReturnValue('Yet Another Value');
 			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EXPORT_PROFILE_CLASS]);
 			const element2 = addElementWith('A Different Profile Name', [EXPORT_PROFILE_CLASS]);
 			const element3 = addElementWith('A Third Profile Name', ['some-other-class-name']);
 
 			manageModuleProfilesSettingsForm.activateListeners();
 
-			element1.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(1);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			const instance1 = ExportModuleProfileForm.mock.instances[0];
-			expect(instance1.render).toHaveBeenCalledWith(true);
+			await element1.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Yet Another Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
-			element2.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(2);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
-			const instance2 = ExportModuleProfileForm.mock.instances[1];
-			expect(instance2.render).toHaveBeenCalledWith(true);
+			await element2.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Yet Another Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 
-			element3.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(2);
+			await element3.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
 		});
 
-		test('WHEN elements have other classes than "module-profiles-export-profile" THEN adds exportProfile click event for elements with class', () =>
+		test('WHEN elements have other classes than "module-profiles-export-profile" THEN adds exportProfile click event for elements with class', async () =>
 		{
+			Settings.exportProfileByName.mockReturnValue('Value');
 			const element1 = addElementWith(DEFAULT_PROFILE_NAME, [EXPORT_PROFILE_CLASS, 'some-other-class']);
 			const element2 = addElementWith('A Different Profile Name', [EXPORT_PROFILE_CLASS, 'fa-power-off']);
 
 			manageModuleProfilesSettingsForm.activateListeners();
 
-			element1.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(1);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			const instance1 = ExportModuleProfileForm.mock.instances[0];
-			expect(instance1.render).toHaveBeenCalledWith(true);
+			await element1.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
-			element2.click();
-			expect(ExportModuleProfileForm).toHaveBeenCalledTimes(2);
-			expect(ExportModuleProfileForm).toHaveBeenCalledWith('A Different Profile Name');
-			const instance2 = ExportModuleProfileForm.mock.instances[1];
-			expect(instance2.render).toHaveBeenCalledWith(true);
+			await element2.click();
+			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
+			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Value');
+			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 		});
 	});
 
@@ -608,7 +638,7 @@ describe('activateListeners', () =>
 		});
 
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
-			('WHEN element has "module-profiles-delete-profile" class THEN adds deleteProfile click event for one element with class', (value) =>
+			('WHEN element has "module-profiles-delete-profile" class THEN adds deleteProfile click event for one element with class: %s', (value) =>
 			{
 				const element = addElementWith(value, [DELETE_PROFILE_CLASS]);
 

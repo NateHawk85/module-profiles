@@ -5,10 +5,19 @@ import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm.js';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
+// TODO - Needs to be a separate function just for closeDialog instances. updateActiveProfileStatuses() should be exposed and performed when things are changed
 // TODO - test
 export function refreshModuleManagementStatusIcons(app)
 {
 	if (app.data.title === 'Dependencies')
+	{
+		updateActiveProfileStatuses();
+	}
+}
+
+// TODO - definitely test and rename ^^ that method accordingly
+export function checkUpdateActiveProfileStatuses() {
+	if (ModuleManagementScripts.isModuleManagementWindowOpen())
 	{
 		updateActiveProfileStatuses();
 	}
@@ -73,10 +82,20 @@ function addFooterElements()
 
 	function buildStatusButton()
 	{
+		const activeProfile = Settings.getActiveProfile();
+
 		const statusButton = document.createElement('button');
 		statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 		statusButton.classList.add('module-profiles-status-button');
 		statusButton.style.flexBasis = '130%';
+		statusButton.dataset.profileName = activeProfile.name; // TODO - make this a little more... easier to find? idk
+
+		statusButton.addEventListener('click', (event) =>
+		{
+			event.preventDefault();
+			const result = Settings.saveChangesToProfile(activeProfile.name, findUnsavedModuleStatuses());
+			result.then(() => updateStatusButtons());
+		});
 
 		return statusButton;
 	}
@@ -84,8 +103,7 @@ function addFooterElements()
 	function buildCreateModuleProfileButton()
 	{
 		const createModuleProfileButton = document.createElement('button');
-		createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
-												   // submits form)
+		createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 		createModuleProfileButton.innerHTML = '<i class="fa fa-plus"></i> Create Module Profile</button>';
 		createModuleProfileButton.style.flexBasis = '80%';
 		createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
@@ -96,8 +114,7 @@ function addFooterElements()
 	function buildManageProfilesButton()
 	{
 		const manageProfilesButton = document.createElement('button');
-		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
-											  // form)
+		manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 		manageProfilesButton.innerHTML = '<i class="fa fa-cog"></i> Manage Module Profiles</button>';
 		manageProfilesButton.addEventListener('click', (event) =>
 		{
@@ -174,23 +191,15 @@ function updateStatusButtons()
 	const profileButtons = document.getElementsByClassName('module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>
 	{
+		const buttonProfileName = button.dataset.profileName;
 		if (isUpToDate)
 		{
 			button.style.backgroundColor = '';
-			button.innerHTML = `<i class="fa fa-check-circle" style="color: mediumseagreen"></i><b>${(activeProfile.name)}</b> is up to date`;
+			button.innerHTML = `<i class="fa fa-check-circle" style="color: mediumseagreen"></i><b>${(buttonProfileName)}</b> is up to date`;
 		} else
 		{
 			button.style.backgroundColor = 'orangered';
-			button.innerHTML = `<i class="far fa-save"></i> Save changes to <b>${(activeProfile.name)}</b>`;
-			button.addEventListener('click', (event) =>
-			{
-				event.preventDefault();
-				const result = Settings.saveChangesToProfile(activeProfile.name, findUnsavedModuleStatuses());
-				result.then(() =>
-				{
-					updateStatusButtons();
-				});
-			});
+			button.innerHTML = `<i class="far fa-save"></i> Save changes to <b>${(buttonProfileName)}</b>`;
 		}
 
 		button.disabled = isUpToDate;

@@ -1,5 +1,6 @@
 import * as Settings from '../scripts/settings.js';
 
+// TODO - can reuse eventually, but not needed right now
 export default class ExportModuleProfileForm extends FormApplication
 {
 	constructor(profileName, object={}, options={})
@@ -33,14 +34,6 @@ export default class ExportModuleProfileForm extends FormApplication
 			data: JSON.stringify(profile, null, 2)
 		};
 	}
-
-	// TODO - button onclick for export? copied shamelessly from compendium folders
-	//  event.stopPropagation();
-	//             let exportText = document.querySelector('#import-export textarea[name=\'exportData\']');
-	//             exportText.select();
-	//             exportText.setSelectionRange(0, 99999); /*For mobile devices*/
-	//             document.execCommand("copy");
-	//             ui.notifications.info(game.i18n.localize('CF.clipboardNotification'));
 
 	// TODO - clean up import/export form?
 

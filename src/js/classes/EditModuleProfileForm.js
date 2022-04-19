@@ -28,6 +28,7 @@ export default class EditModuleProfileForm extends FormApplication
 	getData(options = {})
 	{
 		// TODO - bug, need to pull in new modules that haven't been saved yet or else you can't edit them
+		// TODO - can remove sorting when getting/setting is alphabetized in settings
 		const profile = Settings.getProfileByName(this.profileName);
 		return {
 			name: profile.name,

@@ -109,7 +109,7 @@ describe('getData', () =>
 		[DEFAULT_PROFILE_NAME, 'A Different Profile'],
 		['A New Profile', 'Active Profile Name']
 	])
-		('WHEN called THEN returns active profile from what Settings.getActiveProfile() returns: %s', (profileNameToActivate, activeProfile) =>
+		('WHEN called THEN returns active profile from what Settings.getActiveProfile() returns: %s, %s', (profileNameToActivate, activeProfile) =>
 		{
 			Settings.getActiveProfile.mockReturnValue({
 				name: activeProfile,

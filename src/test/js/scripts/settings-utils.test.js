@@ -28,7 +28,7 @@ describe('setSetting', () =>
 		['aKey', 'a value'],
 		['aDifferentKey', 99]
 	])
-		('WHEN called THEN calls game.settings.set: %s', (key, value) =>
+		('WHEN called THEN calls game.settings.set: %s, %s', (key, value) =>
 		{
 			SettingsUtils.setSetting(key, value);
 
@@ -77,7 +77,7 @@ describe('registerSetting', () =>
 			}
 		]
 	])
-		('WHEN called THEN calls game.settings.register: %s', (key, configuration) =>
+		('WHEN called THEN calls game.settings.register: %s, %o', (key, configuration) =>
 		{
 			SettingsUtils.registerSetting(key, configuration);
 
@@ -111,7 +111,7 @@ describe('registerMenu', () =>
 			}
 		]
 	])
-		('WHEN called THEN calls game.settings.registerMenu: %s', (key, configuration) =>
+		('WHEN called THEN calls game.settings.registerMenu: %s, %o', (key, configuration) =>
 		{
 			SettingsUtils.registerMenu(key, configuration);
 

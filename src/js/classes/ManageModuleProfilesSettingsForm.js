@@ -2,7 +2,6 @@ import * as Settings from '../scripts/settings.js';
 import * as ProfileInteractions from '../scripts/profile-interactions.js';
 import CreateModuleProfileForm from './CreateModuleProfileForm.js';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm.js';
-import ExportModuleProfileForm from './ExportModuleProfileForm.js';
 import EditModuleProfileForm from './EditModuleProfileForm.js';
 
 export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
@@ -68,8 +67,14 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		}));
 
 		const exportProfileElements = document.getElementsByClassName('module-profiles-export-profile');
-		Array.from(exportProfileElements).forEach(element => element.addEventListener('click', () =>
-			new ExportModuleProfileForm(element.dataset.profileName).render(true)));
+		Array.from(exportProfileElements).forEach(element => element.addEventListener('click', async () =>
+		{
+			const profileName = element.dataset.profileName;
+			const exportedProfile = Settings.exportProfileByName(profileName);
+
+			await navigator.clipboard.writeText(exportedProfile);
+			ui.notifications.info(`Profile "${profileName}" copied to clipboard!`);
+		}));
 
 		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
@@ -84,7 +89,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 /**
  * Re-renders the ManageModuleProfiles windows. This can be useful because profiles can be added/removed while the window is open, and re-rendering the
  * Application instance refreshes that data.
- * @return {void}
+ * @returns {void}
  */
 export function reRenderManageModuleProfilesWindows()
 {
@@ -98,7 +103,7 @@ export function reRenderManageModuleProfilesWindows()
  * Forces the application to refresh the size of its first element (aka, the window content). This is primarily to be used whenever an Application adds or
  * removes elements so that the height of the Application is consistent with what is added.
  * @param {Application} app - The Application that needs to be resized.
- * @return {void}
+ * @returns {void}
  */
 export function forceManageModuleProfilesHeightResize(app)
 {

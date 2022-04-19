@@ -2,6 +2,7 @@ import * as Settings from './settings.js';
 import * as SettingsUtils from './settings-utils.js';
 import ManageModuleProfilesSettingsForm, {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm.js';
 
+// TODO - adjust everything to get or save profiles in alphabetical order
 const DEFAULT_PROFILE_NAME = 'Default Profile';
 
 export const SettingKey = {
@@ -41,16 +42,6 @@ export function registerSettings()
 		scope: 'world'
 	});
 
-	// TODO - can probably remove this setting?
-	SettingsUtils.registerSetting(SettingKey.REGISTER_API, {
-		name: 'Register API',
-		hint: 'Make this module\'s API (ModuleProfiles.api.*function()*) available. If you don\'t write code, you probably don\'t need this.',
-		scope: 'world',
-		config: true,
-		type: Boolean,
-		default: false
-	});
-
 	const profiles = Settings.getAllProfiles();
 	if (!profiles || profiles.length === 0)
 	{
@@ -81,63 +72,6 @@ export function getCurrentModuleConfiguration()
 export async function setCoreModuleConfiguration(modules)
 {
 	await game.settings.set('core', 'moduleConfiguration', modules);
-}
-
-// TODO - update object type Typescript
-/**
- * Gets the saved, currently-active module profile from the game settings.
- * @returns {*} - The currently-active module profile.
- */
-export function getActiveProfile()
-{
-	const activeProfileName = SettingsUtils.getSetting(SettingKey.ACTIVE_PROFILE_NAME);
-
-	return Settings.getProfileByName(activeProfileName);
-}
-
-// TODO - update object type Typescript
-/**
- * Gets a saved profile from the game settings with the corresponding name.
- * @param profileName {string} - The name of the profile to return.
- * @returns {*} - The module profile with the given name, or `undefined` if none exists.
- */
-export function getProfileByName(profileName)
-{
-	const profiles = Settings.getAllProfiles();
-
-	return profiles.find(profile => profile.name === profileName);
-}
-
-// TODO - update object type Typescript
-/**
- * Gets the array of all saved profiles from the game settings.
- * @returns {Array<*>} - An array of the saved module profiles.
- */
-export function getAllProfiles()
-{
-	return SettingsUtils.getSetting(SettingKey.PROFILES);
-}
-
-/**
- * Activates the profile with the given name, then reloads the page.
- * @param {string} profileName - The name of the profile to load.
- * @returns {Promise<void>}
- * @throws {Error} - When profile name does not exist.
- */
-export async function activateProfile(profileName)
-{
-	const profile = Settings.getProfileByName(profileName);
-
-	if (!profile)
-	{
-		const errorMessage = `Unable to activate module profile. Profile "${profileName}" does not exist!`;
-		ui.notifications.error(errorMessage);
-		throw new Error(errorMessage);
-	}
-
-	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profile.name)
-						.then(() => Settings.setCoreModuleConfiguration(profile.modules))
-						.then(() => SettingsUtils.reloadWindow());
 }
 
 // TODO - update object type Typescript
@@ -176,10 +110,31 @@ export async function createProfile(profileName, modules)
 
 	const response = SettingsUtils.setSetting(SettingKey.PROFILES, profiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
-
-	// TODO - notify ui.notifications
+	ui.notifications.info(`Profile "${profileName}" has been created!`);
 
 	return response;
+}
+
+/**
+ * Activates the profile with the given name, then reloads the page.
+ * @param {string} profileName - The name of the profile to load.
+ * @returns {Promise<void>}
+ * @throws {Error} - When profile name does not exist.
+ */
+export async function activateProfile(profileName)
+{
+	const profile = Settings.getProfileByName(profileName);
+
+	if (!profile)
+	{
+		const errorMessage = `Unable to activate module profile. Profile "${profileName}" does not exist!`;
+		ui.notifications.error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	return SettingsUtils.setSetting(SettingKey.ACTIVE_PROFILE_NAME, profile.name)
+						.then(() => Settings.setCoreModuleConfiguration(profile.modules))
+						.then(() => SettingsUtils.reloadWindow());
 }
 
 // TODO - update object type Typescript
@@ -205,10 +160,56 @@ export async function saveChangesToProfile(profileName, modules)
 
 	const response = SettingsUtils.setSetting(SettingKey.PROFILES, savedProfiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
-
-	// TODO - notify ui.notifications
+	ui.notifications.info(`Changes to profile "${profileName}" have been saved!`);
 
 	return response;
+}
+
+// TODO - update object type Typescript
+/**
+ * Gets the array of all saved profiles from the game settings.
+ * @returns {Array<*>} - An array of the saved module profiles.
+ */
+export function getAllProfiles()
+{
+	return SettingsUtils.getSetting(SettingKey.PROFILES);
+}
+
+// TODO - update object type Typescript
+/**
+ * Gets the saved, currently-active module profile from the game settings.
+ * @returns {*} - The currently-active module profile.
+ */
+export function getActiveProfile()
+{
+	const activeProfileName = SettingsUtils.getSetting(SettingKey.ACTIVE_PROFILE_NAME);
+
+	return Settings.getProfileByName(activeProfileName);
+}
+
+// TODO - update object type Typescript
+/**
+ * Gets a saved profile from the game settings with the corresponding name.
+ * @param profileName {string} - The name of the profile to return.
+ * @returns {*} - The module profile with the given name, or `undefined` if none exists.
+ */
+export function getProfileByName(profileName)
+{
+	const profiles = Settings.getAllProfiles();
+
+	return profiles.find(profile => profile.name === profileName);
+}
+
+/**
+ * Gets a saved profile from the game settings in JSON format.
+ * @param {string} profileName - The name of the profile to return.
+ * @returns {string} - The JSON representation of the profile, or `undefined` if none exists.
+ */
+export function exportProfileByName(profileName)
+{
+	const profile = Settings.getProfileByName(profileName);
+
+	return profile ? JSON.stringify(profile, null, 2) : profile;
 }
 
 // TODO - update object type Typescript
@@ -236,8 +237,7 @@ export async function deleteProfile(profileName)
 	}
 
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
-
-	// TODO - notify ui.notifications
+	ui.notifications.info(`Profile "${profileName}" has been deleted!`);
 
 	return response;
 }

@@ -71,20 +71,6 @@ describe('registerSettings', () =>
 		});
 	});
 
-	test('WHEN called THEN the "Register API" setting is registered', () =>
-	{
-		Settings.registerSettings();
-
-		expect(SettingsUtils.registerSetting).toHaveBeenCalledWith(Settings.SettingKey.REGISTER_API, {
-			name: 'Register API',
-			hint: 'Make this module\'s API (ModuleProfiles.api.*function()*) available. If you don\'t write code, you probably don\'t need this.',
-			scope: 'world',
-			config: true,
-			type: Boolean,
-			default: false
-		});
-	});
-
 	test('WHEN getAllProfiles setting does not exist THEN resets to default profile', () =>
 	{
 		jest.spyOn(Settings, 'getAllProfiles').mockImplementation(() => undefined);
@@ -244,6 +230,76 @@ describe('getProfileByName', () =>
 
 				expect(response).toStrictEqual(expected);
 			});
+});
+
+describe('exportProfileByName', () =>
+{
+	test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
+		('WHEN called THEN calls Settings.getProfileByName with profile name: %s', (value) =>
+		{
+			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(undefined);
+
+			Settings.exportProfileByName(value);
+
+			expect(Settings.getProfileByName).toHaveBeenCalledWith(value);
+		});
+
+	test('WHEN Settings.getProfileByName returns undefined THEN returns undefined', () =>
+	{
+		jest.spyOn(Settings, 'getProfileByName').mockReturnValue(undefined);
+
+		const response = Settings.exportProfileByName('a profile name');
+
+		expect(response).toStrictEqual(undefined);
+	});
+
+	test('WHEN Settings.getProfileByName returns a profile THEN returns what Settings.getProfileByName returns as JSON string', () =>
+	{
+		const profile = {
+			'name': 'A Profile Name',
+			'modules': {
+				'a-module': true,
+				'b-module': false
+			}
+		};
+		jest.spyOn(Settings, 'getProfileByName').mockReturnValue(profile);
+
+		const actual = Settings.exportProfileByName(DEFAULT_PROFILE_NAME);
+
+		expect(actual).toStrictEqual(
+			'{\n' +
+			'  \"name\": \"A Profile Name\",\n' +
+			'  \"modules\": {\n' +
+			'    \"a-module\": true,\n' +
+			'    \"b-module\": false\n' +
+			'  }\n' +
+			'}');
+	});
+
+	test('WHEN Settings.getProfileByName returns a profile THEN returns what Settings.getProfileByName returns as JSON string with alternate parameters', () =>
+	{
+		const profile = {
+			name: 'A Different Profile Name',
+			modules: {
+				'a-module': true,
+				'b-module': false,
+				'c-module': true
+			}
+		};
+		jest.spyOn(Settings, 'getProfileByName').mockReturnValue(profile);
+
+		const actual = Settings.exportProfileByName(DEFAULT_PROFILE_NAME);
+
+		expect(actual).toStrictEqual(
+			'{\n' +
+			'  \"name\": \"A Different Profile Name\",\n' +
+			'  \"modules\": {\n' +
+			'    \"a-module\": true,\n' +
+			'    \"b-module\": false,\n' +
+			'    \"c-module\": true\n' +
+			'  }\n' +
+			'}');
+	});
 });
 
 describe('activateProfile', () =>
@@ -438,6 +494,16 @@ describe('createProfile', () =>
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
 
+	test.each(['Some Profile Name', 'A Different Profile Name'])
+		('WHEN profile name does not exist THEN calls ui.notifications.info: %s', async (value) =>
+		{
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([DEFAULT_PROFILE]);
+
+			await Settings.createProfile(value, {});
+
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" has been created!`);
+		});
+
 	test.each([
 		[DEFAULT_PROFILE],
 		[{ name: 'A Different Profile', modules: {} }]
@@ -524,6 +590,16 @@ describe('saveChangesToProfile', () =>
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
 
+	test.each(['Some Profile Name', 'A Different Profile Name'])
+		('WHEN profile exists with name THEN calls ui.notifications.info: %s', async (value) =>
+		{
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([{ name: value, modules: {} }]);
+
+			await Settings.saveChangesToProfile(value, {});
+
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Changes to profile "${value}" have been saved!`);
+		});
+
 	test.each([
 		'a return value', [{ name: 'A profile', modules: undefined }]
 	])
@@ -551,7 +627,6 @@ describe('deleteProfile', () =>
 		await expect(functionCall).rejects.toThrow(`Unable to delete module profile. Profile "${DEFAULT_PROFILE_NAME}" does not exist!`);
 	});
 
-	// TODO - do something else than refreshing window, eventually
 	test.each([DEFAULT_PROFILE, { name: 'A Different Profile', modules: {} }])
 		('WHEN only one profile exists THEN calls SettingsUtils.setSetting to set profiles and refreshes window: %s', async (value) =>
 		{
@@ -602,4 +677,29 @@ describe('deleteProfile', () =>
 
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
+
+	test.each(['Some Profile Name', 'A Different Profile Name'])
+		('WHEN profile exists with name THEN calls ui.notifications.info: %s', async (value) =>
+		{
+			jest.spyOn(Settings, 'getProfileByName').mockReturnValue({ name: value, modules: {} });
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([{ name: value, modules: {} }]);
+
+			await Settings.deleteProfile(value);
+
+			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" has been deleted!`);
+		});
+
+	test.each([
+		'a return value', [{ name: 'A profile', modules: undefined }]
+	])
+		('WHEN profile exists with name THEN returns what SettingsUtils.setSetting returns: %s', async (value) =>
+		{
+			const profile = { name: value, modules: {} };
+			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(profile);
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([profile]);
+
+			const actual = await Settings.deleteProfile(DEFAULT_PROFILE_NAME);
+
+			expect(actual).toStrictEqual([profile]);
+		});
 });

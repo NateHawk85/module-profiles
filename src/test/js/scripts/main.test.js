@@ -10,6 +10,7 @@ const modifyModuleManagementRender = () => {};
 const reRenderManageModuleProfilesWindows = () => {};
 const forceManageModuleProfilesHeightResize = () => {};
 const refreshModuleManagementStatusIcons = () => {};
+const checkUpdateActiveProfileStatuses = () => {};
 const RENDER_HOOK_NAME = 'renderHookName';
 const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdatedHookName';
 
@@ -21,7 +22,8 @@ jest.mock('../../../js/scripts/api.js', () => ({
 }));
 jest.mock('../../../js/scripts/ui/module-management-scripts.js', () => ({
 	modifyModuleManagementRender: modifyModuleManagementRender,
-	refreshModuleManagementStatusIcons: refreshModuleManagementStatusIcons
+	refreshModuleManagementStatusIcons: refreshModuleManagementStatusIcons,
+	checkUpdateActiveProfileStatuses: checkUpdateActiveProfileStatuses
 }));
 jest.mock('../../../js/classes/ManageModuleProfilesSettingsForm.js', () => ({
 	RENDER_HOOK_NAME: RENDER_HOOK_NAME,
@@ -56,6 +58,14 @@ test('WHEN main.js is run THEN the module management status icons are refreshed 
 	require('../../../js/scripts/main.js');
 
 	expect(Hooks.on).toHaveBeenCalledWith('closeDialog', ModuleManagementScripts.refreshModuleManagementStatusIcons);
+});
+
+test('WHEN main.js is run THEN the module management status icons are refreshed when a module profile is updated', () =>
+{
+	require('../../../js/scripts/main.js');
+
+	expect(Hooks.on).toHaveBeenCalledWith(ManageModuleProfilesSettingsFormFunctions.MODULE_PROFILES_UPDATED_HOOK_NAME,
+		ModuleManagementScripts.checkUpdateActiveProfileStatuses);
 });
 
 test('WHEN main.js is run THEN ManageModuleProfilesSettingsForms have their height adjusted whenever they are rendered', () =>
