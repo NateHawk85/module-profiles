@@ -1,9 +1,0 @@
-{
-	"name": "Only Module Profiles Enabled",
-	"modules": {
-		"find-the-culprit": false,
-		"popout": false,
-		"tidy-ui_game-settings": false,
-		"module-profiles": false
-	}
-}

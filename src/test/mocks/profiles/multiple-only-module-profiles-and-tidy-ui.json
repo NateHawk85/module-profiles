@@ -1,9 +1,0 @@
-{
-	"name": "Multiple Only Module Profiles and Tidy UI Enabled",
-	"modules": {
-		"find-the-culprit": false,
-		"popout": false,
-		"tidy-ui_game-settings": true,
-		"module-profiles": true
-	}
-}

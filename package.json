@@ -27,17 +27,22 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.7",
+    "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
+    "@types/jest": "^27.4.1",
+    "@types/jest-when": "^3.5.0",
     "jest": "^27.5.1",
-    "jest-when": "^3.5.1"
+    "jest-when": "^3.5.1",
+    "ts-jest": "^27.1.4"
   },
   "jest": {
     "setupFiles": [
-      "<rootDir>/src/test/config/mock-foundry.js",
-      "<rootDir>/src/test/config/mock-window.js",
-      "<rootDir>/src/test/config/constants.js"
+      "<rootDir>/src/test/config/mock-foundry.ts",
+      "<rootDir>/src/test/config/mock-window.ts",
+      "<rootDir>/src/test/config/constants.ts"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/test/config/global-test-config.js"
+      "<rootDir>/src/test/config/global-test-config.ts"
     ],
     "testEnvironment": "jsdom",
     "clearMocks": true,

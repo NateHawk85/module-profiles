@@ -1,7 +1,0 @@
-{
-	"name": "Only Module Profiles and Tidy UI Enabled",
-	"modules": {
-		"tidy-ui_game-settings": true,
-		"module-profiles": true
-	}
-}
