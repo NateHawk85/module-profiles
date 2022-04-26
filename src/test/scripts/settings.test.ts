@@ -1,11 +1,14 @@
 import * as Settings from '../../main/scripts/settings';
 import * as MockedSettingsUtils from '../../main/scripts/settings-utils';
+import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
 import {when} from 'jest-when';
 import * as Constants from '../config/constants';
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
 
 jest.mock('../../main/scripts/settings-utils');
 const SettingsUtils = jest.mocked(MockedSettingsUtils, true);
+jest.mock('../../main/scripts/mapping-utils');
+const MappingUtils = jest.mocked(MockedMappingUtils, true);
 
 const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
 
@@ -65,100 +68,198 @@ describe('registerModuleSettings', () =>
 
 describe('getCurrentModuleConfiguration', () =>
 {
-	test.each(Constants.ModulesCoreGameModulesMapCombinedTestCases)
+	test.each(Constants.CoreModulesConfigurationToCorrespondingModuleInfosPairs)
 		('WHEN game.modules returns a map of modules THEN maps them to an array of ModuleInfo objects: %o, %o', (coreConfiguration, expectedProfile) =>
 		{
-			// @ts-ignore
+			// @ts-ignore - Mocking for Foundry
 			game.modules = coreConfiguration;
 
 			const actual = Settings.getCurrentModuleConfiguration();
 
 			expect(actual).toStrictEqual(expectedProfile.modules);
 		});
+
+	test.each([
+		[
+			Constants.buildCoreGameModulesMapWithProfiles(
+				[Constants.TidyUITestValues, false],
+				[Constants.FindTheCulpritTestValues, false]
+			),
+			[
+				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+			]
+		],
+		[
+			Constants.buildCoreGameModulesMapWithProfiles(
+				[Constants.TidyUITestValues, false],
+				[Constants.PopoutTestValues, false],
+				[Constants.FindTheCulpritTestValues, false]
+			),
+			[
+				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+				Constants.buildModuleInfo(Constants.PopoutTestValues, false),
+				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+			]
+		],
+		[
+			Constants.buildCoreGameModulesMapWithProfiles(
+				[Constants.PopoutTestValues, true],
+				[Constants.FindTheCulpritTestValues, false],
+				[Constants.ModuleProfilesTestValues, false],
+				[Constants.TidyUITestValues, false]
+			),
+			[
+				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+				Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
+				Constants.buildModuleInfo(Constants.PopoutTestValues, true),
+				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+			]
+		],
+		[
+			Constants.buildCoreGameModulesMapWithProfiles(
+				[{id: 'b-module', title: 'B Module'}, false],
+				[{id: 'a-module', title: 'A Module'}, false],
+			),
+			[
+				Constants.buildModuleInfo({id: 'a-module', title: 'A Module'}, false),
+				Constants.buildModuleInfo({id: 'b-module', title: 'B Module'}, false)
+			]
+		],
+		[
+			Constants.buildCoreGameModulesMapWithProfiles(
+				[{id: 'key-does-not-matter', title: 'ZZZZ Module'}, false],
+				[{id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module'}, false],
+				[{id: 'key-does-not-matter2', title: 'Z Module'}, false]
+			),
+			[
+				Constants.buildModuleInfo({id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module'}, false),
+				Constants.buildModuleInfo({id: 'key-does-not-matter2', title: 'Z Module'}, false),
+				Constants.buildModuleInfo({id: 'key-does-not-matter', title: 'ZZZZ Module'}, false)
+			]
+		]
+	])
+		('WHEN game.modules returns a map of modules unsorted by title THEN sorts them by title: %o, %o', (coreConfiguration, expectedModuleInfos) =>
+		{
+			// @ts-ignore - Mocking for Foundry
+			game.modules = coreConfiguration;
+
+			const actual = Settings.getCurrentModuleConfiguration();
+
+			expect(actual).toStrictEqual(expectedModuleInfos);
+		});
 });
 
 describe('setCoreModuleConfiguration', () =>
 {
-	test.each(Constants.ModuleInfosCoreSettingsConfigurationTestCases)
-		('WHEN called with info THEN calls game.settings.set with the correct corresponding module configuration: %o, %o',
-			(moduleInfos, expectedConfiguration) =>
-			{
-				when(game.settings.get).calledWith('core', 'moduleConfiguration').mockReturnValue({});
+	test.each(Constants.SavedModuleInfosFromGameSettings)
+		('WHEN called THEN calls MappingUtils.mapToModuleKeyIsActiveRecord with inputted module infos: %s', (value) =>
+		{
+			Settings.setCoreModuleConfiguration(value);
 
-				Settings.setCoreModuleConfiguration(moduleInfos);
+			expect(MappingUtils.mapToModuleKeyIsActiveRecord).toHaveBeenCalledWith(value);
+		});
+
+	test.each(Constants.CoreSettingsModuleConfigurations)
+		('WHEN called with info THEN calls game.settings.set with response from MappingUtils.mapToModuleKeyIsActiveRecord: %o',
+			async (expectedConfiguration) =>
+			{
+				MappingUtils.mapToModuleKeyIsActiveRecord.mockReturnValue(expectedConfiguration);
+
+				await Settings.setCoreModuleConfiguration([]);
 
 				expect(game.settings.set).toHaveBeenCalledWith('core', 'moduleConfiguration', expectedConfiguration);
 			});
 
-	test.each(Constants.ModuleInfosCoreSettingsConfigurationTestCases)
-		('WHEN called with info THEN returns what game.settings.set returns: %o, %o', async (moduleInfos, expectedConfiguration) =>
+	test.each(Constants.CoreSettingsModuleConfigurations)
+		('WHEN called with info THEN returns what game.settings.set returns: %o', async (expectedConfiguration) =>
 		{
+			MappingUtils.mapToModuleKeyIsActiveRecord.mockReturnValue(expectedConfiguration);
 			when(game.settings.set).calledWith('core', 'moduleConfiguration', expectedConfiguration).mockReturnValue(Promise.resolve(expectedConfiguration));
 
-			const actual = await Settings.setCoreModuleConfiguration(moduleInfos);
+			const actual = await Settings.setCoreModuleConfiguration([]);
 
 			expect(actual).toStrictEqual(expectedConfiguration);
 		});
 
 	test('WHEN core module configuration returns more values than module infos entered THEN calls game.settings.set with merged values from the two', () =>
 	{
-		const coreModuleConfigurationResponse: Record<string, boolean> = {};
-		coreModuleConfigurationResponse['some-other-module'] = true;
-		coreModuleConfigurationResponse[Constants.ModuleProfilesTestValues.key] = true;
+		const coreModuleConfigurationResponse: Record<string, boolean> = {
+			'some-other-module': true,
+			[Constants.ModuleProfilesTestValues.id]: true
+		};
 		when(game.settings.get).calledWith('core', 'moduleConfiguration').mockReturnValue(coreModuleConfigurationResponse);
+		MappingUtils.mapToModuleKeyIsActiveRecord.mockReturnValue({ [Constants.ModuleProfilesTestValues.id]: false });
 
-		Settings.setCoreModuleConfiguration(Constants.TestModuleProfiles.OnlyModuleProfiles.modules);
+		Settings.setCoreModuleConfiguration([]);
 
-		const expected: Record<string, boolean> = {};
-		expected['some-other-module'] = true;
-		expected[Constants.ModuleProfilesTestValues.key] = true;
+		const expected: Record<string, boolean> = {
+			'some-other-module': true,
+			[Constants.ModuleProfilesTestValues.id]: false
+		};
 
 		expect(game.settings.set).toHaveBeenCalledWith('core', 'moduleConfiguration', expected);
 	});
 
 	test('WHEN core module configuration returns less values than module infos entered THEN calls game.settings.set with merged values from the two', () =>
 	{
-		const coreModuleConfigurationResponse: Record<string, boolean> = {};
-		coreModuleConfigurationResponse['some-other-module'] = false;
-		coreModuleConfigurationResponse['yet-another-module'] = false;
-		coreModuleConfigurationResponse['theres-another-module'] = false;
+		const coreModuleConfigurationResponse: Record<string, boolean> = {
+			'some-other-module': true,
+			'yet-another-module': true,
+			'theres-another-module': true
+		};
 		when(game.settings.get).calledWith('core', 'moduleConfiguration').mockReturnValue(coreModuleConfigurationResponse);
 
-		const input = Constants.TestModuleProfiles.MultipleAllEnabled.modules;
-		input.push({ key: 'some-other-module', title: 'Some Other Module', isActive: false });
-		input.push({ key: 'yet-another-module', title: 'Yet Another Module', isActive: false });
-		input.push({ key: 'theres-another-module', title: 'Theres Another Module', isActive: false });
+		const mappedModuleInfos = {
+			'some-other-module': false,
+			'yet-another-module': false,
+			'theres-another-module': false,
+			[Constants.FindTheCulpritTestValues.id]: true,
+			[Constants.PopoutTestValues.id]: true,
+			[Constants.TidyUITestValues.id]: true,
+			[Constants.ModuleProfilesTestValues.id]: true
+		};
+		MappingUtils.mapToModuleKeyIsActiveRecord.mockReturnValue(mappedModuleInfos);
 
-		Settings.setCoreModuleConfiguration(input);
+		Settings.setCoreModuleConfiguration([]);
 
-		const expected: Record<string, boolean> = {};
-		expected['some-other-module'] = false;
-		expected['yet-another-module'] = false;
-		expected['theres-another-module'] = false;
-		expected[Constants.FindTheCulpritTestValues.key] = true;
-		expected[Constants.PopoutTestValues.key] = true;
-		expected[Constants.TidyUITestValues.key] = true;
-		expected[Constants.ModuleProfilesTestValues.key] = true;
+		const expected: Record<string, boolean> = {
+			'some-other-module': false,
+			'yet-another-module': false,
+			'theres-another-module': false,
+			[Constants.FindTheCulpritTestValues.id]: true,
+			[Constants.PopoutTestValues.id]: true,
+			[Constants.TidyUITestValues.id]: true,
+			[Constants.ModuleProfilesTestValues.id]: true
+		};
 
 		expect(game.settings.set).toHaveBeenCalledWith('core', 'moduleConfiguration', expected);
 	});
 
 	test('WHEN passed modules have different values than core module configuration THEN inputs overwrite core module configuration values', () =>
 	{
-		const coreModuleConfigurationResponse: Record<string, boolean> = {};
-		coreModuleConfigurationResponse[Constants.FindTheCulpritTestValues.key] = false;
-		coreModuleConfigurationResponse[Constants.PopoutTestValues.key] = false;
-		coreModuleConfigurationResponse[Constants.TidyUITestValues.key] = false;
-		coreModuleConfigurationResponse[Constants.ModuleProfilesTestValues.key] = false;
+		const coreModuleConfigurationResponse: Record<string, boolean> = {
+			[Constants.FindTheCulpritTestValues.id]: false,
+			[Constants.PopoutTestValues.id]: false,
+			[Constants.TidyUITestValues.id]: false,
+			[Constants.ModuleProfilesTestValues.id]: false
+		};
 		when(game.settings.get).calledWith('core', 'moduleConfiguration').mockReturnValue(coreModuleConfigurationResponse);
+		MappingUtils.mapToModuleKeyIsActiveRecord.mockReturnValue({
+			[Constants.FindTheCulpritTestValues.id]: false,
+			[Constants.PopoutTestValues.id]: false,
+			[Constants.TidyUITestValues.id]: true,
+			[Constants.ModuleProfilesTestValues.id]: true
+		});
 
-		Settings.setCoreModuleConfiguration(Constants.TestModuleProfiles.MultipleOnlyModuleProfilesAndTidyUIEnabled.modules);
+		Settings.setCoreModuleConfiguration([]);
 
-		const expected: Record<string, boolean> = {};
-		expected[Constants.FindTheCulpritTestValues.key] = false;
-		expected[Constants.PopoutTestValues.key] = false;
-		expected[Constants.TidyUITestValues.key] = true;
-		expected[Constants.ModuleProfilesTestValues.key] = true;
+		const expected: Record<string, boolean> = {
+			[Constants.FindTheCulpritTestValues.id]: false,
+			[Constants.PopoutTestValues.id]: false,
+			[Constants.TidyUITestValues.id]: true,
+			[Constants.ModuleProfilesTestValues.id]: true
+		};
 
 		expect(game.settings.set).toHaveBeenCalledWith('core', 'moduleConfiguration', expected);
 	});
@@ -195,7 +296,7 @@ describe('createProfile', () =>
 		await expect(functionCall).rejects.toThrow('Unable to create module profile. Please refresh the page and try again.');
 	});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile already exists THEN throws Error and calls ui.notifications.error: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(DEFAULT_PROFILE);
@@ -207,7 +308,7 @@ describe('createProfile', () =>
 			await expect(functionCall).rejects.toThrow(`Unable to create module profile. Profile "${value}" already exists!`);
 		});
 
-	test.each(Constants.NameModuleProfilesTestCases)
+	test.each(Constants.NameModuleProfilePairs)
 		('WHEN no profiles exist THEN calls SettingsUtils.setProfiles to save profile: %s, %o', async (profileName, testProfile) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(undefined);
@@ -218,7 +319,7 @@ describe('createProfile', () =>
 			expect(SettingsUtils.setProfiles).toHaveBeenCalledWith([{ name: profileName, modules: testProfile.modules }]);
 		});
 
-	test.each(Constants.NameModuleProfilesTestCases)
+	test.each(Constants.NameModuleProfilePairs)
 		('WHEN profile name does not exist THEN calls SettingsUtils.setProfiles to save profile: %s, %o', async (profileName, testProfile) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(undefined);
@@ -281,7 +382,7 @@ describe('createProfile', () =>
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile name does not exist THEN calls ui.notifications.info: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([{ name: 'Some random name', modules: [] }]);
@@ -291,7 +392,7 @@ describe('createProfile', () =>
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" has been created!`);
 		});
 
-	test.each(Constants.AllModuleProfilesAsArrayTestCases)
+	test.each(Constants.SavedModuleProfilesArrays)
 		('WHEN no matching profile exists THEN returns what SettingsUtils.setProfiles returns: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(value);
@@ -305,7 +406,7 @@ describe('createProfile', () =>
 
 describe('activateProfile', () =>
 {
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN calls Settings.getProfileByName for profile with the given name: %s', async (value) =>
 		{
 			const spies = buildSpyFunctionsForActivateProfile(value, DEFAULT_PROFILE);
@@ -315,7 +416,7 @@ describe('activateProfile', () =>
 			expect(spies.getProfileByName).toHaveBeenCalledWith(value);
 		});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile does not exist THEN throws Error and calls ui.notifications.error: %s', async (value) =>
 		{
 			buildSpyFunctionsForActivateProfile(value, undefined);
@@ -327,7 +428,7 @@ describe('activateProfile', () =>
 			await expect(functionCall).rejects.toThrow(`Unable to activate module profile. Profile "${value}" does not exist!`);
 		});
 
-	test.each(Constants.NameModuleProfilesTestCases)
+	test.each(Constants.NameModuleProfilePairs)
 		('WHEN profile exists THEN calls SettingsUtils.setActiveProfileName to save active profile name: %s, %o', async (profileName, profile) =>
 		{
 			buildSpyFunctionsForActivateProfile(profileName, profile);
@@ -337,7 +438,7 @@ describe('activateProfile', () =>
 			expect(SettingsUtils.setActiveProfileName).toHaveBeenCalledWith(profileName);
 		});
 
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN profile exists THEN calls Settings.setCoreModuleConfiguration with returned profile: %s', async (value) =>
 		{
 			const spies = buildSpyFunctionsForActivateProfile(DEFAULT_PROFILE_NAME, value);
@@ -364,7 +465,7 @@ describe('activateProfile', () =>
 
 describe('saveChangesToProfile', () =>
 {
-	test.each(Constants.AllModuleProfilesAsArrayTestCases)
+	test.each(Constants.SavedModuleProfilesArrays)
 		('WHEN no profiles exist with name THEN throws Error and calls ui.notifications.error: %o, %s', async (profiles) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(profiles);
@@ -447,17 +548,17 @@ describe('saveChangesToProfile', () =>
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile exists with name THEN calls ui.notifications.info: %s', async (value) =>
 		{
-			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(Constants.AllTestModuleProfiles);
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(Constants.ModuleProfilesAsArray);
 
 			await Settings.saveChangesToProfile(value, DEFAULT_PROFILE.modules);
 
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Changes to profile "${value}" have been saved!`);
 		});
 
-	test.each(Constants.AllTestModuleProfiles)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN profile exists with name THEN returns what SettingsUtils.setProfiles returns: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([DEFAULT_PROFILE]);
@@ -471,7 +572,7 @@ describe('saveChangesToProfile', () =>
 
 describe('getAllProfiles', () =>
 {
-	test.each(Constants.AllModuleProfilesAsArrayTestCases)
+	test.each(Constants.SavedModuleProfilesArrays)
 		('WHEN called THEN returns what SettingsUtils.getProfiles returns: %o', (value) =>
 		{
 			SettingsUtils.getProfiles.mockReturnValue(value);
@@ -484,7 +585,7 @@ describe('getAllProfiles', () =>
 
 describe('getActiveProfile', () =>
 {
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN calls Settings.getProfileByName with response from SettingsUtils: %s', (value) =>
 		{
 			SettingsUtils.getActiveProfileName.mockReturnValue(value);
@@ -507,7 +608,7 @@ describe('getActiveProfile', () =>
 		expect(functionCall).toThrow('Unable to load active profile. Please refresh the Foundry page.');
 	});
 
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN called THEN returns what Settings.getProfileByName returns: %s', (value) =>
 		{
 			SettingsUtils.getActiveProfileName.mockReturnValue(DEFAULT_PROFILE_NAME);
@@ -530,7 +631,7 @@ describe('getProfileByName', () =>
 		expect(response).toStrictEqual(undefined);
 	});
 
-	test.each(Constants.AllModuleProfilesAsArrayTestCases)
+	test.each(Constants.SavedModuleProfilesArrays)
 		('WHEN Settings.getAllProfiles returns an array with no matching profile names THEN returns undefined: %s', (value) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(value);
@@ -540,7 +641,7 @@ describe('getProfileByName', () =>
 			expect(response).toStrictEqual(undefined);
 		});
 
-	test.each(Constants.NameModuleProfilesTestCases)
+	test.each(Constants.NameModuleProfilePairs)
 		('WHEN Settings.getAllProfiles returns one profile and name matches THEN returns the matching profile: %s, %o', (profileName, moduleProfile) =>
 		{
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([moduleProfile]);
@@ -574,7 +675,7 @@ describe('getProfileByName', () =>
 
 describe('exportProfileByName', () =>
 {
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN calls Settings.getProfileByName with profile name: %s', (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(undefined);
@@ -595,16 +696,16 @@ describe('exportProfileByName', () =>
 
 	test('WHEN Settings.getProfileByName returns a profile THEN returns what Settings.getProfileByName returns as JSON string', () =>
 	{
-		const profile = {
+		const profile: ModuleProfile = {
 			'name': 'A Profile Name',
 			'modules': [
 				{
-					key: 'a-module',
+					id: 'a-module',
 					title: 'A Module',
 					isActive: true
 				},
 				{
-					key: 'b-module',
+					id: 'b-module',
 					title: 'B Module',
 					isActive: false
 				}
@@ -618,12 +719,12 @@ describe('exportProfileByName', () =>
 			+ '\n  "name": "A Profile Name",'
 			+ '\n  "modules": ['
 			+ '\n    {'
-			+ '\n      "key": "a-module",'
+			+ '\n      "id": "a-module",'
 			+ '\n      "title": "A Module",'
 			+ '\n      "isActive": true'
 			+ '\n    },'
 			+ '\n    {'
-			+ '\n      "key": "b-module",'
+			+ '\n      "id": "b-module",'
 			+ '\n      "title": "B Module",'
 			+ '\n      "isActive": false'
 			+ '\n    }'
@@ -635,21 +736,21 @@ describe('exportProfileByName', () =>
 
 	test('WHEN Settings.getProfileByName returns a profile THEN returns what Settings.getProfileByName returns as JSON string with alternate parameters', () =>
 	{
-		const profile = {
+		const profile: ModuleProfile = {
 			'name': 'A Different Profile Name',
 			'modules': [
 				{
-					key: 'a-module',
+					id: 'a-module',
 					title: 'A Module',
 					isActive: true
 				},
 				{
-					key: 'b-module',
+					id: 'b-module',
 					title: 'B Module',
 					isActive: false
 				},
 				{
-					key: 'c-module',
+					id: 'c-module',
 					title: 'C Module',
 					isActive: true
 				}
@@ -663,17 +764,17 @@ describe('exportProfileByName', () =>
 			+ '\n  "name": "A Different Profile Name",'
 			+ '\n  "modules": ['
 			+ '\n    {'
-			+ '\n      "key": "a-module",'
+			+ '\n      "id": "a-module",'
 			+ '\n      "title": "A Module",'
 			+ '\n      "isActive": true'
 			+ '\n    },'
 			+ '\n    {'
-			+ '\n      "key": "b-module",'
+			+ '\n      "id": "b-module",'
 			+ '\n      "title": "B Module",'
 			+ '\n      "isActive": false'
 			+ '\n    },'
 			+ '\n    {'
-			+ '\n      "key": "c-module",'
+			+ '\n      "id": "c-module",'
 			+ '\n      "title": "C Module",'
 			+ '\n      "isActive": true'
 			+ '\n    }'
@@ -697,7 +798,7 @@ describe('deleteProfile', () =>
 		await expect(functionCall).rejects.toThrow(`Unable to delete module profile. Profile "${DEFAULT_PROFILE_NAME}" does not exist!`);
 	});
 
-	test.each(Constants.AllTestModuleProfiles)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN only one profile exists THEN calls SettingsUtils.setProfiles to set profiles and refreshes window: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(value);
@@ -753,7 +854,7 @@ describe('deleteProfile', () =>
 		expect(Hooks.callAll).toHaveBeenCalledWith(MODULE_PROFILES_UPDATED_HOOK_NAME);
 	});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile exists with name THEN calls ui.notifications.info: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(DEFAULT_PROFILE);
@@ -764,7 +865,7 @@ describe('deleteProfile', () =>
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" has been deleted!`);
 		});
 
-	test.each(Constants.AllTestModuleProfiles)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN profile exists with name THEN returns what SettingsUtils.setProfiles returns: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(value);
@@ -781,15 +882,15 @@ describe('resetProfiles', () =>
 {
 	beforeEach(() =>
 	{
-		SettingsUtils.setProfiles.mockReturnValue(Promise.resolve([]));
+		SettingsUtils.resetProfiles.mockReturnValue(Promise.resolve(undefined));
 		SettingsUtils.setActiveProfileName.mockReturnValue(Promise.resolve(DEFAULT_PROFILE_NAME));
 	});
 
-	test('WHEN called THEN calls SettingsUtils.setProfiles to set profiles to undefined', async () =>
+	test('WHEN called THEN calls SettingsUtils.resetProfiles', async () =>
 	{
 		await Settings.resetProfiles();
 
-		expect(SettingsUtils.setProfiles).toHaveBeenCalledWith(undefined);
+		expect(SettingsUtils.resetProfiles).toHaveBeenCalled();
 	});
 
 	test('WHEN called THEN calls SettingsUtils.setActiveProfileName to set profiles to Default Profile', async () =>

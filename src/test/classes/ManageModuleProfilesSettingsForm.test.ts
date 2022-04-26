@@ -44,7 +44,7 @@ beforeEach(() =>
 
 afterAll(() =>
 {
-	// @ts-ignore
+	// @ts-ignore - Mocking for Foundry
 	ui.windows = jest.fn();
 });
 
@@ -101,7 +101,7 @@ describe('defaultOptions', () =>
 
 describe('getData', () =>
 {
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN Settings.getActiveProfile matches profile THEN returns highlighted profile with what Settings.getAllProfiles returns: %s', (value) =>
 		{
 			Settings.getActiveProfile.mockReturnValue(value);
@@ -113,14 +113,14 @@ describe('getData', () =>
 				profiles: [
 					{
 						...value,
-						isActive: true
+						isProfileActive: true
 					}
 				]
 			};
 			expect(actual).toStrictEqual(expected);
 		});
 
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN Settings.getActiveProfile does not match profile THEN returns unhighlighted profiles with what Settings.getAllProfiles returns: %s', (value) =>
 		{
 			Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', modules: [] });
@@ -132,7 +132,7 @@ describe('getData', () =>
 				profiles: [
 					{
 						...value,
-						isActive: false
+						isProfileActive: false
 					}
 				]
 			};
@@ -147,8 +147,8 @@ describe('getData', () =>
 			],
 			Constants.TestModuleProfiles.OnlyModuleProfiles,
 			[
-				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isActive: true },
-				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isActive: false }
+				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isProfileActive: true },
+				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isProfileActive: false }
 			]
 		],
 		[
@@ -158,8 +158,8 @@ describe('getData', () =>
 			],
 			Constants.TestModuleProfiles.MultipleAllDisabled,
 			[
-				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isActive: false },
-				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isActive: true }
+				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isProfileActive: true }
 			]
 		],
 		[
@@ -171,10 +171,10 @@ describe('getData', () =>
 			],
 			DEFAULT_PROFILE,
 			[
-				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isActive: false },
-				{ ...Constants.TestModuleProfiles.MultipleAllEnabled, isActive: false },
-				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isActive: false },
-				{ ...DEFAULT_PROFILE, isActive: true }
+				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.MultipleAllEnabled, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isProfileActive: false },
+				{ ...DEFAULT_PROFILE, isProfileActive: true }
 			]
 		],
 		[
@@ -187,11 +187,11 @@ describe('getData', () =>
 			],
 			Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI,
 			[
-				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isActive: false },
-				{ ...Constants.TestModuleProfiles.MultipleAllEnabled, isActive: false },
-				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isActive: false },
-				{ ...Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI, isActive: true },
-				{ ...DEFAULT_PROFILE, isActive: false }
+				{ ...Constants.TestModuleProfiles.OnlyModuleProfiles, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.MultipleAllEnabled, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.MultipleAllDisabled, isProfileActive: false },
+				{ ...Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI, isProfileActive: true },
+				{ ...DEFAULT_PROFILE, isProfileActive: false }
 			]
 		]
 	])
@@ -529,7 +529,7 @@ describe('activateListeners', () =>
 	{
 		beforeEach(() =>
 		{
-			// @ts-ignore
+			// @ts-ignore - navigator only exists in browser, not test
 			// noinspection JSConstantReassignment
 			navigator.clipboard = {
 				writeText: jest.fn()
@@ -770,13 +770,13 @@ describe('activateListeners', () =>
 	}
 });
 
-// TODO - can pick back up here
 describe('reRenderManageModuleProfilesWindows', () =>
 {
 	test('WHEN one ManageModuleProfilesSettingsForm exists on ui.windows THEN re-renders single window', () =>
 	{
 		ui.windows = {
 			51: {
+				// @ts-ignore - Mocking for Foundry
 				options: {
 					id: ManageModuleProfilesSettingsForm.FORM_ID
 				},
@@ -793,18 +793,21 @@ describe('reRenderManageModuleProfilesWindows', () =>
 	{
 		ui.windows = {
 			51: {
+				// @ts-ignore - Mocking for Foundry
 				options: {
 					id: ManageModuleProfilesSettingsForm.FORM_ID
 				},
 				render: jest.fn()
 			},
 			55: {
+				// @ts-ignore - Mocking for Foundry
 				options: {
 					id: ManageModuleProfilesSettingsForm.FORM_ID
 				},
 				render: jest.fn()
 			},
 			56: {
+				// @ts-ignore - Mocking for Foundry
 				options: {
 					id: ManageModuleProfilesSettingsForm.FORM_ID
 				},
@@ -824,12 +827,14 @@ describe('reRenderManageModuleProfilesWindows', () =>
 		{
 			ui.windows = {
 				51: {
+					// @ts-ignore - Mocking for Foundry
 					options: {
 						id: ManageModuleProfilesSettingsForm.FORM_ID
 					},
 					render: jest.fn()
 				},
 				52: {
+					// @ts-ignore - Mocking for Foundry
 					options: {
 						id: 'some-other-form-id'
 					},
@@ -846,17 +851,6 @@ describe('reRenderManageModuleProfilesWindows', () =>
 
 describe('forceManageModuleProfilesHeightResize', () =>
 {
-	test('WHEN app is undefined THEN does not throw error', () =>
-	{
-		forceManageModuleProfilesHeightResize(undefined);
-	});
-
-	test('WHEN app.element is undefined THEN does not throw error', () =>
-	{
-		const app = {};
-
-		forceManageModuleProfilesHeightResize(app);
-	});
 
 	test('WHEN app.element is empty THEN does not throw error', () =>
 	{
@@ -864,6 +858,7 @@ describe('forceManageModuleProfilesHeightResize', () =>
 			element: []
 		};
 
+		// @ts-ignore - Mocking for Foundry
 		forceManageModuleProfilesHeightResize(app);
 	});
 
@@ -875,6 +870,7 @@ describe('forceManageModuleProfilesHeightResize', () =>
 			element: [element]
 		};
 
+		// @ts-ignore - Mocking for Foundry
 		forceManageModuleProfilesHeightResize(app);
 
 		expect(element.style.height).toStrictEqual('auto');

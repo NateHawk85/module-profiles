@@ -1,6 +1,7 @@
 import * as Settings from '../scripts/settings';
+import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
-// TODO - can reuse eventually, but not needed right now
+// TODO - can reuse eventually, but not needed right now + JSDoc
 export default class ExportModuleProfileForm extends FormApplication
 {
 	private readonly profileName;
@@ -21,7 +22,7 @@ export default class ExportModuleProfileForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: 'module-profiles-export-module-profile',
-			template: 'modules/module-profiles/templates/export-module-profile.hbs',
+			template: `${TEMPLATES_PATH}/export-module-profile.hbs`,
 			title: 'Export Module Profile',
 			height: 500,
 			width: 660
@@ -37,6 +38,5 @@ export default class ExportModuleProfileForm extends FormApplication
 		};
 	}
 
-	// TODO - clean up import/export form?
 	async _updateObject() {}
 }

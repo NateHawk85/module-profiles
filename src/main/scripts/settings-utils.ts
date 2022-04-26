@@ -2,6 +2,7 @@ import * as Settings from './settings';
 import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm';
 
 export const MODULE_ID = 'module-profiles';
+export const TEMPLATES_PATH = `modules/${MODULE_ID}/templates`;
 export const DEFAULT_PROFILE_NAME = 'Default Profile';
 
 const PROFILES_SETTING = 'profiles';
@@ -59,7 +60,7 @@ export function registerMenus(): void
  */
 export function registerAPI(api: Record<string, Function>): void
 {
-	// @ts-ignore
+	// @ts-ignore - Not recognized due to Foundry object
 	game.modules.get(MODULE_ID)!.api = api;
 }
 
@@ -81,8 +82,6 @@ export function getProfiles(): ModuleProfile[]
 	return <ModuleProfile[]> game.settings.get(MODULE_ID, PROFILES_SETTING);
 }
 
-// TODO - sort ModuleInfos[] by title when creating them
-// TODO - sort ModuleProfiles[] by name when creating them
 /**
  * Set the Profiles game setting.
  * @param {ModuleProfile[]} profiles - The value to save to the game setting.
@@ -90,7 +89,23 @@ export function getProfiles(): ModuleProfile[]
  */
 export function setProfiles(profiles: ModuleProfile[]): Promise<ModuleProfile[]>
 {
+	// Filter out references to modules that are no longer installed
+	profiles.forEach(profile => profile.modules = profile.modules.filter(moduleInfo => moduleInfo.title !== undefined));
+
+	// Sort profiles by profile name, and module infos by module title
+	profiles.sort((a, b) => a.name.localeCompare(b.name));
+	// @ts-ignore - undefined titles are filtered before this line
+	profiles.forEach(profile => profile.modules.sort((a, b) => a.title.localeCompare(b.title)));
+
 	return game.settings.set(MODULE_ID, PROFILES_SETTING, profiles);
+}
+
+/**
+ * Resets the Profiles game setting to the default profile.
+ */
+export function resetProfiles(): Promise<void>
+{
+	return game.settings.set(MODULE_ID, PROFILES_SETTING, undefined);
 }
 
 /**

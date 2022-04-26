@@ -1,7 +1,7 @@
 // ---------------------------------------- Test Definitions ----------------------------------------
 interface TestModuleValues
 {
-	key: string,
+	id: string,
 	title: string
 }
 
@@ -13,40 +13,75 @@ type CoreModuleConfigurationValues = 'MultipleAllDisabled'
 	| 'OnlyModuleProfilesAndTidyUI';
 
 export const FindTheCulpritTestValues: TestModuleValues = {
-	key: 'find-the-culprit',
+	id: 'find-the-culprit',
 	title: 'Find the culprit'
 };
+export const ModuleProfilesTestValues: TestModuleValues = {
+	id: 'module-profiles',
+	title: 'Module Profiles'
+};
 export const PopoutTestValues: TestModuleValues = {
-	key: 'popout',
+	id: 'popout',
 	title: 'PopOut!'
 };
 export const TidyUITestValues: TestModuleValues = {
-	key: 'tidy-ui_game-settings',
+	id: 'tidy-ui_game-settings',
 	title: 'Tidy UI - Game Settings'
 };
-export const ModuleProfilesTestValues: TestModuleValues = {
-	key: 'module-profiles',
-	title: 'Module Profiles'
+
+export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, Readonly<ModuleProfile>>> = {
+	MultipleAllDisabled: {
+		name: 'Multiple Profiles - All Disabled',
+		modules: [
+			buildModuleInfo(FindTheCulpritTestValues, false),
+			buildModuleInfo(ModuleProfilesTestValues, false),
+			buildModuleInfo(PopoutTestValues, false),
+			buildModuleInfo(TidyUITestValues, false)
+		]
+	},
+	MultipleAllEnabled: {
+		name: 'Multiple Profiles - All Enabled',
+		modules: [
+			buildModuleInfo(FindTheCulpritTestValues, true),
+			buildModuleInfo(ModuleProfilesTestValues, true),
+			buildModuleInfo(PopoutTestValues, true),
+			buildModuleInfo(TidyUITestValues, true)
+		]
+	},
+	MultipleOnlyModuleProfilesEnabled: {
+		name: 'Multiple Profiles - Only Module Profiles Enabled',
+		modules: [
+			buildModuleInfo(FindTheCulpritTestValues, false),
+			buildModuleInfo(ModuleProfilesTestValues, true),
+			buildModuleInfo(PopoutTestValues, false),
+			buildModuleInfo(TidyUITestValues, false)
+		]
+	},
+	MultipleOnlyModuleProfilesAndTidyUIEnabled: {
+		name: 'Multiple Profiles - Module Profiles and Tidy UI Enabled',
+		modules: [
+			buildModuleInfo(FindTheCulpritTestValues, false),
+			buildModuleInfo(ModuleProfilesTestValues, true),
+			buildModuleInfo(PopoutTestValues, false),
+			buildModuleInfo(TidyUITestValues, true)
+		]
+	},
+	OnlyModuleProfiles: {
+		name: 'Only Module Profiles',
+		modules: [
+			buildModuleInfo(ModuleProfilesTestValues, true)
+		]
+	},
+	OnlyModuleProfilesAndTidyUI: {
+		name: 'Only Module Profiles And Tidy UI',
+		modules: [
+			buildModuleInfo(ModuleProfilesTestValues, true),
+			buildModuleInfo(TidyUITestValues, true)
+		]
+	}
 };
 
-// ---------------------------------------- Test Constants ----------------------------------------
-
-export const DEFAULT_PROFILE_NAME = 'Default Profile';
-export const DEFAULT_PROFILE: ModuleProfile = {
-	name: DEFAULT_PROFILE_NAME,
-	modules: [
-		{
-			key: ModuleProfilesTestValues.key,
-			title: ModuleProfilesTestValues.title,
-			isActive: true
-		},
-		{
-			key: TidyUITestValues.key,
-			title: TidyUITestValues.title,
-			isActive: false
-		}
-	]
-};
+// ---------------------------------------- Test Helper Functions ----------------------------------------
 
 export function buildDefaultFormApplicationOptions(): FormApplicationOptions
 {
@@ -76,124 +111,105 @@ export function buildDefaultFormApplicationOptions(): FormApplicationOptions
 	};
 }
 
-export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, Readonly<ModuleProfile>>> = {
-	MultipleAllDisabled: {
-		name: 'Multiple Profiles - All Disabled',
-		modules: [
-			buildModuleInfo(FindTheCulpritTestValues, false),
-			buildModuleInfo(PopoutTestValues, false),
-			buildModuleInfo(TidyUITestValues, false),
-			buildModuleInfo(ModuleProfilesTestValues, false)
-		]
-	},
-	MultipleAllEnabled: {
-		name: 'Multiple Profiles - All Enabled',
-		modules: [
-			buildModuleInfo(FindTheCulpritTestValues, true),
-			buildModuleInfo(PopoutTestValues, true),
-			buildModuleInfo(TidyUITestValues, true),
-			buildModuleInfo(ModuleProfilesTestValues, true)
-		]
-	},
-	MultipleOnlyModuleProfilesEnabled: {
-		name: 'Multiple Profiles - Only Module Profiles Enabled',
-		modules: [
-			buildModuleInfo(FindTheCulpritTestValues, false),
-			buildModuleInfo(PopoutTestValues, false),
-			buildModuleInfo(TidyUITestValues, false),
-			buildModuleInfo(ModuleProfilesTestValues, true)
-		]
-	},
-	MultipleOnlyModuleProfilesAndTidyUIEnabled: {
-		name: 'Multiple Profiles - Module Profiles and Tidy UI Enabled',
-		modules: [
-			buildModuleInfo(FindTheCulpritTestValues, false),
-			buildModuleInfo(PopoutTestValues, false),
-			buildModuleInfo(TidyUITestValues, true),
-			buildModuleInfo(ModuleProfilesTestValues, true)
-		]
-	},
-	OnlyModuleProfiles: {
-		name: 'Only Module Profiles',
-		modules: [
-			buildModuleInfo(ModuleProfilesTestValues, true)
-		]
-	},
-	OnlyModuleProfilesAndTidyUI: {
-		name: 'Only Module Profiles And Tidy UI',
-		modules: [
-			buildModuleInfo(TidyUITestValues, true),
-			buildModuleInfo(ModuleProfilesTestValues, true)
-		]
-	}
-};
-export const AllTestModuleProfiles = [...Object.values(TestModuleProfiles), DEFAULT_PROFILE];
-export const CoreGameModuleMaps: Readonly<Record<CoreModuleConfigurationValues, ReadonlyMap<string, StubCoreModuleDataEntry>>> = {
-	MultipleAllDisabled: buildCoreGameModulesMapWithProfiles(
-		{ profile: FindTheCulpritTestValues, isActive: false },
-		{ profile: PopoutTestValues, isActive: false },
-		{ profile: TidyUITestValues, isActive: false },
-		{ profile: ModuleProfilesTestValues, isActive: false }
-	),
-	MultipleAllEnabled: buildCoreGameModulesMapWithProfiles(
-		{ profile: FindTheCulpritTestValues, isActive: true },
-		{ profile: PopoutTestValues, isActive: true },
-		{ profile: TidyUITestValues, isActive: true },
-		{ profile: ModuleProfilesTestValues, isActive: true }
-	),
-	MultipleOnlyModuleProfilesEnabled: buildCoreGameModulesMapWithProfiles(
-		{ profile: FindTheCulpritTestValues, isActive: false },
-		{ profile: PopoutTestValues, isActive: false },
-		{ profile: TidyUITestValues, isActive: false },
-		{ profile: ModuleProfilesTestValues, isActive: true }
-	),
-	MultipleOnlyModuleProfilesAndTidyUIEnabled: buildCoreGameModulesMapWithProfiles(
-		{ profile: FindTheCulpritTestValues, isActive: false },
-		{ profile: PopoutTestValues, isActive: false },
-		{ profile: TidyUITestValues, isActive: true },
-		{ profile: ModuleProfilesTestValues, isActive: true }
-	),
-	OnlyModuleProfiles: buildCoreGameModulesMapWithProfiles(
-		{ profile: ModuleProfilesTestValues, isActive: true }
-	),
-	OnlyModuleProfilesAndTidyUI: buildCoreGameModulesMapWithProfiles(
-		{ profile: TidyUITestValues, isActive: true },
-		{ profile: ModuleProfilesTestValues, isActive: true }
-	)
-};
-
-function buildCoreGameModulesMapWithProfiles(...entries: { profile: TestModuleValues, isActive: boolean }[]): ReadonlyMap<string, StubCoreModuleDataEntry>
-{
-	const map = new Map<string, StubCoreModuleDataEntry>();
-	entries.forEach(entry => map.set(entry.profile.key, buildMockModuleDataEntry(entry.profile, entry.isActive)));
-
-	return map;
-}
-
-export function buildModuleInfo(dataForModuleProfile: TestModuleValues, isActive: boolean): ModuleInfo
+export function buildModuleInfo(moduleInfo: { id: string, title?: string }, isActive: boolean): ModuleInfo
 {
 	return {
-		key: dataForModuleProfile.key,
-		title: dataForModuleProfile.title,
+		id: moduleInfo.id,
+		title: moduleInfo.title,
 		isActive: isActive
 	};
 }
 
-function buildMockModuleDataEntry(profile: TestModuleValues, isActive: boolean): StubCoreModuleDataEntry
-{
-	return {
-		active: isActive,
-		data: {
-			name: profile.key,
-			title: profile.title
-		}
-	};
-}
+// ---------------------------------------- Test Core Settings Constants ----------------------------------------
+export const CoreGameModuleMaps: Record<CoreModuleConfigurationValues, Map<string, StubCoreModuleDataEntry>> = {
+	MultipleAllDisabled: buildCoreGameModulesMapWithProfiles(
+		[FindTheCulpritTestValues, false],
+		[ModuleProfilesTestValues, false],
+		[PopoutTestValues, false],
+		[TidyUITestValues, false]
+	),
+	MultipleAllEnabled: buildCoreGameModulesMapWithProfiles(
+		[FindTheCulpritTestValues, true],
+		[ModuleProfilesTestValues, true],
+		[PopoutTestValues, true],
+		[TidyUITestValues, true]
+	),
+	MultipleOnlyModuleProfilesEnabled: buildCoreGameModulesMapWithProfiles(
+		[FindTheCulpritTestValues, false],
+		[ModuleProfilesTestValues, true],
+		[PopoutTestValues, false],
+		[TidyUITestValues, false]
+	),
+	MultipleOnlyModuleProfilesAndTidyUIEnabled: buildCoreGameModulesMapWithProfiles(
+		[FindTheCulpritTestValues, false],
+		[ModuleProfilesTestValues, true],
+		[PopoutTestValues, false],
+		[TidyUITestValues, true]
+	),
+	OnlyModuleProfiles: buildCoreGameModulesMapWithProfiles(
+		[ModuleProfilesTestValues, true]
+	),
+	OnlyModuleProfilesAndTidyUI: buildCoreGameModulesMapWithProfiles(
+		[ModuleProfilesTestValues, true],
+		[TidyUITestValues, true]
+	)
+};
 
-// ---------------------------------------- Test Example Suites for use in jest.each ----------------------------------------
-export const ModuleInfosTestCases: ModuleInfo[][] = Object.values(TestModuleProfiles).map(moduleProfile => moduleProfile.modules);
-export const ModuleProfilesTestCases = Object.values(TestModuleProfiles);
-export const AllModuleProfilesAsArrayTestCases = [
+export const CoreGameRecords: Record<CoreModuleConfigurationValues, Record<string, boolean>> = {
+	MultipleAllDisabled: {
+		[FindTheCulpritTestValues.id]: false,
+		[ModuleProfilesTestValues.id]: false,
+		[PopoutTestValues.id]: false,
+		[TidyUITestValues.id]: false
+	},
+	MultipleAllEnabled: {
+		[FindTheCulpritTestValues.id]: true,
+		[ModuleProfilesTestValues.id]: true,
+		[PopoutTestValues.id]: true,
+		[TidyUITestValues.id]: true
+	},
+	MultipleOnlyModuleProfilesEnabled: {
+		[FindTheCulpritTestValues.id]: false,
+		[ModuleProfilesTestValues.id]: true,
+		[PopoutTestValues.id]: false,
+		[TidyUITestValues.id]: false
+	},
+	MultipleOnlyModuleProfilesAndTidyUIEnabled: {
+		[FindTheCulpritTestValues.id]: false,
+		[ModuleProfilesTestValues.id]: true,
+		[PopoutTestValues.id]: false,
+		[TidyUITestValues.id]: true
+	},
+	OnlyModuleProfiles: {
+		[ModuleProfilesTestValues.id]: true
+	},
+	OnlyModuleProfilesAndTidyUI: {
+		[ModuleProfilesTestValues.id]: true,
+		[TidyUITestValues.id]: true
+	}
+};
+
+// ---------------------------------------- Test Module Profile Constants ----------------------------------------
+
+export const DEFAULT_PROFILE_NAME = 'Default Profile';
+export const DEFAULT_PROFILE: ModuleProfile = {
+	name: DEFAULT_PROFILE_NAME,
+	modules: [
+		{
+			id: ModuleProfilesTestValues.id,
+			title: ModuleProfilesTestValues.title,
+			isActive: true
+		},
+		{
+			id: TidyUITestValues.id,
+			title: TidyUITestValues.title,
+			isActive: false
+		}
+	]
+};
+
+export const ModuleProfilesAsArray: ModuleProfile[] = [...Object.values(TestModuleProfiles), DEFAULT_PROFILE];
+export const SavedModuleProfilesArrays: ModuleProfile[][][] = [
 	[[DEFAULT_PROFILE]],
 	[[DEFAULT_PROFILE, TestModuleProfiles.OnlyModuleProfiles]],
 	[[DEFAULT_PROFILE, TestModuleProfiles.MultipleOnlyModuleProfilesEnabled, TestModuleProfiles.MultipleAllEnabled]],
@@ -201,13 +217,39 @@ export const AllModuleProfilesAsArrayTestCases = [
 	[[TestModuleProfiles.MultipleOnlyModuleProfilesEnabled, TestModuleProfiles.MultipleOnlyModuleProfilesAndTidyUIEnabled]],
 	[[TestModuleProfiles.OnlyModuleProfiles, TestModuleProfiles.OnlyModuleProfilesAndTidyUI]]
 ];
-export const AllModuleProfileNamesTestCases = Object.values(TestModuleProfiles).map(moduleProfile => moduleProfile.name);
-export const NameModuleProfilesTestCases: [name: string, profile: ModuleProfile][] = Object.values(TestModuleProfiles).map(profile => [profile.name, profile]);
-export const CoreGameModulesMapTestCases = Object.values(CoreGameModuleMaps);
-export const ModulesCoreGameModulesMapCombinedTestCases = allModulesCoreGameModulesMapTestCases();
-export const ModuleInfosCoreSettingsConfigurationTestCases = moduleInfosCoreSettingsConfigurationTestCases();
+export const SavedModuleInfosFromGameSettings: ModuleInfo[][][] = Object.values(TestModuleProfiles).map(moduleProfile => [moduleProfile.modules]);
 
-function allModulesCoreGameModulesMapTestCases(): [coreGameModuleMap: ReadonlyMap<string, StubCoreModuleDataEntry>, moduleProfile: Readonly<ModuleProfile>][]
+export const ModuleProfileNames: string[] = Object.values(TestModuleProfiles).map(moduleProfile => moduleProfile.name);
+export const NameModuleProfilePairs: [name: string, profile: ModuleProfile][] = Object.values(TestModuleProfiles).map(profile => [profile.name, profile]);
+
+export const CoreModulesConfigurationToCorrespondingModuleInfosPairs:
+	[coreGameModuleMap: Map<string, StubCoreModuleDataEntry>, moduleProfile: ModuleProfile][] = coreModulesConfigurationToCorrespondingModuleInfosPairs();
+export const CoreSettingsModuleConfigurations: Record<string, boolean>[] = coreSettingsModuleConfigurations();
+export const ModuleInfosToCorrespondingCoreSettingsModuleConfigurationPairs:
+	[moduleInfos: ModuleInfo[], coreConfiguration: Record<string, boolean>][] = moduleInfosToCorrespondingCoreSettingsModuleConfigurationPairs();
+
+// ---------------------------------------- Helper Methods ----------------------------------------
+
+export function buildCoreGameModulesMapWithProfiles(...entries: [profile: TestModuleValues, isActive: boolean][]): Map<string, StubCoreModuleDataEntry>
+{
+	const map = new Map<string, StubCoreModuleDataEntry>();
+	entries.forEach(entry => map.set(entry[0].id, buildMockModuleDataEntry(entry[0], entry[1])));
+
+	return map;
+}
+
+function buildMockModuleDataEntry(profile: TestModuleValues, isActive: boolean): StubCoreModuleDataEntry
+{
+	return {
+		active: isActive,
+		data: {
+			name: profile.id,
+			title: profile.title
+		}
+	};
+}
+
+function coreModulesConfigurationToCorrespondingModuleInfosPairs(): [coreGameModuleMap: Map<string, StubCoreModuleDataEntry>, moduleProfile: ModuleProfile][]
 {
 	const moduleProfiles = Object.entries(TestModuleProfiles);
 
@@ -220,12 +262,23 @@ function allModulesCoreGameModulesMapTestCases(): [coreGameModuleMap: ReadonlyMa
 	});
 }
 
-function moduleInfosCoreSettingsConfigurationTestCases(): [moduleInfos: ModuleInfo[], coreConfiguration: Record<string, boolean>][]
+function coreSettingsModuleConfigurations(): Record<string, boolean>[]
 {
 	return Object.entries(TestModuleProfiles).map(identifierModuleProfilePair =>
 	{
 		const coreConfiguration: Record<string, boolean> = {};
-		identifierModuleProfilePair[1].modules.forEach(moduleInfo => coreConfiguration[moduleInfo.key] = moduleInfo.isActive);
+		identifierModuleProfilePair[1].modules.forEach(moduleInfo => coreConfiguration[moduleInfo.id] = moduleInfo.isActive);
+
+		return coreConfiguration;
+	});
+}
+
+function moduleInfosToCorrespondingCoreSettingsModuleConfigurationPairs(): [moduleInfos: ModuleInfo[], coreConfiguration: Record<string, boolean>][]
+{
+	return Object.entries(TestModuleProfiles).map(identifierModuleProfilePair =>
+	{
+		const coreConfiguration: Record<string, boolean> = {};
+		identifierModuleProfilePair[1].modules.forEach(moduleInfo => coreConfiguration[moduleInfo.id] = moduleInfo.isActive);
 
 		return [identifierModuleProfilePair[1].modules, coreConfiguration];
 	});

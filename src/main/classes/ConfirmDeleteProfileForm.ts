@@ -1,5 +1,10 @@
 import * as Settings from '../scripts/settings';
+import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
+
+/**
+ * A FormApplication to be rendered when you want a user's confirmation that yes, in fact, they *do* want to delete said profile.
+ */
 export default class ConfirmDeleteProfileForm extends FormApplication
 {
 	private readonly profileNameToDelete;
@@ -20,7 +25,7 @@ export default class ConfirmDeleteProfileForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: 'module-profiles-confirm-delete-profile',
-			template: 'modules/module-profiles/templates/confirm-delete-profile.hbs',
+			template: `${TEMPLATES_PATH}/confirm-delete-profile.hbs`,
 			title: 'Confirm Delete Profile',
 			width: 660
 		};

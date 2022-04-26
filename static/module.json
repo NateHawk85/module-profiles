@@ -10,9 +10,9 @@
     "dnd5e"
   ],
   "styles": [
-    "src/styles/module-profiles-styles.css"
+    "styles/module-profiles-styles.css"
   ],
   "esmodules": [
-    "./src/js/scripts/main.js"
+    "module-profiles.js"
   ]
 }

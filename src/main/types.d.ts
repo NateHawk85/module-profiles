@@ -6,7 +6,7 @@ interface ModuleProfile
 
 interface ModuleInfo
 {
-	key: string,
-	title: string,
+	id: string,
+	title?: string,
 	isActive: boolean
 }

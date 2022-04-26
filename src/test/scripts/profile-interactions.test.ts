@@ -28,7 +28,7 @@ describe('activateProfile', () =>
 		});
 	});
 
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN should not force and ModuleManagement is open THEN ModuleManagementScripts.unsavedChangesExistOn is called with the active profile name: %s',
 			(value) =>
 			{
@@ -42,7 +42,7 @@ describe('activateProfile', () =>
 
 	describe('changes detected', () =>
 	{
-		test.each(Constants.AllModuleProfileNamesTestCases)
+		test.each(Constants.ModuleProfileNames)
 			('WHEN ModuleManagement is open and changes detected THEN creates new ConfirmActivateProfileForm and calls render on it: %s',
 				(profileName) =>
 				{
@@ -81,7 +81,7 @@ describe('activateProfile', () =>
 				expect(ConfirmActivateProfileForm).toHaveBeenCalledTimes(0);
 			});
 
-			test.each(Constants.AllModuleProfileNamesTestCases)
+			test.each(Constants.ModuleProfileNames)
 				('WHEN shouldForce and ModuleManagement has changes THEN calls Settings.activateProfile with profile name: %s', (value) =>
 				{
 					ModuleManagementScripts.isModuleManagementWindowOpen.mockReturnValue(true);
@@ -103,7 +103,7 @@ describe('activateProfile', () =>
 			expect(ConfirmActivateProfileForm).toHaveBeenCalledTimes(0);
 		});
 
-		test.each(Constants.AllModuleProfileNamesTestCases)
+		test.each(Constants.ModuleProfileNames)
 			('WHEN ModuleManagement is not open THEN calls Settings.activateProfile with profile name: %s', (value) =>
 			{
 				ProfileInteractions.activateProfile(value);

@@ -18,6 +18,7 @@ export function activateProfile(profileName: string, shouldForce: boolean = fals
 		throw new Error(errorMessage);
 	}
 
+	// TODO - what if no active profile exists? AKA, deleted active profile?
 	const activeProfile = Settings.getActiveProfile();
 
 	if (!shouldForce && ModuleManagementScripts.isModuleManagementWindowOpen() && ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name))

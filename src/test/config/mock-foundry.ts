@@ -1,11 +1,11 @@
-// @ts-ignore
+// @ts-ignore - Mocking for Foundry
 globalThis.Hooks = {
 	once: jest.fn(),
 	on: jest.fn(),
 	callAll: jest.fn()
 };
 
-// @ts-ignore
+// @ts-ignore - Mocking for Foundry
 globalThis.game = {
 	modules: new Map(),
 	settings: {
@@ -19,7 +19,7 @@ globalThis.game = {
 	}
 }
 
-// @ts-ignore
+// @ts-ignore - Mocking for Foundry
 globalThis.ui = {
 	windows: jest.fn(),
 	notifications: {
@@ -29,7 +29,7 @@ globalThis.ui = {
 	}
 }
 
-// @ts-ignore
+// @ts-ignore - Mocking for Foundry
 globalThis.FormApplication = class FormApplication
 {
 	static DEFAULT_OPTIONS = {
@@ -48,7 +48,7 @@ globalThis.FormApplication = class FormApplication
 	render() {}
 };
 
-// @ts-ignore
+// @ts-ignore - Mocking for Foundry
 globalThis.ModuleManagement = class ModuleManagement extends FormApplication {
 
 }

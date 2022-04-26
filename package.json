@@ -4,7 +4,10 @@
   "description": "A module for FoundryVTT that allows for swapping between multiple customizable module profiles.",
   "main": "scripts/module-profiles.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "webpack",
+    "build:production": "webpack --mode production --env mode=production",
+    "start": "webpack serve --hot"
   },
   "repository": {
     "type": "git",
@@ -31,9 +34,26 @@
     "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
     "@types/jest": "^27.4.1",
     "@types/jest-when": "^3.5.0",
+    "@types/webpack-env": "^1.16.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^8.1.1",
+    "css-loader": "^5.2.2",
+    "glob": "^7.1.6",
     "jest": "^27.5.1",
     "jest-when": "^3.5.1",
-    "ts-jest": "^27.1.4"
+    "marked": "^4.0.14",
+    "null-loader": "^4.0.1",
+    "raw-loader": "^4.0.2",
+    "source-map-loader": "^2.0.1",
+    "string-replace-loader": "^3.0.1",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^27.1.4",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^4.8.1",
+    "webpack-import-glob-loader": "^1.6.3"
   },
   "jest": {
     "setupFiles": [

@@ -1,6 +1,10 @@
 import * as Settings from '../scripts/settings';
 import * as ProfileInteractions from '../scripts/profile-interactions';
+import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
+/**
+ * A FormApplication to be rendered when you want a user's confirmation that yes, in fact, they *do* want to activate said profile.
+ */
 export default class ConfirmActivateProfileForm extends FormApplication
 {
 	private readonly profileNameToActivate;
@@ -21,7 +25,7 @@ export default class ConfirmActivateProfileForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: 'module-profiles-confirm-activate-profile',
-			template: 'modules/module-profiles/templates/confirm-activate-profile.hbs',
+			template: `${TEMPLATES_PATH}/confirm-activate-profile.hbs`,
 			title: 'Confirm Activate Profile',
 			width: 660
 		};

@@ -81,7 +81,7 @@ describe('defaultOptions', () =>
 
 describe('getData', () =>
 {
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN returns data with profile name from constructor: %s', (value) =>
 		{
 			confirmActivateProfileForm = new ConfirmActivateProfileForm(value);
@@ -132,7 +132,7 @@ describe('_updateObject', () =>
 			expect(ProfileInteractions.activateProfile).toHaveBeenCalledTimes(0);
 		});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN event.submitter.id is "moduleProfilesActivateProfileSubmit" THEN calls ProfileInteractions.activateProfile with profile name to activate: %s',
 			async (value) =>
 			{

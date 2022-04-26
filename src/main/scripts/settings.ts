@@ -1,5 +1,6 @@
 import * as Settings from './settings';
 import * as SettingsUtils from './settings-utils';
+import * as MappingUtils from './mapping-utils';
 import {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm';
 
 /**
@@ -18,7 +19,6 @@ export function registerModuleSettings(): void
 	}
 }
 
-// TODO - sort modules by title when getting them
 /**
  * Gets the currently active modules from the core game settings.
  * @returns {ModuleInfo[]} - The currently-active module configuration.
@@ -26,10 +26,10 @@ export function registerModuleSettings(): void
 export function getCurrentModuleConfiguration(): ModuleInfo[]
 {
 	return Array.from(game.modules).map(([key, value]) => ({
-		key: key,
+		id: key,
 		title: value.data.title,
 		isActive: value.active
-	}));
+	})).sort((a, b) => a.title.localeCompare(b.title));
 }
 
 /**
@@ -39,11 +39,10 @@ export function getCurrentModuleConfiguration(): ModuleInfo[]
  */
 export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Promise<Record<string, boolean>>
 {
-	const inputtedConfiguration: Record<string, boolean> = {};
-	moduleInfos.forEach(module => inputtedConfiguration[module.key] = module.isActive);
+	const moduleInfosToSave = MappingUtils.mapToModuleKeyIsActiveRecord(moduleInfos);
 	const coreModuleConfiguration = game.settings.get('core', 'moduleConfiguration');
 
-	const mergedConfiguration = { ...coreModuleConfiguration, ...inputtedConfiguration };
+	const mergedConfiguration = { ...coreModuleConfiguration, ...moduleInfosToSave };
 
 	return await game.settings.set('core', 'moduleConfiguration', mergedConfiguration);
 }
@@ -191,6 +190,7 @@ export function exportProfileByName(profileName: string): string | undefined
 	return profile ? JSON.stringify(profile, null, 2) : profile;
 }
 
+// TODO - what should happen if they try to delete the currently-active profile?
 /**
  * Deletes the profile with the given name.
  * @param {string} profileName - The name of the profile to delete.
@@ -226,8 +226,7 @@ export async function deleteProfile(profileName: string): Promise<ModuleProfile[
  */
 export async function resetProfiles(): Promise<void>
 {
-	// @ts-ignore
-	await SettingsUtils.setProfiles(undefined)
+	await SettingsUtils.resetProfiles()
 					   .then(() => SettingsUtils.setActiveProfileName(SettingsUtils.DEFAULT_PROFILE_NAME))
 					   .then(() => SettingsUtils.reloadWindow());
 }

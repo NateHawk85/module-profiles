@@ -1,10 +1,13 @@
 import EditModuleProfileForm from '../../main/classes/EditModuleProfileForm';
 import * as MockedSettings from '../../main/scripts/settings';
+import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
 import * as Constants from '../config/constants';
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
 
 jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
+jest.mock('../../main/scripts/mapping-utils');
+const MappingUtils = jest.mocked(MockedMappingUtils, true);
 
 const FORM_ID = 'module-profiles-edit-module-profile';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/edit-module-profile.hbs';
@@ -87,7 +90,7 @@ describe('getData', () =>
 		Settings.getProfileByName.mockReturnValue(DEFAULT_PROFILE);
 	});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN calls Settings.getProfileByName with profile name from constructor: %s', (value) =>
 		{
 			editModuleProfileForm = new EditModuleProfileForm(value);
@@ -97,7 +100,7 @@ describe('getData', () =>
 			expect(Settings.getProfileByName).toHaveBeenCalledWith(value);
 		});
 
-	test.each(Constants.ModuleProfilesTestCases)
+	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN profile exists with name THEN returns what Settings.getProfileByName returns: %s', (value) =>
 		{
 			Settings.getProfileByName.mockReturnValue(value);
@@ -109,7 +112,7 @@ describe('getData', () =>
 			expect(response).toStrictEqual(value);
 		});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN profile is undefined with name THEN throws Error and calls ui.notifications.error', (value) =>
 		{
 			Settings.getProfileByName.mockReturnValue(undefined);
@@ -131,6 +134,7 @@ describe('_updateObject', () =>
 		await editModuleProfileForm._updateObject({}, {});
 
 		expect(Settings.saveChangesToProfile).toHaveBeenCalledTimes(0);
+		expect(MappingUtils.mapToModuleInfos).toHaveBeenCalledTimes(0);
 	});
 
 	test.each(['someOtherId', 'anotherRandomId', 'moduleProfilesEditProfileAlmostMatch', undefined])
@@ -145,26 +149,39 @@ describe('_updateObject', () =>
 			await editModuleProfileForm._updateObject(event, {});
 
 			expect(Settings.saveChangesToProfile).toHaveBeenCalledTimes(0);
+			expect(MappingUtils.mapToModuleInfos).toHaveBeenCalledTimes(0);
 		});
 
-	test.each([
-		[DEFAULT_PROFILE_NAME, {}],
-		['A Different Profile Name', { 'a-module': true, 'b-module': false, 'c-module': true }],
-		['A Third Profile Name', { 'first-module-checkbox': false, 'second-module-checkbox': false }]
-	])
-		('WHEN event.submitter.id is "moduleProfilesEditProfileSubmit" THEN calls Settings.saveChangesToProfile with values from checkboxes: %s',
-			async (profileName, modules: Record<string, boolean>) =>
+	test.each(Constants.CoreSettingsModuleConfigurations)
+		('WHEN event.submitter.id is "moduleProfilesEditProfileSubmit" THEN calls MappingUtils.mapToModuleInfos with values from checkboxes: %s',
+			async (value) =>
 			{
-				editModuleProfileForm = new EditModuleProfileForm(profileName);
-
 				const event = {
 					submitter: {
 						id: SUBMIT_ELEMENT_ID
 					}
 				};
 
-				await editModuleProfileForm._updateObject(event, modules);
+				await editModuleProfileForm._updateObject(event, value);
 
-				expect(Settings.saveChangesToProfile).toHaveBeenCalledWith(profileName, modules);
+				expect(MappingUtils.mapToModuleInfos).toHaveBeenCalledWith(value);
 			});
+
+	test.each(Constants.NameModuleProfilePairs)
+		('WHEN event.submitter.id is "moduleProfilesEditProfileSubmit" THEN calls Settings.saveChangesToProfile with response from ' +
+			'MappingUtils.mapToModuleInfos: %s', async (profileName, moduleProfile) =>
+		{
+			MappingUtils.mapToModuleInfos.mockReturnValue(moduleProfile.modules);
+			editModuleProfileForm = new EditModuleProfileForm(profileName);
+
+			const event = {
+				submitter: {
+					id: SUBMIT_ELEMENT_ID
+				}
+			};
+
+			await editModuleProfileForm._updateObject(event, {});
+
+			expect(Settings.saveChangesToProfile).toHaveBeenCalledWith(profileName, moduleProfile.modules);
+		});
 });

@@ -100,7 +100,7 @@ describe('_updateObject', () =>
 			expect(Settings.createProfile).toHaveBeenCalledTimes(0);
 		});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with value from ' +
 			'"moduleProfilesCreateNewProfileName" key: %s',
 			async (value) =>
@@ -119,11 +119,11 @@ describe('_updateObject', () =>
 				expect(Settings.createProfile).toHaveBeenCalledWith(value, CURRENT_MODULE_CONFIGURATION);
 			});
 
-	test.each(Constants.ModuleInfosTestCases)
+	test.each(Constants.SavedModuleInfosFromGameSettings)
 		('WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with response from ' +
 			'Settings.getCurrentModuleConfiguration: %s', async (value) =>
 		{
-			Settings.getCurrentModuleConfiguration.mockReturnValue([value]);
+			Settings.getCurrentModuleConfiguration.mockReturnValue(value);
 			const event = {
 				submitter: {
 					id: SUBMIT_ELEMENT_ID
@@ -135,7 +135,7 @@ describe('_updateObject', () =>
 
 			await createModuleProfileForm._updateObject(event, formData);
 
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME, [value]);
+			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME, value);
 		});
 });
 

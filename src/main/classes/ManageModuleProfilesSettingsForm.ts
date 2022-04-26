@@ -2,10 +2,15 @@ import * as Settings from '../scripts/settings';
 import * as ProfileInteractions from '../scripts/profile-interactions';
 import CreateModuleProfileForm from './CreateModuleProfileForm';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm';
+import EditModuleProfileForm from './EditModuleProfileForm';
+import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
 export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
 export const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
 
+/**
+ * A FormApplication that provides an interface for a user to manage module profiles.
+ */
 export default class ManageModuleProfilesSettingsForm extends FormApplication
 {
 	static FORM_ID = 'module-profiles-manage-profiles';
@@ -24,7 +29,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: this.FORM_ID,
-			template: 'modules/module-profiles/templates/manage-profiles.hbs',
+			template: `${TEMPLATES_PATH}/manage-profiles.hbs`,
 			title: 'Manage Module Profiles',
 			width: 660
 		};
@@ -36,7 +41,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 		const profilesWithActiveFlag = Settings.getAllProfiles().map(profile => ({
 			...profile,
-			isActive: activeProfileName === profile.name
+			isProfileActive: activeProfileName === profile.name
 		}));
 
 		return {
@@ -54,35 +59,40 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		const createNewProfileElement = document.getElementById('module-profiles-manage-profiles-create-new');
 		createNewProfileElement?.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
-		const activateProfileElements = document.getElementsByClassName('module-profiles-activate-profile');
+		const activateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-activate-profile');
 		Array.from(activateProfileElements).forEach(element => element.addEventListener('click', () =>
-			ProfileInteractions.activateProfile(element.dataset.profileName)));
+			ProfileInteractions.activateProfile(element.dataset.profileName!)));
 
-		// TODO - disabled until fix on the backend is implemented
-		// new EditModuleProfileForm(element.dataset.profileName).render(true)));
-		const editProfileElements = document.getElementsByClassName('module-profiles-edit-profile');
-		Array.from(editProfileElements).forEach(element => element.addEventListener('click', () => {}));
+		const editProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-edit-profile');
+		Array.from(editProfileElements).forEach(element => element.addEventListener('click', () =>
+			new EditModuleProfileForm(element.dataset.profileName!).render(true)));
 
-		const duplicateProfileElements = document.getElementsByClassName('module-profiles-duplicate-profile');
+		const duplicateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-duplicate-profile');
 		Array.from(duplicateProfileElements).forEach(element => element.addEventListener('click', () =>
 		{
-			const profile = Settings.getProfileByName(element.dataset.profileName);
-			return Settings.createProfile(profile.name + ' (Copy)', profile.modules);
+			const profile = Settings.getProfileByName(element.dataset.profileName!);
+			if (profile)
+			{
+				return Settings.createProfile(profile.name + ' (Copy)', profile.modules);
+			}
 		}));
 
-		const exportProfileElements = document.getElementsByClassName('module-profiles-export-profile');
+		const exportProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-export-profile');
 		Array.from(exportProfileElements).forEach(element => element.addEventListener('click', async () =>
 		{
-			const profileName = element.dataset.profileName;
+			const profileName = element.dataset.profileName!;
 			const exportedProfile = Settings.exportProfileByName(profileName);
 
-			await navigator.clipboard.writeText(exportedProfile);
-			ui.notifications.info(`Profile "${profileName}" copied to clipboard!`);
+			if (exportedProfile)
+			{
+				await navigator.clipboard.writeText(exportedProfile);
+				ui.notifications.info(`Profile "${profileName}" copied to clipboard!`);
+			}
 		}));
 
-		const deleteProfileElements = document.getElementsByClassName('module-profiles-delete-profile');
-		Array.from(deleteProfileElements).forEach(element => element.addEventListener('click', () =>
-			new ConfirmDeleteProfileForm(element.dataset.profileName).render(true)));
+		const deleteProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-delete-profile');
+		Array.from(deleteProfileElements).forEach((element) => element.addEventListener('click', () =>
+			new ConfirmDeleteProfileForm(element.dataset.profileName!).render(true)));
 
 		// TODO - add import profiles + export profiles functionality? Or just hide and publish, then worry about qol
 	}
@@ -95,7 +105,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
  * Application instance refreshes that data.
  * @returns {void}
  */
-export function reRenderManageModuleProfilesWindows()
+export function reRenderManageModuleProfilesWindows(): void
 {
 	Object.values(ui.windows)
 		  .filter(app => app.options.id === ManageModuleProfilesSettingsForm.FORM_ID)
@@ -109,7 +119,7 @@ export function reRenderManageModuleProfilesWindows()
  * @param {Application} app - The Application that needs to be resized.
  * @returns {void}
  */
-export function forceManageModuleProfilesHeightResize(app)
+export function forceManageModuleProfilesHeightResize(app: Application): void
 {
 	if (app?.element?.length > 0)
 	{

@@ -1,5 +1,9 @@
 import * as Settings from '../scripts/settings';
+import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
+/**
+ * A FormApplication that allows a user to create a new module profile.
+ */
 export default class CreateModuleProfileForm extends FormApplication
 {
 	constructor(object = {}, options = {})
@@ -16,7 +20,7 @@ export default class CreateModuleProfileForm extends FormApplication
 			...parent,
 			classes: [...parentClasses, 'module-profiles-form'],
 			id: 'module-profiles-create-module-profile',
-			template: 'modules/module-profiles/templates/create-module-profile.hbs',
+			template: `${TEMPLATES_PATH}/create-module-profile.hbs`,
 			title: 'Create New Module Profile',
 			width: 660
 		};

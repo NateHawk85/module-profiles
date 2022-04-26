@@ -77,7 +77,7 @@ describe('defaultOptions', () =>
 
 describe('getData', () =>
 {
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN called THEN returns data with profile name from constructor: %s', (value) =>
 		{
 			confirmDeleteProfileForm = new ConfirmDeleteProfileForm(value);
@@ -111,7 +111,7 @@ describe('_updateObject', () =>
 			expect(Settings.deleteProfile).toHaveBeenCalledTimes(0);
 		});
 
-	test.each(Constants.AllModuleProfileNamesTestCases)
+	test.each(Constants.ModuleProfileNames)
 		('WHEN event.submitter.id is "moduleProfilesDeleteProfileSubmit" THEN calls Settings.deleteProfile with profile name to delete: %s',
 			async (value) =>
 			{
@@ -126,7 +126,7 @@ describe('_updateObject', () =>
 				expect(Settings.deleteProfile).toHaveBeenCalledWith(value);
 			});
 
-	test.each(Constants.AllModuleProfilesAsArrayTestCases)
+	test.each(Constants.SavedModuleProfilesArrays)
 		('WHEN event.submitter.id is "moduleProfilesDeleteProfileSubmit" THEN returns what Settings.deleteProfile returns: %s', async (value) =>
 		{
 			Settings.deleteProfile.mockReturnValue(Promise.resolve(value));
