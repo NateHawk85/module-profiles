@@ -3,6 +3,7 @@ import * as ProfileInteractions from '../scripts/profile-interactions';
 import CreateModuleProfileForm from './CreateModuleProfileForm';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm';
 import EditModuleProfileForm from './EditModuleProfileForm';
+import ImportModuleProfileForm from './ImportModuleProfileForm';
 import {TEMPLATES_PATH} from '../scripts/settings-utils';
 
 export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
@@ -59,6 +60,29 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		const createNewProfileElement = document.getElementById('module-profiles-manage-profiles-create-new');
 		createNewProfileElement?.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
+		const importProfileElement = document.getElementById('module-profiles-manage-profiles-import');
+		importProfileElement?.addEventListener('click', (e) => {
+			// Prevents window from automatically closing
+			e.preventDefault();
+
+			new ImportModuleProfileForm().render(true)
+		});
+
+		const exportAllProfilesElement = document.getElementById('module-profiles-manage-profiles-export-all');
+		exportAllProfilesElement?.addEventListener('click', async (e) =>
+		{
+			// Prevents window from automatically closing
+			e.preventDefault();
+
+			const exportedProfiles = Settings.exportAllProfiles();
+
+			if (exportedProfiles)
+			{
+				await navigator.clipboard.writeText(exportedProfiles);
+				ui.notifications.info(`All profiles have been copied to clipboard!`);
+			}
+		});
+
 		const activateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-activate-profile');
 		Array.from(activateProfileElements).forEach(element => element.addEventListener('click', () =>
 			ProfileInteractions.activateProfile(element.dataset.profileName!)));
@@ -112,7 +136,6 @@ export function reRenderManageModuleProfilesWindows(): void
 		  .forEach(app => app.render());
 }
 
-// TODO - can be moved to somewhere more appropriate if shared
 /**
  * Forces the application to refresh the size of its first element (aka, the window content). This is primarily to be used whenever an Application adds or
  * removes elements so that the height of the Application is consistent with what is added.

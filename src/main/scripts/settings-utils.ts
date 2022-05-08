@@ -87,7 +87,7 @@ export function getProfiles(): ModuleProfile[]
  * @param {ModuleProfile[]} profiles - The value to save to the game setting.
  * @return {Promise<ModuleProfile[]>} - A Promise resolving to the new game setting value.
  */
-export function setProfiles(profiles: ModuleProfile[]): Promise<ModuleProfile[]>
+export async function setProfiles(profiles: ModuleProfile[]): Promise<ModuleProfile[]>
 {
 	// Filter out references to modules that are no longer installed
 	profiles.forEach(profile => profile.modules = profile.modules.filter(moduleInfo => moduleInfo.title !== undefined));
@@ -97,7 +97,7 @@ export function setProfiles(profiles: ModuleProfile[]): Promise<ModuleProfile[]>
 	// @ts-ignore - undefined titles are filtered before this line
 	profiles.forEach(profile => profile.modules.sort((a, b) => a.title.localeCompare(b.title)));
 
-	return game.settings.set(MODULE_ID, PROFILES_SETTING, profiles);
+	return await game.settings.set(MODULE_ID, PROFILES_SETTING, profiles);
 }
 
 /**

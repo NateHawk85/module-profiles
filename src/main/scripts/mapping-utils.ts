@@ -26,7 +26,18 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 		isActive: value
 	}));
 
-	// TODO - sort by title
+	moduleInfos.sort((a, b) =>
+	{
+		if (!a.title)
+		{
+			return 1
+		}
+		if (!b.title)
+		{
+			return -1;
+		}
+		return a.title.localeCompare(b.title);
+	});
 
 	return moduleInfos;
 }

@@ -155,7 +155,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 
 	function modifyModuleListElements()
 	{
-		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]'); // TODO - NodeList, not Array
+		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]');
 
 		// Add status icons and add an "update" event listener to each module in the list
 		moduleElements.forEach(module =>
@@ -167,7 +167,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 				module.addEventListener('input', () => updateActiveProfileStatuses());
 			} else
 			{
-				console.log(module); // TODO - what's going on here? Why is there a module with no children?
+				console.log(module);
 			}
 		});
 
@@ -181,14 +181,12 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 	}
 }
 
-// TODO - test and hook up
 function updateActiveProfileStatuses(): void
 {
 	const activeProfile = Settings.getActiveProfile();
 	const modules = <NodeListOf<HTMLLIElement>> document.querySelectorAll('#module-management li[data-module-name]');
 	modules.forEach(module =>
 	{
-		// TODO - what's this do tho?
 		if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
 		{
 			const statusIcon = <HTMLSpanElement> module.children[0].children[0].firstChild!;
@@ -214,7 +212,6 @@ function updateActiveProfileStatuses(): void
 
 function updateStatusButtons(): void
 {
-	// TODO - clean up
 	const activeProfile = Settings.getActiveProfile();
 	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);
 

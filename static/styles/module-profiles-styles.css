@@ -44,12 +44,6 @@
     background: orangered;
 }
 
-.module-profiles-status-unsynced,
-.module-profiles-status-unsynced::before,
-.module-profiles-status-unsynced::after {
-    background: #E74C3C;
-}
-
 .module-profiles-status::before {
     content: "";
     animation: bounce 1.5s infinite;

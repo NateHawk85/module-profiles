@@ -118,24 +118,24 @@ describe('getCurrentModuleConfiguration', () =>
 		],
 		[
 			Constants.buildCoreGameModulesMapWithProfiles(
-				[{id: 'b-module', title: 'B Module'}, false],
-				[{id: 'a-module', title: 'A Module'}, false],
+				[{ id: 'b-module', title: 'B Module' }, false],
+				[{ id: 'a-module', title: 'A Module' }, false]
 			),
 			[
-				Constants.buildModuleInfo({id: 'a-module', title: 'A Module'}, false),
-				Constants.buildModuleInfo({id: 'b-module', title: 'B Module'}, false)
+				Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
+				Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false)
 			]
 		],
 		[
 			Constants.buildCoreGameModulesMapWithProfiles(
-				[{id: 'key-does-not-matter', title: 'ZZZZ Module'}, false],
-				[{id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module'}, false],
-				[{id: 'key-does-not-matter2', title: 'Z Module'}, false]
+				[{ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false],
+				[{ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false],
+				[{ id: 'key-does-not-matter2', title: 'Z Module' }, false]
 			),
 			[
-				Constants.buildModuleInfo({id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module'}, false),
-				Constants.buildModuleInfo({id: 'key-does-not-matter2', title: 'Z Module'}, false),
-				Constants.buildModuleInfo({id: 'key-does-not-matter', title: 'ZZZZ Module'}, false)
+				Constants.buildModuleInfo({ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false),
+				Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
+				Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false)
 			]
 		]
 	])
@@ -673,6 +673,291 @@ describe('getProfileByName', () =>
 			});
 });
 
+describe('importProfiles', () =>
+{
+	beforeEach(() =>
+	{
+		JSON.parse = jest.fn();
+	});
+
+	test.each(['{"Some": "JSON value"}', '{"Another": "JSON value"}'])
+		('WHEN called THEN calls JSON.parse with input: %s', async (value) =>
+		{
+			jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([DEFAULT_PROFILE]));
+			// @ts-ignore
+			JSON.parse.mockReturnValue(DEFAULT_PROFILE);
+
+			await Settings.importProfiles(value);
+
+			expect(JSON.parse).toHaveBeenCalledWith(value);
+		});
+
+	describe('Not a module profile', () =>
+	{
+		test.each([
+			'Not a module profile',
+			{ name: 'Not a profile', module: [] },
+			{ names: 'Also not a profile', modules: [] },
+			{ name: 'Almost, but not really', modules: [{ id: 'Profile', title: 'So close', isNotActive: true }] },
+			{
+				name: 'Super close, but not really', modules:
+					[
+						{ id: 'Profile', title: 'So close', isActive: false },
+						{ id: 'Profile2', title: 'So close', somethingElse: false }
+					]
+			},
+			{
+				name: 'This is NOT a profile', modules:
+					[
+						{ id: 'Profile', title: 'A Profile', isActive: true },
+						{ id: 'But this is not', modules: { id: 'Almost' } }
+					]
+			}
+			,
+			[
+				{
+					name: 'This is a profile', modules:
+						[
+							{ id: 'Profile', title: 'A Profile', isActive: true },
+							{ id: 'same', title: 'A Profile2', isActive: false }
+						]
+				},
+				{
+					name: 'This is NOT a profile', modules:
+						[
+							{ id: 'Profile', title: 'A Profile', isActive: true },
+							{ name: 'But this is not', modules: { id: 'Almost' } }
+						]
+				}
+			]
+		])
+			('WHEN JSON.parse does not return a module profile or array of module profiles THEN throws Error and calls ui.notifications.error: %o',
+				async (value) =>
+				{
+					// @ts-ignore
+					JSON.parse.mockReturnValue(value);
+
+					const functionCall = async () => Settings.importProfiles('{"json": "jsonValue"}');
+
+					await expect(functionCall).rejects.toThrow(Error);
+					expect(ui.notifications.error).toHaveBeenCalledWith('Unable to import profiles. Please re-export and try again.');
+					await expect(functionCall).rejects.toThrow('Unable to import profiles. Please re-export and try again.');
+
+				});
+	});
+
+	describe('Single profile', () =>
+	{
+		test.each(Constants.ModuleProfilesAsArray)
+			('WHEN JSON.parse returns a single module profile THEN calls Settings.createProfile once for that profile: %s', async (value) =>
+			{
+				// @ts-ignore
+				JSON.parse.mockReturnValue(value);
+				jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([]));
+
+				await Settings.importProfiles('json');
+
+				expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+				expect(Settings.createProfile).toHaveBeenCalledWith(value.name, value.modules);
+			});
+
+		test.each(Constants.ModuleProfilesAsArray)
+			('WHEN JSON.parse returns a single module profile THEN returns what Settings.getAllProfiles returns: %s', async (value) =>
+			{
+				// @ts-ignore
+				JSON.parse.mockReturnValue(DEFAULT_PROFILE);
+				jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([value]));
+				jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([value]);
+
+				const actual = await Settings.importProfiles('json');
+
+				expect(actual).toStrictEqual([value]);
+			});
+	});
+
+	describe('Array of profiles', () =>
+	{
+		test.each(Constants.ModuleProfilesAsArray)
+			('WHEN JSON.parse returns a single module profile as array THEN calls Settings.createProfile once for that profile: %s', async (value) =>
+			{
+				// @ts-ignore
+				JSON.parse.mockReturnValue([value]);
+				jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([]));
+
+				await Settings.importProfiles('json');
+
+				expect(Settings.createProfile).toHaveBeenCalledTimes(1);
+				expect(Settings.createProfile).toHaveBeenCalledWith(value.name, value.modules);
+			});
+
+		test.each([
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles, Constants.TestModuleProfiles.MultipleAllEnabled]],
+			[[Constants.TestModuleProfiles.MultipleAllEnabled, DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles, DEFAULT_PROFILE]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.MultipleOnlyModuleProfilesAndTidyUIEnabled]],
+			[[Constants.TestModuleProfiles.MultipleOnlyModuleProfilesAndTidyUIEnabled, DEFAULT_PROFILE]]
+		])
+			('WHEN JSON.parse returns multiple module profiles THEN calls Settings.createProfile one per profile: %o', async (value) =>
+			{
+				// @ts-ignore
+				JSON.parse.mockReturnValue(value);
+				jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([]));
+
+				await Settings.importProfiles('json');
+
+				expect(Settings.createProfile).toHaveBeenCalledTimes(value.length);
+				value.forEach(profile => expect(Settings.createProfile).toHaveBeenCalledWith(profile.name, profile.modules));
+			});
+
+		test.each([
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles, Constants.TestModuleProfiles.MultipleAllEnabled]],
+			[[Constants.TestModuleProfiles.MultipleAllEnabled, DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles, DEFAULT_PROFILE]],
+			[[DEFAULT_PROFILE, Constants.TestModuleProfiles.MultipleOnlyModuleProfilesAndTidyUIEnabled]]
+		])
+			('WHEN JSON.parse returns multiple module profiles THEN returns what Settings.getAllProfiles returns: %o', async (value) =>
+			{
+				// @ts-ignore
+				JSON.parse.mockReturnValue(DEFAULT_PROFILE);
+				jest.spyOn(Settings, 'createProfile').mockReturnValue(Promise.resolve([DEFAULT_PROFILE]));
+				jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(value);
+
+				const actual = await Settings.importProfiles('json');
+
+				expect(actual).toStrictEqual(value);
+			});
+	});
+});
+
+describe('exportAllProfiles', () =>
+{
+	test('WHEN Settings.getAllProfiles returns profiles THEN returns what Settings.getAllProfiles returns as JSON string', () =>
+	{
+		const profile: ModuleProfile = {
+			'name': 'A Profile Name',
+			'modules': [
+				{
+					id: 'a-module',
+					title: 'A Module',
+					isActive: true
+				},
+				{
+					id: 'b-module',
+					title: 'B Module',
+					isActive: false
+				}
+			]
+		};
+		jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([profile]);
+
+		const actual = Settings.exportAllProfiles();
+
+		const expected = '['
+			+ '\n  {'
+			+ '\n    "name": "A Profile Name",'
+			+ '\n    "modules": ['
+			+ '\n      {'
+			+ '\n        "id": "a-module",'
+			+ '\n        "title": "A Module",'
+			+ '\n        "isActive": true'
+			+ '\n      },'
+			+ '\n      {'
+			+ '\n        "id": "b-module",'
+			+ '\n        "title": "B Module",'
+			+ '\n        "isActive": false'
+			+ '\n      }'
+			+ '\n    ]'
+			+ '\n  }'
+			+ '\n]';
+
+		expect(actual).toStrictEqual(expected);
+	});
+
+	test('WHEN Settings.getAllProfiles returns profiles THEN returns what Settings.getAllProfiles returns as JSON string with alternate parameters', () =>
+	{
+		const profile: ModuleProfile = {
+			'name': 'A Profile Name',
+			'modules': [
+				{
+					id: 'a-module',
+					title: 'A Module',
+					isActive: true
+				},
+				{
+					id: 'b-module',
+					title: 'B Module',
+					isActive: false
+				}
+			]
+		};
+		const profile2: ModuleProfile = {
+			'name': 'A Different Profile Name',
+			'modules': [
+				{
+					id: 'a-module',
+					title: 'A Module',
+					isActive: true
+				},
+				{
+					id: 'b-module',
+					title: 'B Module',
+					isActive: false
+				},
+				{
+					id: 'c-module',
+					title: 'C Module',
+					isActive: true
+				}
+			]
+		};
+		jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([profile, profile2]);
+
+		const actual = Settings.exportAllProfiles();
+
+		const expected = '['
+			+ '\n  {'
+			+ '\n    "name": "A Profile Name",'
+			+ '\n    "modules": ['
+			+ '\n      {'
+			+ '\n        "id": "a-module",'
+			+ '\n        "title": "A Module",'
+			+ '\n        "isActive": true'
+			+ '\n      },'
+			+ '\n      {'
+			+ '\n        "id": "b-module",'
+			+ '\n        "title": "B Module",'
+			+ '\n        "isActive": false'
+			+ '\n      }'
+			+ '\n    ]'
+			+ '\n  },'
+			+ '\n  {'
+			+ '\n    "name": "A Different Profile Name",'
+			+ '\n    "modules": ['
+			+ '\n      {'
+			+ '\n        "id": "a-module",'
+			+ '\n        "title": "A Module",'
+			+ '\n        "isActive": true'
+			+ '\n      },'
+			+ '\n      {'
+			+ '\n        "id": "b-module",'
+			+ '\n        "title": "B Module",'
+			+ '\n        "isActive": false'
+			+ '\n      },'
+			+ '\n      {'
+			+ '\n        "id": "c-module",'
+			+ '\n        "title": "C Module",'
+			+ '\n        "isActive": true'
+			+ '\n      }'
+			+ '\n    ]'
+			+ '\n  }'
+			+ '\n]';
+
+		expect(actual).toStrictEqual(expected);
+	});
+});
+
 describe('exportProfileByName', () =>
 {
 	test.each(Constants.ModuleProfileNames)
@@ -799,15 +1084,15 @@ describe('deleteProfile', () =>
 	});
 
 	test.each(Constants.ModuleProfilesAsArray)
-		('WHEN only one profile exists THEN calls SettingsUtils.setProfiles to set profiles and refreshes window: %s', async (value) =>
+		('WHEN only one profile exists THEN calls Settings.resetProfiles: %s', async (value) =>
 		{
 			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(value);
 			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([value]);
+			jest.spyOn(Settings, 'resetProfiles').mockReturnValue(Promise.resolve());
 
 			await Settings.deleteProfile(value.name);
 
-			expect(SettingsUtils.setProfiles).toHaveBeenCalledWith([]);
-			expect(SettingsUtils.reloadWindow).toHaveBeenCalled();
+			expect(Settings.resetProfiles).toHaveBeenCalled();
 		});
 
 	test.each([
@@ -844,10 +1129,33 @@ describe('deleteProfile', () =>
 				expect(SettingsUtils.reloadWindow).toHaveBeenCalledTimes(0);
 			});
 
-	test('WHEN a profile exists THEN fires "moduleProfilesUpdated" hook event', async () =>
+	test('WHEN deleted profile was not the active profile THEN does not set the active profile name to the first profile available', async () =>
 	{
 		jest.spyOn(Settings, 'getProfileByName').mockReturnValue(DEFAULT_PROFILE);
-		jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([DEFAULT_PROFILE]);
+		jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]);
+		SettingsUtils.getActiveProfileName.mockReturnValue(Constants.TestModuleProfiles.OnlyModuleProfiles.name);
+
+		await Settings.deleteProfile(DEFAULT_PROFILE_NAME);
+
+		expect(SettingsUtils.setActiveProfileName).toHaveBeenCalledTimes(0);
+	});
+
+	test.each(Constants.SavedModuleProfilesArrays)
+		('WHEN deleted profile was the active profile THEN sets the active profile name to the first profile available', async (value) =>
+		{
+			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(DEFAULT_PROFILE);
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([{ name: 'A Profile', modules: [] }, ...value]);
+			SettingsUtils.getActiveProfileName.mockReturnValue('A Profile');
+
+			await Settings.deleteProfile('A Profile');
+
+			expect(SettingsUtils.setActiveProfileName).toHaveBeenCalledWith(value[0].name);
+		});
+
+	test('WHEN a profile exists and is not the only profile THEN fires "moduleProfilesUpdated" hook event', async () =>
+	{
+		jest.spyOn(Settings, 'getProfileByName').mockReturnValue(DEFAULT_PROFILE);
+		jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([DEFAULT_PROFILE, Constants.TestModuleProfiles.OnlyModuleProfiles]);
 
 		await Settings.deleteProfile(DEFAULT_PROFILE_NAME);
 
@@ -868,11 +1176,11 @@ describe('deleteProfile', () =>
 	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN profile exists with name THEN returns what SettingsUtils.setProfiles returns: %s', async (value) =>
 		{
-			jest.spyOn(Settings, 'getProfileByName').mockReturnValue(value);
-			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([value]);
+			jest.spyOn(Settings, 'getProfileByName').mockReturnValue({ name: 'A Profile', modules: [] });
+			jest.spyOn(Settings, 'getAllProfiles').mockReturnValue([value, { name: 'A Profile', modules: [] }]);
 			SettingsUtils.setProfiles.mockReturnValue(Promise.resolve([value]));
 
-			const actual = await Settings.deleteProfile(DEFAULT_PROFILE_NAME);
+			const actual = await Settings.deleteProfile('A Profile');
 
 			expect(actual).toStrictEqual([value]);
 		});

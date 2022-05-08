@@ -48,10 +48,10 @@ export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Pro
 }
 
 /**
- * Creates a new profile in the game settings.
+ * Creates a new {@link ModuleProfile} in the game settings.
  * @param {string} profileName - The name of the profile to create.
- * @param {ModuleInfo[]} modules - The Array of ModuleInfo objects that represent each module's activation status.
- * @returns {Promise<ModuleProfile[]>} - The new Array of module profiles.
+ * @param {ModuleInfo[]} modules - The Array of {@link ModuleInfo} objects that represent each module's activation status.
+ * @returns {Promise<ModuleProfile[]>} - The new Array of {@link ModuleProfile}s.
  * @throws Error - When a profile exists with the given profileName
  */
 export async function createProfile(profileName: string, modules: ModuleInfo[]): Promise<ModuleProfile[]>
@@ -113,7 +113,7 @@ export async function activateProfile(profileName: string): Promise<void>
 /**
  * Saves the current profile settings to an existing profile.
  * @param {string} profileName - The name of the profile to update.
- * @param {ModuleInfo[]} modules - The Array of ModuleInfo objects that represent each module's activation status.
+ * @param {ModuleInfo[]} modules - The Array of {@link ModuleInfo} objects that represent each module's activation status.
  * @returns {Promise<ModuleProfile[]>} - The new Array of module profiles.
  * @throws Error - When a profile name is passed and no profiles exist with that name.
  */
@@ -179,6 +179,59 @@ export function getProfileByName(profileName: string): ModuleProfile | undefined
 }
 
 /**
+ * Creates a {@link ModuleProfile} or multiple module profiles out of a JSON representation of those profiles.
+ * @param {string} json - The JSON representation of a {@link ModuleProfile} or an Array of {@link ModuleProfile[]} objects.
+ * @return {Promise<ModuleProfile[]>} - The saved array of module profiles in the game settings.
+ */
+export async function importProfiles(json: string): Promise<ModuleProfile[]>
+{
+	let profiles: ModuleProfile | ModuleProfile[] = JSON.parse(json);
+
+	if (!Array.isArray(profiles))
+	{
+		profiles = [profiles];
+	}
+
+	if (profiles.some(profile => !isValidModuleProfile(profile)))
+	{
+		const errorMessage = 'Unable to import profiles. Please re-export and try again.';
+		ui.notifications.error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	// Written this way to continue trying to create profiles, even when a previous profile could not be created
+	for (const profile of profiles)
+	{
+		try
+		{
+			await Settings.createProfile(profile.name, profile.modules);
+		} catch (ignored)
+		{}
+	}
+
+	return Settings.getAllProfiles();
+
+	function isValidModuleProfile(profile: ModuleProfile): boolean
+	{
+		if (!profile || !profile.name || !profile.modules)
+		{
+			return false;
+		}
+
+		return profile.modules.every(module => module.id && module.title && module.hasOwnProperty('isActive'));
+	}
+}
+
+/**
+ * Gets the array of saved profiles from the game settings in JSON format.
+ * @return {string} - The JSON representation of the profile.
+ */
+export function exportAllProfiles(): string
+{
+	return JSON.stringify(Settings.getAllProfiles(), null, 2);
+}
+
+/**
  * Gets a saved profile from the game settings in JSON format.
  * @param {string} profileName - The name of the profile to return.
  * @return {string | undefined} - The JSON representation of the profile, or `undefined` if none exists.
@@ -190,14 +243,13 @@ export function exportProfileByName(profileName: string): string | undefined
 	return profile ? JSON.stringify(profile, null, 2) : profile;
 }
 
-// TODO - what should happen if they try to delete the currently-active profile?
 /**
- * Deletes the profile with the given name.
+ * Deletes the profile with the given name. When the currently-active profile is deleted, the first profile is selected.
  * @param {string} profileName - The name of the profile to delete.
- * @return {Promise<ModuleProfile[]>} - The resulting value of the updated profiles setting.
+ * @return {Promise<ModuleProfile[] | undefined>} - The resulting value of the updated profiles setting, or `undefined` if no profiles remain.
  * @throws {Error} - When no profile with the given name exists.
  */
-export async function deleteProfile(profileName: string): Promise<ModuleProfile[]>
+export async function deleteProfile(profileName: string): Promise<ModuleProfile[] | undefined>
 {
 	if (!Settings.getProfileByName(profileName))
 	{
@@ -211,7 +263,13 @@ export async function deleteProfile(profileName: string): Promise<ModuleProfile[
 
 	if (profilesToSave.length === 0)
 	{
-		SettingsUtils.reloadWindow();
+		await Settings.resetProfiles();
+		return;
+	}
+
+	if (profileName === SettingsUtils.getActiveProfileName())
+	{
+		await SettingsUtils.setActiveProfileName(profilesToSave[0].name);
 	}
 
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));

@@ -35,7 +35,6 @@ export default class EditModuleProfileForm extends FormApplication
 
 	getData(): any
 	{
-		// TODO - bug, need to pull in new modules that haven't been saved yet or else you can't edit them
 		const profile = Settings.getProfileByName(this.profileName);
 
 		if (!profile)
@@ -48,7 +47,6 @@ export default class EditModuleProfileForm extends FormApplication
 		return profile;
 	}
 
-	// TODO - can probably update this to receive better data than just a Record, since a ModuleProfile is passed to the frontend
 	async _updateObject(event: any, formData: Record<string, boolean>): Promise<ModuleProfile[] | undefined>
 	{
 		if (event?.submitter?.id === 'moduleProfilesEditProfileSubmit')

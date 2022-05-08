@@ -2,6 +2,7 @@ import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFu
 import {forceManageModuleProfilesHeightResize} from '../../main/classes/ManageModuleProfilesSettingsForm';
 import * as MockedSettings from '../../main/scripts/settings';
 import * as MockedProfileInteractions from '../../main/scripts/profile-interactions';
+import MockedImportModuleProfileForm from '../../main/classes/ImportModuleProfileForm';
 import MockedCreateModuleProfileForm from '../../main/classes/CreateModuleProfileForm';
 import MockedConfirmDeleteProfileForm from '../../main/classes/ConfirmDeleteProfileForm';
 import MockedEditModuleProfileForm from '../../main/classes/EditModuleProfileForm';
@@ -13,6 +14,8 @@ jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
 jest.mock('../../main/scripts/profile-interactions');
 const ProfileInteractions = jest.mocked(MockedProfileInteractions, true);
+jest.mock('../../main/classes/ImportModuleProfileForm');
+const ImportModuleProfileForm = jest.mocked(MockedImportModuleProfileForm, true);
 jest.mock('../../main/classes/CreateModuleProfileForm');
 const CreateModuleProfileForm = jest.mocked(MockedCreateModuleProfileForm, true);
 jest.mock('../../main/classes/ConfirmDeleteProfileForm');
@@ -24,6 +27,8 @@ const FORM_ID = 'module-profiles-manage-profiles';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/manage-profiles.hbs';
 const FORM_TITLE = 'Manage Module Profiles';
 const MODULE_PROFILES_FORM_CLASS = 'module-profiles-form';
+const IMPORT_PROFILE_ID = 'module-profiles-manage-profiles-import';
+const EXPORT_PROFILE_ID = 'module-profiles-manage-profiles-export-all';
 const CREATE_PROFILE_ID = 'module-profiles-manage-profiles-create-new';
 const ACTIVATE_PROFILE_CLASS = 'module-profiles-activate-profile';
 const EDIT_PROFILE_CLASS = 'module-profiles-edit-profile';
@@ -209,6 +214,53 @@ describe('getData', () =>
 
 describe('activateListeners', () =>
 {
+	describe('module-profiles-manage-profiles-import', () =>
+	{
+		test('WHEN element with "module-profiles-manage-profiles-import" id exists THEN adds importProfile click event to element', () =>
+		{
+			const element = document.createElement('a');
+			element.id = IMPORT_PROFILE_ID;
+			document.body.append(element);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			element.click();
+
+			expect(ImportModuleProfileForm).toHaveBeenCalledTimes(1);
+			const instance = ImportModuleProfileForm.mock.instances[0];
+			expect(instance.render).toHaveBeenCalledWith(true);
+		});
+	});
+
+	describe('module-profiles-manage-profiles-export', () =>
+	{
+		beforeEach(() =>
+		{
+			// @ts-ignore - navigator only exists in browser, not test
+			// noinspection JSConstantReassignment
+			navigator.clipboard = {
+				writeText: jest.fn()
+			};
+		});
+
+		test.each(['Value', 'Another Value'])
+			('WHEN element with "module-profiles-manage-profiles-export-all" id exists THEN adds exportProfile click event to element: %s', async (value) =>
+		{
+			Settings.exportAllProfiles.mockReturnValue(value);
+			const element = document.createElement('a');
+			element.id = EXPORT_PROFILE_ID;
+			document.body.append(element);
+
+			manageModuleProfilesSettingsForm.activateListeners();
+			await element.click();
+
+			expect(Settings.exportAllProfiles).toHaveBeenCalledTimes(1);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
+			expect(navigator.clipboard.writeText).toHaveBeenCalledWith(value);
+			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
+			expect(ui.notifications.info).toHaveBeenCalledWith(`All profiles have been copied to clipboard!`);
+		});
+	});
+
 	describe('module-profiles-manage-profiles-create-new', () =>
 	{
 		test('WHEN element with "module-profiles-manage-profiles-create-new" id exists THEN adds createProfile click event to element', () =>
@@ -305,7 +357,6 @@ describe('activateListeners', () =>
 		});
 	});
 
-	// TODO - ignore for now, still in progress
 	describe('module-profiles-edit-profile', () =>
 	{
 		test('WHEN element does not have "module-profiles-edit-profile" class THEN does not add editProfile click event to element', () =>

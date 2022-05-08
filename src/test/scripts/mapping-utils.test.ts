@@ -64,6 +64,120 @@ describe('mapToModuleInfos', () =>
 
 				expect(actual).toStrictEqual(expectedModuleProfile.modules);
 			});
+
+		test.each([
+			[
+				{
+					[Constants.TidyUITestValues.id]: false,
+					[Constants.FindTheCulpritTestValues.id]: false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.TidyUITestValues, false],
+					[Constants.FindTheCulpritTestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
+			[
+				{
+					[Constants.TidyUITestValues.id]: false,
+					[Constants.PopoutTestValues.id]: false,
+					[Constants.FindTheCulpritTestValues.id]: false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.TidyUITestValues, false],
+					[Constants.PopoutTestValues, false],
+					[Constants.FindTheCulpritTestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.PopoutTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
+			[
+				{
+					[Constants.PopoutTestValues.id]: false,
+					[Constants.FindTheCulpritTestValues.id]: false,
+					[Constants.ModuleProfilesTestValues.id]: false,
+					[Constants.TidyUITestValues.id]: false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.PopoutTestValues, false],
+					[Constants.FindTheCulpritTestValues, false],
+					[Constants.ModuleProfilesTestValues, false],
+					[Constants.TidyUITestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
+					Constants.buildModuleInfo(Constants.PopoutTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
+			[
+				{
+					'b-module': false,
+					'a-module': false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[{ id: 'b-module', title: 'B Module' }, false],
+					[{ id: 'a-module', title: 'A Module' }, false]
+				),
+				[
+					Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
+					Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false)
+				]
+			],
+			[
+				{
+					'key-does-not-matter': false,
+					'zzzzzzzzzzzzzzzz-module': false,
+					'key-does-not-matter2': false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[{ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false],
+					[{ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false],
+					[{ id: 'key-does-not-matter2', title: 'Z Module' }, false]
+				),
+				[
+					Constants.buildModuleInfo({ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false)
+				]
+			],
+			[
+				{
+					'key-does-not-matter': false,
+					'zzzzzzzzzzzzzzzz-module': false,
+					'key-does-not-matter1': false,
+					'key-does-not-matter2': false
+				},
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[{ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false],
+					[{ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false],
+					[{ id: 'key-does-not-matter2', title: 'Z Module' }, false]
+				),
+				[
+					Constants.buildModuleInfo({ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter1', title: undefined }, false)
+				]
+			]
+		])
+			('WHEN modules exist on record that are not in alphabetical order THEN sorts them with undefined titles at bottom: %o, %o, %o',
+				(inputtedModulesRecord, coreGameModuleMap, expectedModuleInfos) =>
+				{
+					// @ts-ignore
+					game.modules = coreGameModuleMap;
+
+					const actual = MappingUtils.mapToModuleInfos(inputtedModulesRecord);
+
+					expect(actual).toStrictEqual(expectedModuleInfos);
+				});
 	});
 
 	describe('game.modules returns more modules than inputted record (new modules added since profile was saved)', () =>
@@ -89,13 +203,13 @@ describe('mapToModuleInfos', () =>
 				Constants.CoreGameModuleMaps.MultipleOnlyModuleProfilesAndTidyUIEnabled,
 				{
 					[Constants.FindTheCulpritTestValues.id]: false,
-					[Constants.TidyUITestValues.id]: true,
-					[Constants.ModuleProfilesTestValues.id]: false
+					[Constants.ModuleProfilesTestValues.id]: false,
+					[Constants.TidyUITestValues.id]: true
 				},
 				[
 					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-					Constants.buildModuleInfo(Constants.TidyUITestValues, true),
-					Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false)
+					Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, true)
 				]
 			]
 		])
@@ -129,15 +243,15 @@ describe('mapToModuleInfos', () =>
 				new Map<string, StubCoreModuleDataEntry>(),
 				{
 					[Constants.FindTheCulpritTestValues.id]: false,
+					[Constants.ModuleProfilesTestValues.id]: true,
 					[Constants.PopoutTestValues.id]: false,
-					[Constants.TidyUITestValues.id]: false,
-					[Constants.ModuleProfilesTestValues.id]: true
+					[Constants.TidyUITestValues.id]: false
 				},
 				[
 					{ id: Constants.FindTheCulpritTestValues.id, title: undefined, isActive: false },
+					{ id: Constants.ModuleProfilesTestValues.id, title: undefined, isActive: true },
 					{ id: Constants.PopoutTestValues.id, title: undefined, isActive: false },
-					{ id: Constants.TidyUITestValues.id, title: undefined, isActive: false },
-					{ id: Constants.ModuleProfilesTestValues.id, title: undefined, isActive: true }
+					{ id: Constants.TidyUITestValues.id, title: undefined, isActive: false }
 				]
 			],
 			[
@@ -179,9 +293,9 @@ describe('mapToModuleInfos', () =>
 				},
 				[
 					{ id: Constants.FindTheCulpritTestValues.id, title: Constants.FindTheCulpritTestValues.title, isActive: false },
+					{ id: Constants.ModuleProfilesTestValues.id, title: Constants.ModuleProfilesTestValues.title, isActive: true },
 					{ id: Constants.PopoutTestValues.id, title: undefined, isActive: false },
-					{ id: Constants.TidyUITestValues.id, title: undefined, isActive: false },
-					{ id: Constants.ModuleProfilesTestValues.id, title: Constants.ModuleProfilesTestValues.title, isActive: true }
+					{ id: Constants.TidyUITestValues.id, title: undefined, isActive: false }
 				]
 			]
 		])
