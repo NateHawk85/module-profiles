@@ -35,5 +35,6 @@ Track statuses of changed modules compared to your currently-saved profile
 
 ## I'm a developer
 
-Welcome! You're probably looking for the [api docs](https://github.com/NateHawk85/module-profiles/blob/master/documentation/api.md), or perhaps some additional 
-[developer info](https://github.com/NateHawk85/module-profiles/blob/master/documentation/developer-info.md).
+Cool! Me too. You're probably looking for the [api docs](https://github.com/NateHawk85/module-profiles/blob/master/documentation/api.md), or perhaps some 
+additional [developer info](https://github.com/NateHawk85/module-profiles/blob/master/documentation/developer-info.md) if you want to contribute to this 
+project.
