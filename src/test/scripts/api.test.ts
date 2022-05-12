@@ -1,7 +1,6 @@
 import * as API from '../../main/scripts/api';
 import * as Settings from '../../main/scripts/settings';
 import * as MockSettingsUtils from '../../main/scripts/settings-utils';
-import * as ProfileInteractions from '../../main/scripts/profile-interactions';
 
 jest.mock('../../main/scripts/settings-utils');
 const SettingsUtils = jest.mocked(MockSettingsUtils, true);
@@ -17,9 +16,12 @@ describe('registerApi', () =>
 			getAllProfiles: Settings.getAllProfiles,
 			getActiveProfile: Settings.getActiveProfile,
 			getProfileByName: Settings.getProfileByName,
+			exportAllProfiles: Settings.exportAllProfiles,
+			exportProfileByName: Settings.exportProfileByName,
 			saveChangesToProfile: Settings.saveChangesToProfile,
-			activateProfile: ProfileInteractions.activateProfile,
+			activateProfile: Settings.activateProfile,
 			createProfile: Settings.createProfile,
+			importProfiles: Settings.importProfiles,
 			deleteProfile: Settings.deleteProfile,
 			resetProfiles: Settings.resetProfiles
 		});

@@ -3,10 +3,6 @@ import * as SettingsUtils from './settings-utils';
 import * as MappingUtils from './mapping-utils';
 import {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm';
 
-/**
- * Registers settings for this module. This is only meant to be called on initial game load.
- * @returns {void}
- */
 export function registerModuleSettings(): void
 {
 	SettingsUtils.registerSettings();
@@ -33,18 +29,64 @@ export function getCurrentModuleConfiguration(): ModuleInfo[]
 }
 
 /**
- * Sets the core module configuration.
- * @param {ModuleInfo[]} moduleInfos - The desired modules to activate/disable.
- * @return {Promise<Record<string, boolean>>} - The value set on the core module configuration.
+ * Gets all saved module profiles from the game settings.
+ * @returns {ModuleProfile[]}
  */
-export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Promise<Record<string, boolean>>
+export function getAllProfiles(): ModuleProfile[]
 {
-	const moduleInfosToSave = MappingUtils.mapToModuleKeyIsActiveRecord(moduleInfos);
-	const coreModuleConfiguration = game.settings.get('core', 'moduleConfiguration');
+	return SettingsUtils.getProfiles();
+}
 
-	const mergedConfiguration = { ...coreModuleConfiguration, ...moduleInfosToSave };
+/**
+ * Gets the saved, currently-active module profile from the game settings.
+ * @returns {ModuleProfile} - The currently-active module profile.
+ */
+export function getActiveProfile(): ModuleProfile
+{
+	const activeProfileName = SettingsUtils.getActiveProfileName();
+	const activeProfile = Settings.getProfileByName(activeProfileName);
 
-	return await game.settings.set('core', 'moduleConfiguration', mergedConfiguration);
+	if (!activeProfile)
+	{
+		const errorMessage = 'Unable to load active profile. Please refresh the Foundry page.';
+		ui.notifications.error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	return activeProfile;
+}
+
+/**
+ * Gets a saved profile from the game settings with the corresponding name.
+ * @param {string} profileName - The name of the profile to return.
+ * @returns {ModuleProfile | undefined} - The module profile with the given name, or `undefined` if none exists.
+ */
+export function getProfileByName(profileName: string): ModuleProfile | undefined
+{
+	const profiles = Settings.getAllProfiles();
+
+	return profiles.find(profile => profile.name === profileName);
+}
+
+/**
+ * Gets the array of saved profiles from the game settings in JSON format.
+ * @return {string} - The JSON representation of the profile.
+ */
+export function exportAllProfiles(): string
+{
+	return JSON.stringify(Settings.getAllProfiles(), null, 2);
+}
+
+/**
+ * Gets a saved profile from the game settings in JSON format.
+ * @param {string} profileName - The name of the profile to return.
+ * @return {string | undefined} - The JSON representation of the profile, or `undefined` if none exists.
+ */
+export function exportProfileByName(profileName: string): string | undefined
+{
+	const profile = Settings.getProfileByName(profileName);
+
+	return profile ? JSON.stringify(profile, null, 2) : profile;
 }
 
 /**
@@ -86,6 +128,50 @@ export async function createProfile(profileName: string, modules: ModuleInfo[]):
 	ui.notifications.info(`Profile "${profileName}" has been created!`);
 
 	return response;
+}
+
+/**
+ * Creates a {@link ModuleProfile} or multiple module profiles out of a JSON representation of those profiles.
+ * @param {string} json - The JSON representation of a {@link ModuleProfile} or an Array of {@link ModuleProfile}[] objects.
+ * @return {Promise<ModuleProfile[]>} - The saved array of module profiles in the game settings.
+ */
+export async function importProfiles(json: string): Promise<ModuleProfile[]>
+{
+	let profiles: ModuleProfile | ModuleProfile[] = JSON.parse(json);
+
+	if (!Array.isArray(profiles))
+	{
+		profiles = [profiles];
+	}
+
+	if (profiles.some(profile => !isValidModuleProfile(profile)))
+	{
+		const errorMessage = 'Unable to import profiles. Please re-export and try again.';
+		ui.notifications.error(errorMessage);
+		throw new Error(errorMessage);
+	}
+
+	// Written this way to continue trying to create profiles, even when a previous profile could not be created
+	for (const profile of profiles)
+	{
+		try
+		{
+			await Settings.createProfile(profile.name, profile.modules);
+		} catch (ignored)
+		{}
+	}
+
+	return Settings.getAllProfiles();
+
+	function isValidModuleProfile(profile: ModuleProfile): boolean
+	{
+		if (!profile || !profile.name || !profile.modules)
+		{
+			return false;
+		}
+
+		return profile.modules.every(module => module.id && module.title && module.hasOwnProperty('isActive'));
+	}
 }
 
 /**
@@ -139,111 +225,6 @@ export async function saveChangesToProfile(profileName: string, modules: ModuleI
 }
 
 /**
- * Gets all saved module profiles from the game settings.
- * @returns {ModuleProfile[]}
- */
-export function getAllProfiles(): ModuleProfile[]
-{
-	return SettingsUtils.getProfiles();
-}
-
-/**
- * Gets the saved, currently-active module profile from the game settings.
- * @returns {ModuleProfile} - The currently-active module profile.
- */
-export function getActiveProfile(): ModuleProfile
-{
-	const activeProfileName = SettingsUtils.getActiveProfileName();
-	const activeProfile = Settings.getProfileByName(activeProfileName);
-
-	if (!activeProfile)
-	{
-		const errorMessage = 'Unable to load active profile. Please refresh the Foundry page.';
-		ui.notifications.error(errorMessage);
-		throw new Error(errorMessage);
-	}
-
-	return activeProfile;
-}
-
-/**
- * Gets a saved profile from the game settings with the corresponding name.
- * @param {string} profileName - The name of the profile to return.
- * @returns {ModuleProfile | undefined} - The module profile with the given name, or `undefined` if none exists.
- */
-export function getProfileByName(profileName: string): ModuleProfile | undefined
-{
-	const profiles = Settings.getAllProfiles();
-
-	return profiles.find(profile => profile.name === profileName);
-}
-
-/**
- * Creates a {@link ModuleProfile} or multiple module profiles out of a JSON representation of those profiles.
- * @param {string} json - The JSON representation of a {@link ModuleProfile} or an Array of {@link ModuleProfile[]} objects.
- * @return {Promise<ModuleProfile[]>} - The saved array of module profiles in the game settings.
- */
-export async function importProfiles(json: string): Promise<ModuleProfile[]>
-{
-	let profiles: ModuleProfile | ModuleProfile[] = JSON.parse(json);
-
-	if (!Array.isArray(profiles))
-	{
-		profiles = [profiles];
-	}
-
-	if (profiles.some(profile => !isValidModuleProfile(profile)))
-	{
-		const errorMessage = 'Unable to import profiles. Please re-export and try again.';
-		ui.notifications.error(errorMessage);
-		throw new Error(errorMessage);
-	}
-
-	// Written this way to continue trying to create profiles, even when a previous profile could not be created
-	for (const profile of profiles)
-	{
-		try
-		{
-			await Settings.createProfile(profile.name, profile.modules);
-		} catch (ignored)
-		{}
-	}
-
-	return Settings.getAllProfiles();
-
-	function isValidModuleProfile(profile: ModuleProfile): boolean
-	{
-		if (!profile || !profile.name || !profile.modules)
-		{
-			return false;
-		}
-
-		return profile.modules.every(module => module.id && module.title && module.hasOwnProperty('isActive'));
-	}
-}
-
-/**
- * Gets the array of saved profiles from the game settings in JSON format.
- * @return {string} - The JSON representation of the profile.
- */
-export function exportAllProfiles(): string
-{
-	return JSON.stringify(Settings.getAllProfiles(), null, 2);
-}
-
-/**
- * Gets a saved profile from the game settings in JSON format.
- * @param {string} profileName - The name of the profile to return.
- * @return {string | undefined} - The JSON representation of the profile, or `undefined` if none exists.
- */
-export function exportProfileByName(profileName: string): string | undefined
-{
-	const profile = Settings.getProfileByName(profileName);
-
-	return profile ? JSON.stringify(profile, null, 2) : profile;
-}
-
-/**
  * Deletes the profile with the given name. When the currently-active profile is deleted, the first profile is selected.
  * @param {string} profileName - The name of the profile to delete.
  * @return {Promise<ModuleProfile[] | undefined>} - The resulting value of the updated profiles setting, or `undefined` if no profiles remain.
@@ -287,4 +268,14 @@ export async function resetProfiles(): Promise<void>
 	await SettingsUtils.resetProfiles()
 					   .then(() => SettingsUtils.setActiveProfileName(SettingsUtils.DEFAULT_PROFILE_NAME))
 					   .then(() => SettingsUtils.reloadWindow());
+}
+
+export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Promise<Record<string, boolean>>
+{
+	const moduleInfosToSave = MappingUtils.mapToModuleKeyIsActiveRecord(moduleInfos);
+	const coreModuleConfiguration = game.settings.get('core', 'moduleConfiguration');
+
+	const mergedConfiguration = { ...coreModuleConfiguration, ...moduleInfosToSave };
+
+	return await game.settings.set('core', 'moduleConfiguration', mergedConfiguration);
 }

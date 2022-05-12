@@ -7,7 +7,8 @@
     "test": "jest",
     "build": "webpack",
     "build:production": "webpack --mode production --env mode=production",
-    "start": "webpack serve --hot"
+    "start": "webpack serve --hot",
+    "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts ./src/main/types.d.ts --configure ./jsdoc2md.json > ./documentation/api.md"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,8 @@
   },
   "homepage": "https://github.com/NateHawk85/module-profiles#readme",
   "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
     "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.7",
@@ -40,6 +43,8 @@
     "glob": "^7.1.6",
     "jest": "^27.5.1",
     "jest-when": "^3.5.1",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^7.1.1",
     "null-loader": "^4.0.1",
     "raw-loader": "^4.0.2",
     "source-map-loader": "^2.0.1",

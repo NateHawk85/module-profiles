@@ -1,3 +1,5 @@
+# Developer Info
+
 ![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/nerds.gif)
 
 ## What technologies/frameworks does this use?
@@ -6,10 +8,11 @@
 - Typescript
 - Webpack
 - Jest
+- jsdoc2md
 
 ## Can I work with this functionality in my own modules?
 
-Of course! [Here's a link to the API docs.](https://github.com/NateHawk85/module-profiles/blob/master/api.md)
+Of course! [Here's a link to the API docs.](https://github.com/NateHawk85/module-profiles/blob/master/documentation/api.md)
 
 ## I want to work on this module. What do I need to know?
 
