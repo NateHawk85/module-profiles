@@ -1,0 +1,27 @@
+name: Enhancement Request
+description: Suggest an idea/enhancement for this project
+title: "[Enhancement]: "
+labels: ["enhancement"]
+assignees:
+  - NateHawk85
+body:
+  - type: input
+    id: related-to-issue
+    attributes:
+      label: Is your feature request related to a problem?
+      placeholder: Please describe, or you can just say "no" :)
+    validations:
+      required: true
+  - type: input
+    id: solution-exists
+    attributes:
+      label: Have you looked for an existing solution or alternative, and does one exist?
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the enhancement!
+      placeholder: A clear and concise description of what you want to happen, including screenshots and/or other context.
+    validations:
+      required: true
