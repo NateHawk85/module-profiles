@@ -1,0 +1,87 @@
+name: Bug Report - 2
+description: Ran into a bug? Let me know so I can squash it!
+title: "[Bug]: "
+labels: ["bug", "unverified"]
+assignees:
+  - NateHawk85
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      placeholder: What happpened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-replicate
+    attributes:
+      label: Steps to Replicate
+      placeholder: How can I see what you saw?
+      value: |
+        1) Go to...
+        2) Click on...
+        3) Scroll to...
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Desired Outcome
+      placeholder: As specific as possible, please describe what you expected to happen
+    validations:
+      required: true
+  - type: textarea
+    id: actual-outcome
+    attributes:
+      label: Actual Outcome
+      placeholder: As specific as possible, please describe what actually happened
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Cool screenshots you captured
+      placeholder: `WINDOWS KEY` + `Shift` + `S` on Windows, or `Shift` + `Command` + `5` on Mac
+    validations:
+      required: false
+  - type: input
+    id: foundry-version
+    attributes:
+      label: Foundry Version
+      placeholder: (ex. v9.269)
+    validations:
+      required: true
+  - type: input
+    id: system-and-version
+    attributes:
+      label: System and Version
+      placeholder: (ex. D&D5e v1.5.7)
+    validations:
+      required: true
+  - type: input
+    id: module-profiles-version
+    attributes:
+      label: Module Profiles Version
+      placeholder: (ex. v1.0.0)
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browser did you see this on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+  - type: textarea
+    id: installed-modules
+    attributes:
+      label: Installed Modules
+      value: |
+        - Module Profiles v1.0.0
+    validations:
+      required: true

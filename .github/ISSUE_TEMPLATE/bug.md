@@ -23,8 +23,7 @@ assignees: NateHawk85
 
 ## Screenshots
 *Cool screenshots you captured*
-- `WINDOWS KEY` + `Shift` + `S` on Windows
-- `Shift` + `Command` + `5` on Mac
+- `WINDOWS KEY` + `Shift` + `S` on Windows, or `Shift` + `Command` + `5` on Mac
 
 ### Foundry/World Setup
 - Foundry Version: (ex. 9.269)
