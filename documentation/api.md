@@ -10,7 +10,7 @@
 | Property    | Type                            | Description                    |
 |-------------|---------------------------------|--------------------------------|
 | name | <code>string</code>             | <p>The name of the profile</p> |
-| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>An Array of [ModuleInfo](ModuleInfo) objects that are saved to this profile.</p>               |
+| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>An Array of [ModuleInfo](#ModuleInfo) objects that are saved to this profile.</p>               |
 
 <a name="ModuleInfo"></a>
 ## ModuleInfo
@@ -42,9 +42,9 @@
 <dt><a href="#exportProfileByName">exportProfileByName(profileName)</a> ⇒ <code>string</code> | <code>undefined</code></dt>
 <dd><p>Gets a saved profile from the game settings in JSON format.</p></dd>
 <dt><a href="#createProfile">createProfile(profileName, modules)</a> ⇒ <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code></dt>
-<dd><p>Creates a new [ModuleProfile](ModuleProfile) in the game settings.</p></dd>
+<dd><p>Creates a new [ModuleProfile](#ModuleProfile) in the game settings.</p></dd>
 <dt><a href="#importProfiles">importProfiles(json)</a> ⇒ <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code></dt>
-<dd><p>Creates a [ModuleProfile](ModuleProfile) or multiple module profiles out of a JSON representation of those profiles.</p></dd>
+<dd><p>Creates a [ModuleProfile](#ModuleProfile) or multiple module profiles out of a JSON representation of those profiles.</p></dd>
 <dt><a href="#activateProfile">activateProfile(profileName)</a> ⇒ <code>Promise.&lt;void&gt;</code></dt>
 <dd><p>Activates the profile with the given name, then reloads the page.</p></dd>
 <dt><a href="#saveChangesToProfile">saveChangesToProfile(profileName, modules)</a> ⇒ <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code></dt>
@@ -119,11 +119,11 @@
 <a name="createProfile"></a>
 
 ## createProfile(profileName, modules) ⇒ <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code>
-<p>Creates a new [ModuleProfile](ModuleProfile) in the game settings.</p>
+<p>Creates a new [ModuleProfile](#ModuleProfile) in the game settings.</p>
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - <ul>
-<li>The new Array of [ModuleProfile](ModuleProfile)s.</li>
+<li>The new Array of [ModuleProfile](#ModuleProfile)s.</li>
 </ul>  
 **Throws**:
 
@@ -133,12 +133,12 @@
 | Param | Type | Description |
 | --- | --- | --- |
 | profileName | <code>string</code> | <p>The name of the profile to create.</p> |
-| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>The Array of [ModuleInfo](ModuleInfo) objects that represent each module's activation status.</p> |
+| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>The Array of [ModuleInfo](#ModuleInfo) objects that represent each module's activation status.</p> |
 
 <a name="importProfiles"></a>
 
 ## importProfiles(json) ⇒ <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code>
-<p>Creates a [ModuleProfile](ModuleProfile) or multiple module profiles out of a JSON representation of those profiles.</p>
+<p>Creates a [ModuleProfile](#ModuleProfile) or multiple module profiles out of a JSON representation of those profiles.</p>
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - <ul>
@@ -147,7 +147,7 @@
 
 | Param | Type | Description |
 | --- | --- | --- |
-| json | <code>string</code> | <p>The JSON representation of a [ModuleProfile](ModuleProfile) or an Array of [ModuleProfile](ModuleProfile)[] objects.</p> |
+| json | <code>string</code> | <p>The JSON representation of a [ModuleProfile](#ModuleProfile) or an Array of [ModuleProfile](#ModuleProfile)[] objects.</p> |
 
 <a name="activateProfile"></a>
 
@@ -183,7 +183,7 @@
 | Param | Type | Description |
 | --- | --- | --- |
 | profileName | <code>string</code> | <p>The name of the profile to update.</p> |
-| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>The Array of [ModuleInfo](ModuleInfo) objects that represent each module's activation status.</p> |
+| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>The Array of [ModuleInfo](#ModuleInfo) objects that represent each module's activation status.</p> |
 
 <a name="deleteProfile"></a>
 
