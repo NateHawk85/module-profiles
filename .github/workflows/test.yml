@@ -26,6 +26,6 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: npm install
 
       - run: npm test
