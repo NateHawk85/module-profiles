@@ -1,9 +1,7 @@
 ## Got feedback?
 
-No problem! Follow one of these issue templates and let me know how much my code sucks, or how it could be improved.
-
-- [Bug Report](https://github.com/NateHawk85/module-profiles/blob/master/misc/issue_templates/bug.md)
-- [Enhancement](https://github.com/NateHawk85/module-profiles/blob/master/misc/issue_templates/enhancement.md)
+No problem! Go ahead and [create an issue](https://github.com/NateHawk85/module-profiles/issues) and let me know how much my code sucks, or how it could be 
+improved.
 
 ## Why should you use this?
 
