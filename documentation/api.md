@@ -73,7 +73,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Gets the currently active modules from the core game settings.</p>
 
 **Kind**: global function  
-**Returns**: <code>Array.&lt;ModuleInfo&gt;</code> - <ul>
+**Returns**: <code>Array.&lt;ModuleInfo&gt;</code> - 
+<ul>
 <li>The currently-active module configuration.</li>
 </ul>  
 <a name="getAllProfiles"></a>
@@ -90,7 +91,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Gets the saved, currently-active module profile from the game settings.</p>
 
 **Kind**: global function  
-**Returns**: <code>ModuleProfile</code> - <ul>
+**Returns**: <code>ModuleProfile</code> - 
+<ul>
 <li>The currently-active module profile.</li>
 </ul>  
 <a name="getProfileByName"></a>
@@ -100,7 +102,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Gets a saved profile from the game settings with the corresponding name.</p>
 
 **Kind**: global function  
-**Returns**: <code>ModuleProfile</code> \| <code>undefined</code> - <ul>
+**Returns**: <code>ModuleProfile</code> \| <code>undefined</code> - 
+<ul>
 <li>The module profile with the given name, or <code>undefined</code> if none exists.</li>
 </ul>  
 
@@ -115,7 +118,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Gets the array of saved profiles from the game settings in JSON format.</p>
 
 **Kind**: global function  
-**Returns**: <code>string</code> - <ul>
+**Returns**: <code>string</code> - 
+<ul>
 <li>The JSON representation of the profile.</li>
 </ul>  
 <a name="exportProfileByName"></a>
@@ -125,7 +129,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Gets a saved profile from the game settings in JSON format.</p>
 
 **Kind**: global function  
-**Returns**: <code>string</code> \| <code>undefined</code> - <ul>
+**Returns**: <code>string</code> \| <code>undefined</code> - 
+<ul>
 <li>The JSON representation of the profile, or <code>undefined</code> if none exists.</li>
 </ul>  
 
@@ -140,12 +145,14 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Creates a new [ModuleProfile](#ModuleProfile) in the game settings.</p>
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - <ul>
+**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - 
+<ul>
 <li>The new Array of [ModuleProfile](#ModuleProfile)s.</li>
 </ul>  
+
 **Throws**:
 
-- <p>Error - When a profile exists with the given profileName</p>
+- <p><code>Error</code> - When a profile exists with the given profileName</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -159,7 +166,8 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Creates a [ModuleProfile](#ModuleProfile) or multiple module profiles out of a JSON representation of those profiles.</p>
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - <ul>
+**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - 
+<ul>
 <li>The saved array of module profiles in the game settings.</li>
 </ul>  
 
@@ -176,10 +184,7 @@ Accessible via `game.modules.get('module-profiles').api.*`
 **Kind**: global function  
 **Throws**:
 
-- <code>Error</code> <ul>
-
-<li>When profile name does not exist.</li>
-</ul>
+- <code>Error</code> - When profile name does not exist.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -192,12 +197,14 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Saves the current profile settings to an existing profile.</p>
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - <ul>
+**Returns**: <code>Promise.&lt;Array.&lt;ModuleProfile&gt;&gt;</code> - 
+<ul>
 <li>The new Array of module profiles.</li>
 </ul>  
+
 **Throws**:
 
-- <p>Error - When a profile name is passed and no profiles exist with that name.</p>
+- <p><code>Error</code> - When a profile name is passed and no profiles exist with that name.</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -211,15 +218,15 @@ Accessible via `game.modules.get('module-profiles').api.*`
 <p>Deletes the profile with the given name. When the currently-active profile is deleted, the first profile is selected.</p>
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;(Array.&lt;ModuleProfile&gt;\|undefined)&gt;</code> - <ul>
+**Returns**: <code>Promise.&lt;(Array.&lt;ModuleProfile&gt;\|undefined)&gt;</code> - 
+<ul>
 <li>The resulting value of the updated profiles setting, or <code>undefined</code> if no profiles remain.</li>
 </ul>  
+
+
 **Throws**:
 
-- <code>Error</code> <ul>
-
-<li>When no profile with the given name exists.</li>
-</ul>
+- <code>Error</code> - When no profile with the given name exists.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -231,4 +238,4 @@ Accessible via `game.modules.get('module-profiles').api.*`
 
 <p>Reset all module profiles to the default values. WARNING: Doing this leads to unrecoverable data loss.</p>
 
-**Kind**: global function  
+**Kind**: global function
