@@ -29,6 +29,8 @@
 
 ## Functions
 
+Accessible via `game.modules.get('module-profiles').api.*`
+
 <dl>
 <dt><a href="#getCurrentModuleConfiguration">getCurrentModuleConfiguration()</a> ⇒ <code>Array.&lt;ModuleInfo&gt;</code></dt>
 <dd><p>Gets the currently active modules from the core game settings.</p></dd>
