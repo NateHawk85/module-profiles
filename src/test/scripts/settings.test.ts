@@ -17,6 +17,7 @@ beforeEach(() =>
 	SettingsUtils.getActiveProfileName.mockReturnValue(DEFAULT_PROFILE_NAME);
 	SettingsUtils.setActiveProfileName.mockReturnValue(Promise.resolve(DEFAULT_PROFILE_NAME));
 	SettingsUtils.setProfiles.mockReturnValue(Promise.resolve([DEFAULT_PROFILE]));
+	SettingsUtils.resetProfiles.mockReturnValue(Promise.resolve());
 });
 
 describe('registerModuleSettings', () =>
