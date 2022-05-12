@@ -8,7 +8,7 @@
     "build": "webpack",
     "build:production": "webpack --mode production --env mode=production",
     "start": "webpack serve --hot",
-    "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts ./src/main/types.d.ts --configure ./jsdoc2md.json > ./documentation/api.md"
+    "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts --configure ./jsdoc2md.json > ./documentation/settings-api.md"
   },
   "repository": {
     "type": "git",

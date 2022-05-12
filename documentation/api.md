@@ -1,8 +1,10 @@
-# Object Types
+# API
+
+## Object Types
 
 <a name="ModuleProfile"></a>
 
-## ModuleProfile
+### ModuleProfile
 
 <p>A representation of a module profile configuration.</p>
 
@@ -15,7 +17,7 @@
 
 <a name="ModuleInfo"></a>
 
-## ModuleInfo
+### ModuleInfo
 
 <p>A representation of an installed module, and the surrounding information about it.</p>
 
@@ -26,6 +28,12 @@
 | id       | <code>string</code>             | <p>The ID of the module in Foundry's internals.</p>                                                        |
 | title    | <code>string \ undefined</code> | <p>(Optional) The Title of the module, most-often shown in the "Module Management" configuration list.</p> |
 | isActive       | <code>boolean</code>            | <p>Whether the given module is active or not.</p>                                                          |
+
+## Hooks
+
+<ul>
+<li><code>moduleProfilesUpdated</code> - called whenever module profiles are saved and/or updated</li>
+</ul>
 
 ## Functions
 
