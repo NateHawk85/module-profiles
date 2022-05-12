@@ -1,3 +1,5 @@
+![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/test.yml/badge.svg)
+
 ## Got feedback?
 
 No problem! Go ahead and [create an issue](https://github.com/NateHawk85/module-profiles/issues) and let me know how much my code sucks, or how it could be 
