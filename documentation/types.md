@@ -1,18 +1,20 @@
 # Object Types
 
 <a name="ModuleProfile"></a>
+
 ## ModuleProfile
 
 <p>A representation of a module profile configuration.</p>
 
 **Kind**: global interface
 
-| Property    | Type                            | Description                    |
-|-------------|---------------------------------|--------------------------------|
-| name | <code>string</code>             | <p>The name of the profile</p> |
-| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>An Array of [ModuleInfo](ModuleInfo) objects that are saved to this profile.</p>               |
+| Property    | Type                            | Description                                                                          |
+|-------------|---------------------------------|--------------------------------------------------------------------------------------|
+| name | <code>string</code>             | <p>The name of the profile.</p>                                                      |
+| modules | <code>Array.&lt;ModuleInfo&gt;</code> | <p>An Array of [ModuleInfo](#ModuleInfo) objects that are saved to this profile.</p> |
 
 <a name="ModuleInfo"></a>
+
 ## ModuleInfo
 
 <p>A representation of an installed module, and the surrounding information about it.</p>
