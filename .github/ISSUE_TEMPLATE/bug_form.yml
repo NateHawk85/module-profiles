@@ -43,7 +43,7 @@ body:
     attributes:
       label: Screenshots
       description: Cool screenshots you captured
-      placeholder: `WINDOWS KEY` + `Shift` + `S` on Windows, or `Shift` + `Command` + `5` on Mac
+      placeholder: (WINDOWS KEY + Shift + S) on Windows, or (Shift + Command + 5) on Mac
     validations:
       required: false
   - type: input
