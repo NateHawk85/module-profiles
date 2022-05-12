@@ -1,0 +1,26 @@
+<form id="module-profiles-view-profile-modules-form">
+	<!------------------------------ Header ------------------------------>
+	<h2 class="module-profiles-header">{{name}}</h2>
+	<!------------------------------ Content ------------------------------>
+	<ul>
+		{{#each modules}}
+			<li class="flexrow">
+				<label for="isModuleActiveCheckbox-{{id}}">
+					<input name="{{id}}" id="isModuleActiveCheckbox-{{id}}" type="checkbox" {{#if isActive}}checked{{/if}}>
+					{{title}}
+				</label>
+			</li>
+			<br />
+		{{/each}}
+	</ul>
+	<!------------------------------ Footer ------------------------------>
+	<hr>
+	<div class="flexrow">
+		<button type="submit" name="submit" id="moduleProfilesEditProfileSubmit">
+			<i class="fa fa-check"></i> Save Edits To Profile
+		</button>
+		<button type="submit" name="moduleProfilesCancel" id="moduleProfilesCancel">
+			<i class="fa fa-ban"></i> Cancel
+		</button>
+	</div>
+</form>
