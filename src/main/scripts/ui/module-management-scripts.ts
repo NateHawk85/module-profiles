@@ -7,12 +7,11 @@ import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm';
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
 // TODO - Needs to be a separate function just for closeDialog instances. updateActiveProfileStatuses() should be exposed and performed when things are changed
-// TODO - test
-export function refreshModuleManagementStatusIcons(app: Dialog): void
+export function refreshStatusElementsOnDependenciesClose(app: Dialog): void
 {
 	if (app.data.title === 'Dependencies')
 	{
-		updateActiveProfileStatuses();
+		updateAllStatusElements();
 	}
 }
 
@@ -21,7 +20,7 @@ export function checkUpdateActiveProfileStatuses(): void
 {
 	if (ModuleManagementScripts.isModuleManagementWindowOpen())
 	{
-		updateActiveProfileStatuses();
+		updateAllStatusElements();
 	}
 }
 
@@ -68,7 +67,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 	{
 		addFooterElements();
 		modifyModuleListElements();
-		updateActiveProfileStatuses();
+		updateAllStatusElements();
 	}
 
 	function addFooterElements(): void
@@ -89,7 +88,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 		moduleList.after(preFooterDiv);
 
 		// Update status of status buttons
-		updateStatusButtons();
+		updateProfileStatusButtons();
 
 		// Update the height of the window with the new elements
 		forceModuleManagementWindowHeightResize();
@@ -111,7 +110,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 				const moduleInfos = findUnsavedModuleInfos();
 
 				Settings.saveChangesToProfile(activeProfile.name, moduleInfos)
-						.then(() => updateStatusButtons());
+						.then(() => updateProfileStatusButtons());
 			});
 
 			return statusButton;
@@ -157,21 +156,21 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 	{
 		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]');
 
-		// Add status icons and add an "update" event listener to each module in the list
+		// Add status blinkers and add an "update" event listener to each module in the list
 		moduleElements.forEach(module =>
 		{
-			let statusIconContainer = createModuleStatusIcon();
+			let statusBlinkerContainer = createModuleStatusBlinker();
 			if (module.children.length > 0)
 			{
-				module.children[0].prepend(statusIconContainer);
-				module.addEventListener('input', () => updateActiveProfileStatuses());
+				module.children[0].prepend(statusBlinkerContainer);
+				module.addEventListener('input', () => updateAllStatusElements());
 			} else
 			{
 				console.log(module);
 			}
 		});
 
-		function createModuleStatusIcon()
+		function createModuleStatusBlinker()
 		{
 			const span = document.createElement('span');
 			span.classList.add('module-profiles-status-container');
@@ -181,7 +180,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 	}
 }
 
-function updateActiveProfileStatuses(): void
+function updateAllStatusElements(): void
 {
 	const activeProfile = Settings.getActiveProfile();
 	const modules = <NodeListOf<HTMLLIElement>> document.querySelectorAll('#module-management li[data-module-name]');
@@ -189,7 +188,7 @@ function updateActiveProfileStatuses(): void
 	{
 		if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
 		{
-			const statusIcon = <HTMLSpanElement> module.children[0].children[0].firstChild!;
+			const statusBlinker = <HTMLSpanElement> module.children[0].children[0].firstChild!;
 			const checkbox = <HTMLInputElement> module.children[0].children[1].children[0];
 
 			// @ts-ignore - 'name' field exists on Foundry checkboxes with the given module IDs
@@ -197,20 +196,20 @@ function updateActiveProfileStatuses(): void
 
 			if (matchingModuleInfo && matchingModuleInfo.isActive === checkbox.checked)
 			{
-				statusIcon.classList.remove('module-profiles-status-changed');
-				statusIcon.classList.add('module-profiles-status-saved');
+				statusBlinker.classList.remove('module-profiles-status-changed');
+				statusBlinker.classList.add('module-profiles-status-saved');
 			} else
 			{
-				statusIcon.classList.remove('module-profiles-status-saved');
-				statusIcon.classList.add('module-profiles-status-changed');
+				statusBlinker.classList.remove('module-profiles-status-saved');
+				statusBlinker.classList.add('module-profiles-status-changed');
 			}
 		}
 	});
 
-	updateStatusButtons();
+	updateProfileStatusButtons();
 }
 
-function updateStatusButtons(): void
+function updateProfileStatusButtons(): void
 {
 	const activeProfile = Settings.getActiveProfile();
 	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);

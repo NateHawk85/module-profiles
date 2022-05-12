@@ -38,6 +38,7 @@ export default class ConfirmDeleteProfileForm extends FormApplication
 		};
 	}
 
+	// TODO - bug, name for button on module management does not update when active profile name switches
 	async _updateObject(event: any): Promise<ModuleProfile[] | undefined>
 	{
 		if (event?.submitter?.id === 'moduleProfilesDeleteProfileSubmit')

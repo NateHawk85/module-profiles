@@ -117,8 +117,6 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		const deleteProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach((element) => element.addEventListener('click', () =>
 			new ConfirmDeleteProfileForm(element.dataset.profileName!).render(true)));
-
-		// TODO - add import profiles + export profiles functionality? Or just hide and publish, then worry about qol
 	}
 
 	async _updateObject() {}

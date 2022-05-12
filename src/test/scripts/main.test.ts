@@ -9,7 +9,7 @@ const registerApi = () => {};
 const modifyModuleManagementRender = () => {};
 const reRenderManageModuleProfilesWindows = () => {};
 const forceManageModuleProfilesHeightResize = () => {};
-const refreshModuleManagementStatusIcons = () => {};
+const refreshStatusElementsOnDependenciesClose = () => {};
 const checkUpdateActiveProfileStatuses = () => {};
 const RENDER_HOOK_NAME = 'renderHookName';
 const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdatedHookName';
@@ -22,7 +22,7 @@ jest.mock('../../main/scripts/api', () => ({
 }));
 jest.mock('../../main/scripts/ui/module-management-scripts', () => ({
 	modifyModuleManagementRender: modifyModuleManagementRender,
-	refreshModuleManagementStatusIcons: refreshModuleManagementStatusIcons,
+	refreshStatusElementsOnDependenciesClose: refreshStatusElementsOnDependenciesClose,
 	checkUpdateActiveProfileStatuses: checkUpdateActiveProfileStatuses
 }));
 jest.mock('../../main/classes/ManageModuleProfilesSettingsForm', () => ({
@@ -53,11 +53,11 @@ test('WHEN main.ts is run THEN the module management render is modified', () =>
 	expect(Hooks.on).toHaveBeenCalledWith('renderModuleManagement', ModuleManagementScripts.modifyModuleManagementRender);
 });
 
-test('WHEN main.ts is run THEN the module management status icons are refreshed when a dialog is closed', () =>
+test('WHEN main.ts is run THEN the module management status elements are refreshed when a dialog is closed', () =>
 {
 	require('../../main/scripts/main');
 
-	expect(Hooks.on).toHaveBeenCalledWith('closeDialog', ModuleManagementScripts.refreshModuleManagementStatusIcons);
+	expect(Hooks.on).toHaveBeenCalledWith('closeDialog', ModuleManagementScripts.refreshStatusElementsOnDependenciesClose);
 });
 
 test('WHEN main.ts is run THEN the module management status icons are refreshed when a module profile is updated', () =>

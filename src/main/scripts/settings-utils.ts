@@ -49,7 +49,7 @@ export function registerMenus(): void
 		label: 'Manage Profiles',
 		icon: 'fas fa-cog',
 		type: ManageModuleProfilesSettingsForm,
-		restricted: false
+		restricted: true
 	});
 }
 
