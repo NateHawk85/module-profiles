@@ -1,3 +1,5 @@
+![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/nerds.gif)
+
 ## What technologies/frameworks does this use?
 
 - Javascript

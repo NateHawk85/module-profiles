@@ -35,6 +35,4 @@ Track statuses of changed modules compared to your currently-saved profile
 
 ## I'm a developer
 
-![](https://giphy.com/gifs/3zpHYzhLV3ZzW)
-
 Welcome! You're probably looking for this: [Developer Info](https://github.com/NateHawk85/module-profiles/blob/master/developer-info.md)
