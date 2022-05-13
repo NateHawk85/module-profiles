@@ -3,6 +3,7 @@ import * as MappingUtils from '../mapping-utils';
 import * as ModuleManagementScripts from './module-management-scripts';
 import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm';
 import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm';
+import {MODULE_ID} from '../settings-utils';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
@@ -83,8 +84,6 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 
 		// Add elements just below the module list
 		const moduleList = document.getElementById('module-list')!;
-		console.log('module-list: ');
-		console.log(moduleList);
 		moduleList.after(preFooterDiv);
 
 		// Update status of status buttons
@@ -166,6 +165,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 				module.addEventListener('input', () => updateAllStatusElements());
 			} else
 			{
+				console.log(`Error with ${MODULE_ID} - invalid module`);
 				console.log(module);
 			}
 		});

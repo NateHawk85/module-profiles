@@ -5,9 +5,8 @@
   "main": "scripts/module-profiles.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack",
-    "build:production": "webpack --mode production --env mode=production",
     "start": "webpack serve --hot",
+    "build": "webpack",
     "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts --configure ./jsdoc2md.json > ./documentation/settings-api.md"
   },
   "repository": {
