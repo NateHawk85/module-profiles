@@ -1,4 +1,5 @@
 ![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/test.yml/badge.svg)
+![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnatehawk85%2Fmodule-profiles%2Fmaster%2Fstatic%2Fmodule.json&label=Current%20Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange&style=for-the-badge)
 
 ## Got feedback?
 

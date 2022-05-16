@@ -1,16 +1,16 @@
 <form id="module-profiles-confirm-activate-profile-form">
 	<!------------------------------ Content ------------------------------>
-	<h3 class="module-profiles-header">Are you sure you want to activate <b>{{profileNameToActivate}}</b>?
-        Doing so will discard any current changes made to <b>{{activeProfileName}}</b>.
+	<h3 class="module-profiles-header">{{localize 'CONFIRMATION.activate.areYouSure'}} <b>{{profileNameToActivate}}</b>?
+		{{localize 'CONFIRMATION.activate.doingSoWillDiscard'}} <b>{{activeProfileName}}</b>.
 	</h3>
 	<!------------------------------ Footer ------------------------------>
 	<hr>
 	<div class="flexrow">
 		<button type="submit" name="submit" id="moduleProfilesActivateProfileSubmit">
-			<i class="fa fa-check"></i> Activate Profile
+			<i class="fa fa-check"></i> {{localize 'CONFIRMATION.activate.submit'}}
 		</button>
 		<button type="submit" name="moduleProfilesCancel" id="moduleProfilesCancel">
-			<i class="fa fa-ban"></i> Cancel
+			<i class="fa fa-ban"></i> {{localize 'FORM_APPLICATION.button.cancel'}}
 		</button>
 	</div>
 </form>
