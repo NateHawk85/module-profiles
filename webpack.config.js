@@ -1,93 +1,99 @@
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const path = require("path");
-const glob = require("glob");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
+const glob = require('glob');
 
-const allTemplates = () => {
+const allTemplates = () =>
+{
 	return glob
-		.sync("**/*.html", { cwd: path.join(__dirname, "static/templates") })
+		.sync('**/*.html', { cwd: path.join(__dirname, 'static/templates') })
 		.map((file) => `"modules/template/templates/${file}"`)
-		.join(", ");
+		.join(', ');
 };
 
-module.exports = (env) => {
+module.exports = (env) =>
+{
 	const defaults = {
 		watch: false,
-		mode: "development",
+		mode: 'development'
 	};
 
 	const environment = { ...defaults, ...env };
-	const isDevelopment = environment.mode === "development";
+	const isDevelopment = environment.mode === 'development';
 
 	const config = {
-		entry: "./src/main/scripts/main.ts",
+		entry: './src/main/scripts/main.ts',
 		watch: environment.watch,
-		devtool: "inline-source-map",
-		stats: "minimal",
+		devtool: 'inline-source-map',
+		stats: 'minimal',
 		mode: environment.mode,
 		resolve: {
-			extensions: [".wasm", ".mjs", ".ts", ".js", ".json"],
+			extensions: ['.wasm', '.mjs', '.ts', '.js', '.json']
 		},
 		output: {
-			filename: "module-profiles.js",
+			filename: 'module-profiles.js',
 			path: path.resolve(__dirname, `dist`),
-			publicPath: '',
+			publicPath: ''
 		},
 		devServer: {
 			hot: true,
 			devMiddleware: {
-				writeToDisk: true,
+				writeToDisk: true
 			},
 			proxy: [
 				{
-					context: (pathname) => {
-						return !pathname.match("^/ws");
+					context: (pathname) =>
+					{
+						return !pathname.match('^/ws');
 					},
-					target: "http://localhost:30000",
-					ws: true,
-				},
-			],
+					target: 'http://localhost:30000',
+					ws: true
+				}
+			]
 		},
 		module: {
 			rules: [
 				isDevelopment
 				? {
 						test: /\.html$/,
-						loader: "raw-loader",
+						loader: 'raw-loader'
 					}
 				: {
 						test: /\.html$/,
-						loader: "null-loader",
+						loader: 'null-loader'
 					},
 				{
 					test: /\.ts$/,
 					use: [
-						"ts-loader",
-						"webpack-import-glob-loader",
-						"source-map-loader",
+						'ts-loader',
+						'webpack-import-glob-loader',
+						'source-map-loader',
 						{
-							loader: "string-replace-loader",
+							loader: 'string-replace-loader',
 							options: {
 								search: '"__ALL_TEMPLATES__"',
-								replace: allTemplates,
-							},
-						},
-					],
+								replace: allTemplates
+							}
+						}
+					]
 				}
-			],
+			]
 		},
 		plugins: [
 			new CleanWebpackPlugin(),
 			new CopyPlugin({
-				patterns: [{
-					from: "static",
-					noErrorOnMissing: true
-				}],
-			}),
-		],
+				patterns: [
+					{
+						from: 'static',
+						noErrorOnMissing: true
+					}
+				]
+			})
+		]
 	};
 
-	if (!isDevelopment) {
+	if (!isDevelopment)
+	{
 		delete config.devtool;
 	}
 

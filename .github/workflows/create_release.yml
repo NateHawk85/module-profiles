@@ -1,4 +1,4 @@
-name: Create Release
+name: Create release with commit
 
 on:
   release:
@@ -32,7 +32,7 @@ jobs:
 
       # Build our dist folder
       - name: Build dist folder
-        run: npm run build:production
+        run: npm run build
 
       # Substitute the Manifest and Download URLs in the module.json
       - name: Substitute Manifest and Download Links For Versioned Ones
@@ -44,10 +44,10 @@ jobs:
           version: ${{github.event.release.tag_name}}
           url: https://github.com/${{github.repository}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
-          download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
+          download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module-profiles.zip
 
       # Create a zip file with all files required by the module to add to the release
-      - run: cd dist && zip -r ../module.zip .
+      - run: cd dist && zip -r ../module-profiles.zip .
 
       # Create a release for this specific version
       - name: Update Release with Files
@@ -59,6 +59,6 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: './dist/module.json, ./module.zip'
+          artifacts: './dist/module.json, ./module-profiles.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
