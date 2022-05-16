@@ -1,9 +1,8 @@
 name: Create release with commit
 
 on:
-  push:
-    branches:
-      - release
+  release:
+    types: [published]
 
 jobs:
   build:
