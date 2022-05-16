@@ -16,9 +16,6 @@ jobs:
         with:
           node-version: '16'
 
-      # Testing
-      - run: npm -v && node -v
-
       # Cache dependencies
       - name: Cache npm dependencies
         uses: actions/cache@v3
