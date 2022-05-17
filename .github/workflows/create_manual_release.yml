@@ -11,10 +11,14 @@ on:
         description: 'Release Title'
         required: true
         type: string
-      release_body:
-        description: 'Release Body'
-        required: true
-        type: string
+      is_pre_release:
+        description: 'Is Pre-Release?'
+        required: false
+        type: boolean
+      is_draft:
+        description: 'Is Draft?'
+        required: false
+        type: boolean
 
 jobs:
   build:
@@ -33,7 +37,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
+          key: npm-${{hashFiles('package-lock.json')}}
           restore-keys: npm-
 
       - name: Install dependencies
@@ -41,6 +45,15 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      # Bump version and tag
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          release_branches: release
+          custom_tag: ${{github.event.inputs.release_version}}
 
       # Build and add artifacts to release
       - name: Build dist folder
@@ -57,18 +70,16 @@ jobs:
           manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
           download: https://github.com/${{github.repository}}/releases/download/${{github.event.inputs.release_version}}/module-profiles.zip
 
-      # Create a zip file with all files required by the module to add to the release
-      - run: cd dist && zip -r ../module-profiles.zip .
+      - name: Create release module .zip file
+        run: cd dist && zip -r ../module-profiles.zip .
 
-      # Create a release for this specific version
-      - name: Update Release with Files
+      - name: Create release with files
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
-          allowUpdates: true # Set this to false if you want to prevent updating existing releases
           name: ${{github.event.inputs.release_title}}
-          draft: false
-          prerelease: false
+          draft: ${{github.event.inputs.is_draft}}
+          prerelease: ${{github.event.inputs.is_pre_release}}
           token: ${{secrets.GITHUB_TOKEN}}
           artifacts: './dist/module.json, ./module-profiles.zip'
           tag: ${{github.event.inputs.release_version}}
