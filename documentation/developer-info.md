@@ -28,6 +28,9 @@ enabled, create a symlink between your `/dist` folder and your `${FOUNDRY_INSTAL
 run this project with hot reload functionality. Every time you save your project while that's running, your `/dist` folder should be automatically updated, and
 therefore, your `module-profiles` folder as well.
 
+To create a symlink in Windows 10, open a Command Prompt (admin) and run the following command: 
+`mklink /D "${FOUNDRY_INSTALL_LOCATION}\data\modules\module-profiles "${YOUR_SOURCE_CODE_DIRECTORY}\dist"`
+
 ## I did some stuff! I want to make a pull request!
 
 Nice! Thanks for your hard work. Pull requests are absolutely welcome and encouraged. Make sure your stuff is unit tested ahead of submitting the PR - anything
