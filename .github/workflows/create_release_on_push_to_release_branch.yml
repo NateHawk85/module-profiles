@@ -40,7 +40,6 @@ jobs:
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           release_branches: release
-          dry_run: true # TODO - remove this
 
       # Build and add artifacts to release
       - name: Build dist folder
@@ -60,18 +59,17 @@ jobs:
       - name: Create release module .zip file
         run: cd dist && zip -r ../module-profiles.zip .
 
-      # TODO - update draft and prerelease fields to false when ready
-#      - name: Create release with files
-#        id: create_version_release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          name: ${{steps.tag_version.outputs.new_tag}}
-#          draft: false
-#          prerelease: true
-#          token: ${{secrets.GITHUB_TOKEN}}
-#          artifacts: './dist/module.json, ./module-profiles.zip'
-#          tag: ${{steps.tag_version.outputs.new_tag}}
-#          body: ${{steps.tag_version.outputs.changelog}}
+      - name: Create release with files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{steps.tag_version.outputs.new_tag}}
+          draft: false
+          prerelease: false
+          token: ${{secrets.GITHUB_TOKEN}}
+          artifacts: './dist/module.json, ./module-profiles.zip'
+          tag: ${{steps.tag_version.outputs.new_tag}}
+          body: ${{steps.tag_version.outputs.changelog}}
 
       # Cleanup for next release, and merge changes back into main
       - name: Substitute module.json values based on tag name
