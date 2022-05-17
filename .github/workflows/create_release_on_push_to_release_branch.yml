@@ -1,0 +1,73 @@
+name: Create release on push to release branch
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Setup and verify build passes tests
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run tests
+      - run: npm test
+
+      # Bump version and tag
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: release
+          dry_run: true
+
+      # Build and add artifacts to release
+#      - name: Build dist folder
+#        run: npm run build
+#
+#      - name: Substitute module.json values based on tag name
+#        id: sub_manifest_link_version
+#        uses: microsoft/variable-substitution@v1
+#        with:
+#          files: './dist/module.json'
+#        env:
+#          version: ${{github.event.release.tag_name}}
+#          url: https://github.com/${{github.repository}}
+#          manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
+#          download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module-profiles.zip
+#
+#      - name: Create release module .zip file
+#        run: cd dist && zip -r ../module-profiles.zip .
+#
+#      # Create a release for this specific version
+#      - name: Update Release with Files
+#        id: create_version_release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          allowUpdates: true # Set this to false if you want to prevent updating existing releases
+#          name: ${{ github.event.release.name }}
+#          draft: false
+#          prerelease: false
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          artifacts: './dist/module.json, ./module-profiles.zip'
+#          tag: ${{ github.event.release.tag_name }}
+#          body: ${{ github.event.release.body }}
