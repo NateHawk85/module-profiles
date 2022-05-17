@@ -1,6 +1,6 @@
 # Developer Info
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/nerds.gif)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/nerds.gif)
 
 ## What technologies/frameworks does this use?
 
@@ -12,7 +12,7 @@
 
 ## Can I work with this functionality in my own modules?
 
-Of course! [Here's a link to the API docs.](https://github.com/NateHawk85/module-profiles/blob/master/documentation/api.md)
+Of course! [Here's a link to the API docs.](https://github.com/NateHawk85/module-profiles/blob/main/documentation/api.md)
 
 ## I want to work on this module. What do I need to know?
 
@@ -20,7 +20,7 @@ This project uses Node/npm. Everything else should "just work". To start out, ru
 to tell Webpack to compile your stuff over to the `/dist` folder. From there, copy the contents of the `/dist` folder and place
 them in `${FOUNDRY_INSTALL_LOCATION}/data/modules/module-profiles`. If everything's perfect, it should look something like this
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/dev-setup.png)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/dev-setup.png)
 
 If you want to be cool, there's a faster way to package your stuff up as well. This module implements the hot reload functionality from 
 [Blackcloud's Module Template Hotswap](https://github.com/Blackcloud010/FoundryVTT-Module-Template-Hotswap). To make changes to this module with hot swap 
