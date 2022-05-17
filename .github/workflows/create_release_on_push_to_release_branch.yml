@@ -88,13 +88,15 @@ jobs:
           branch: release
           file_pattern: package.json
 
-      - name: perform merge
-        env:
-          DEFAULT_BRANCH: ${{github.event.repository.default_branch}}
+      - name: Merge release -> main
         run: |
+          git config --global user.email "github-actions[bot]"
+          git config --global user.name "github-actions[bot]@users.noreply.github.com"
+          git status
+          git rm -r module-profiles.zip
           git status
           git pull
-          git checkout "$DEFAULT_BRANCH"
+          git checkout ${{github.event.repository.default_branch}}
           git status
           git pull origin release --no-edit
           git push
