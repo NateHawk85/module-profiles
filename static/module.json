@@ -9,8 +9,16 @@
   "url": "Replaced",
   "manifest": "Replaced",
   "download": "Replaced",
-  "license": "LICENSE",
-  "readme": "README.md",
+  "bugs": "https://github.com/NateHawk85/module-profiles/issues",
+  "license": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/LICENSE",
+  "readme": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/README.md",
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "styles": [
     "styles/module-profiles-styles.css"
   ],

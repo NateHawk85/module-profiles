@@ -120,7 +120,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const createModuleProfileButton = document.createElement('button');
 			createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
 													   // submits form)
-			createModuleProfileButton.innerHTML = '<i class="fa fa-plus"></i> Create Module Profile</button>';
+			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize('MODULE_MANAGEMENT.createNewButton.text')}</button>`;
 			createModuleProfileButton.style.flexBasis = '80%';
 			createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
@@ -132,7 +132,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const manageProfilesButton = document.createElement('button');
 			manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
 												  // form)
-			manageProfilesButton.innerHTML = '<i class="fa fa-cog"></i> Manage Module Profiles</button>';
+			manageProfilesButton.innerHTML = `<i class="fa fa-cog"></i> ${game.i18n.localize('MODULE_MANAGEMENT.manageModuleProfilesButton.text')}</button>`;
 			manageProfilesButton.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
@@ -220,12 +220,13 @@ function updateProfileStatusButtons(): void
 		const buttonProfileName = button.dataset.profileName;
 		if (isUpToDate)
 		{
+			const statusButtonText = game.i18n.localize('MODULE_MANAGEMENT.statusButton.upToDate');
 			button.style.backgroundColor = '';
-			button.innerHTML = `<i class="fa fa-check-circle" style="color: mediumseagreen"></i><b>${(buttonProfileName)}</b> is up to date`;
+			button.innerHTML = `<i class="fa fa-check-circle" style="color: mediumseagreen"></i><b>${(buttonProfileName)}</b> ${statusButtonText}`;
 		} else
 		{
 			button.style.backgroundColor = 'orangered';
-			button.innerHTML = `<i class="far fa-save"></i> Save changes to <b>${(buttonProfileName)}</b>`;
+			button.innerHTML = `<i class="far fa-save"></i> ${game.i18n.localize('MODULE_MANAGEMENT.statusButton.saveChanges')} <b>${(buttonProfileName)}</b>`;
 		}
 
 		button.disabled = isUpToDate;

@@ -1,4 +1,6 @@
 ![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/test.yml/badge.svg)
+[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fmodule-profiles&colorB=blueviolet)](https://forge-vtt.com/bazaar#package=module-profiles)
+![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnatehawk85%2Fmodule-profiles%2Fmain%2Fstatic%2Fmodule.json&label=Current%20Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange&style=for-the-badge)
 
 ## Got feedback?
 
@@ -21,20 +23,20 @@ button in the module management configuration window to get started.
 
 Adds the ability to swap between different module profiles
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/module-management.png)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/module-management.png)
 
 Create, edit, import, export, and delete different profiles
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/create-new.png)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/create-new.png)
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/import-export.png)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/import-export.png)
 
 Track statuses of changed modules compared to your currently-saved profile
 
-![](https://github.com/NateHawk85/module-profiles/blob/master/misc/media/changes.png)
+![](https://github.com/NateHawk85/module-profiles/blob/main/misc/media/changes.png)
 
 ## I'm a developer
 
-Cool! Me too. You're probably looking for the [api docs](https://github.com/NateHawk85/module-profiles/blob/master/documentation/api.md), or perhaps some 
-additional [developer info](https://github.com/NateHawk85/module-profiles/blob/master/documentation/developer-info.md) if you want to contribute to this 
+Cool! Me too. You're probably looking for the [api docs](https://github.com/NateHawk85/module-profiles/blob/main/documentation/api.md), or perhaps some 
+additional [developer info](https://github.com/NateHawk85/module-profiles/blob/main/documentation/developer-info.md) if you want to contribute to this 
 project.

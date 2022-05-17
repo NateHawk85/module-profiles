@@ -5,21 +5,21 @@
 	<!------------------------------ Content ------------------------------>
 	<div class="flexrow right-aligned">
 		<button id="module-profiles-manage-profiles-import">
-			<i class="fa fa-file-import"></i> Import Profile(s)
+			<i class="fa fa-file-import"></i> {{localize 'FORM_APPLICATION.import.importProfiles'}}
 		</button>
 		<button id="module-profiles-manage-profiles-export-all">
-			<i class="fa fa-file-export"></i> Export All Profiles
+			<i class="fa fa-file-export"></i> {{localize 'FORM_APPLICATION.export.exportAll'}}
 		</button>
 	</div>
 	<table id="module-profiles-list">
 		<thead>
 		<tr class="flexrow">
-			<td class="profile-name-column">Profile Name</td>
-			<td class="icon-column">Activate</td>
-			<td class="icon-column">Edit</td>
-			<td class="icon-column">Duplicate</td>
-			<td class="icon-column">Export</td>
-			<td class="icon-column">Delete</td>
+			<td class="profile-name-column">{{localize 'FORM_APPLICATION.header.profileName'}}</td>
+			<td class="icon-column">{{localize 'FORM_APPLICATION.manageProfiles.activate'}}</td>
+			<td class="icon-column">{{localize 'FORM_APPLICATION.manageProfiles.edit'}}</td>
+			<td class="icon-column">{{localize 'FORM_APPLICATION.manageProfiles.duplicate'}}</td>
+			<td class="icon-column">{{localize 'FORM_APPLICATION.manageProfiles.export'}}</td>
+			<td class="icon-column">{{localize 'FORM_APPLICATION.manageProfiles.delete'}}</td>
 		</tr>
 		</thead>
 		<tbody>
@@ -36,6 +36,6 @@
 		</tbody>
 	</table>
 	<div class="flexrow right-aligned">
-		<a id=module-profiles-manage-profiles-create-new><i class="fa fa-plus"></i> <b>Create New</b></a>
+		<a id=module-profiles-manage-profiles-create-new><i class="fa fa-plus"></i> <b>{{localize 'FORM_APPLICATION.create.createNew'}}</b></a>
 	</div>
 </form>
