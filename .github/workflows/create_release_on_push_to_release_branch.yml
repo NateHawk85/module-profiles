@@ -75,7 +75,7 @@ jobs:
 
       # Cleanup for next release
       - name: Substitute module.json values based on tag name
-        id: sub_manifest_link_version
+        id: sub_package_json_version
         uses: microsoft/variable-substitution@v1
         with:
           files: './package.json'
