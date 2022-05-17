@@ -54,6 +54,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           release_branches: release
           custom_tag: ${{github.event.inputs.release_version}}
+          tag_prefix: ''
 
       # Build and add artifacts to release
       - name: Build dist folder
@@ -83,4 +84,4 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           artifacts: './dist/module.json, ./module-profiles.zip'
           tag: ${{github.event.inputs.release_version}}
-          body: ${{github.event.inputs.release_body}}
+          body: ${{steps.tag_version.outputs.changelog}}
