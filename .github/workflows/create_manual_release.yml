@@ -1,0 +1,75 @@
+name: Create release with commit
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release Version'
+        required: true
+        type: string
+      release_title:
+        description: 'Release Title'
+        required: true
+        type: string
+      release_body:
+        description: 'Release Body'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Setup and verify build passes tests
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run tests
+        run: npm test
+
+      # Build and add artifacts to release
+      - name: Build dist folder
+        run: npm run build
+
+      - name: Substitute module.json values based on tag name
+        id: sub_manifest_link_version
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './dist/module.json'
+        env:
+          version: ${{github.event.inputs.release_version}}
+          url: https://github.com/${{github.repository}}
+          manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
+          download: https://github.com/${{github.repository}}/releases/download/${{github.event.inputs.release_version}}/module-profiles.zip
+
+      # Create a zip file with all files required by the module to add to the release
+      - run: cd dist && zip -r ../module-profiles.zip .
+
+      # Create a release for this specific version
+      - name: Update Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true # Set this to false if you want to prevent updating existing releases
+          name: ${{github.event.inputs.release_title}}
+          draft: false
+          prerelease: false
+          token: ${{secrets.GITHUB_TOKEN}}
+          artifacts: './dist/module.json, ./module-profiles.zip'
+          tag: ${{github.event.inputs.release_version}}
+          body: ${{github.event.inputs.release_body}}
