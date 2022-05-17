@@ -7,6 +7,8 @@
 No problem! Go ahead and [create an issue](https://github.com/NateHawk85/module-profiles/issues) and let me know how much my code sucks, or how it could be 
 improved.
 
+Check out what work's being done [here](https://github.com/NateHawk85/module-profiles/projects/2)!
+
 ## Why should you use this?
 
 Have you ever wanted to test out a new module, but you don't want to lose your current module configuration? Perhaps, you as a GM want a different group of 
