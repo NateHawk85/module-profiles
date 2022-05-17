@@ -40,7 +40,6 @@ jobs:
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           release_branches: release
-          dry_run: true
 
       # Build and add artifacts to release
       - name: Build dist folder
@@ -52,10 +51,10 @@ jobs:
         with:
           files: './dist/module.json'
         env:
-          version: ${{tag_version.new_tag}}
+          version: ${{steps.tag_version.outputs.new_tag}}
           url: https://github.com/${{github.repository}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
-          download: https://github.com/${{github.repository}}/releases/download/${{tag_version.new_tag}}/module-profiles.zip
+          download: https://github.com/${{github.repository}}/releases/download/${{steps.tag_version.outputs.new_tag}}/module-profiles.zip
 
       - name: Create release module .zip file
         run: cd dist && zip -r ../module-profiles.zip .
@@ -71,8 +70,8 @@ jobs:
           prerelease: true
           token: ${{secrets.GITHUB_TOKEN}}
           artifacts: './dist/module.json, ./module-profiles.zip'
-          tag: ${{tag_version.new_tag}}
-          body: ${{tag_version.changelog}}
+          tag: ${{steps.tag_version.outputs.new_tag}}
+          body: ${{steps.tag_version.outputs.changelog}}
 
       # Cleanup for next release
       - name: Substitute module.json values based on tag name
@@ -81,10 +80,10 @@ jobs:
         with:
           files: './package.json'
         env:
-          version: ${{tag_version.new_tag}}
+          version: ${{steps.tag_version.outputs.new_tag}}
 
       - name: Commit package.json changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Updating development environment to latest version - ${{tag_version.new_tag}}
+          commit_message: Updating development environment to latest version - ${{steps.tag_version.outputs.new_tag}}
           branch: release
