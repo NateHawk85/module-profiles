@@ -1,79 +1,79 @@
 {
-  "name": "module-profiles",
-  "version": "1.0.3",
-  "description": "A module for FoundryVTT that allows for swapping between multiple customizable module profiles.",
-  "main": "scripts/module-profiles.js",
-  "scripts": {
-    "test": "jest",
-    "start": "webpack serve --hot",
-    "build": "webpack",
-    "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts --configure ./jsdoc2md.json > ./documentation/settings-api.md"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NateHawk85/module-profiles.git"
-  },
-  "keywords": [
-    "foundry",
-    "foundryvtt",
-    "foundry-vtt",
-    "profiles",
-    "module",
-    "settings",
-    "dnd5e"
-  ],
-  "author": "NateHawk85",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NateHawk85/module-profiles/issues"
-  },
-  "homepage": "https://github.com/NateHawk85/module-profiles#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/plugin-transform-runtime": "^7.16.4",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-typescript": "^7.16.7",
-    "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
-    "@types/jest": "^27.4.1",
-    "@types/jest-when": "^3.5.0",
-    "@types/webpack-env": "^1.16.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^8.1.1",
-    "glob": "^7.1.6",
-    "jest": "^27.5.1",
-    "jest-when": "^3.5.1",
-    "jsdoc-babel": "^0.5.0",
-    "jsdoc-to-markdown": "^7.1.1",
-    "null-loader": "^4.0.1",
-    "raw-loader": "^4.0.2",
-    "source-map-loader": "^2.0.1",
-    "string-replace-loader": "^3.0.1",
-    "style-loader": "^2.0.0",
-    "ts-jest": "^27.1.4",
-    "ts-loader": "^8.1.0",
-    "typescript": "^4.2.4",
-    "webpack": "^5.33.2",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^4.8.1",
-    "webpack-import-glob-loader": "^1.6.3"
-  },
-  "jest": {
-    "setupFiles": [
-      "<rootDir>/src/test/config/mock-foundry.ts",
-      "<rootDir>/src/test/config/mock-window.ts",
-      "<rootDir>/src/test/config/constants.ts"
+    "name": "module-profiles",
+    "version": "v1.0.4",
+    "description": "A module for FoundryVTT that allows for swapping between multiple customizable module profiles.",
+    "main": "scripts/module-profiles.js",
+    "scripts": {
+        "test": "jest",
+        "start": "webpack serve --hot",
+        "build": "webpack",
+        "build:doc": "jsdoc2md --no-cache --files ./src/main/scripts/settings.ts --configure ./jsdoc2md.json > ./documentation/settings-api.md"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NateHawk85/module-profiles.git"
+    },
+    "keywords": [
+        "foundry",
+        "foundryvtt",
+        "foundry-vtt",
+        "profiles",
+        "module",
+        "settings",
+        "dnd5e"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/test/config/global-test-config.ts"
-    ],
-    "testEnvironment": "jsdom",
-    "clearMocks": true,
-    "resetMocks": true,
-    "restoreMocks": true,
-    "resetModules": true
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.16.3"
-  }
+    "author": "NateHawk85",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/NateHawk85/module-profiles/issues"
+    },
+    "homepage": "https://github.com/NateHawk85/module-profiles#readme",
+    "devDependencies": {
+        "@babel/cli": "^7.17.10",
+        "@babel/core": "^7.17.10",
+        "@babel/plugin-transform-runtime": "^7.16.4",
+        "@babel/preset-env": "^7.16.4",
+        "@babel/preset-typescript": "^7.16.7",
+        "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
+        "@types/jest": "^27.4.1",
+        "@types/jest-when": "^3.5.0",
+        "@types/webpack-env": "^1.16.0",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^8.1.1",
+        "glob": "^7.1.6",
+        "jest": "^27.5.1",
+        "jest-when": "^3.5.1",
+        "jsdoc-babel": "^0.5.0",
+        "jsdoc-to-markdown": "^7.1.1",
+        "null-loader": "^4.0.1",
+        "raw-loader": "^4.0.2",
+        "source-map-loader": "^2.0.1",
+        "string-replace-loader": "^3.0.1",
+        "style-loader": "^2.0.0",
+        "ts-jest": "^27.1.4",
+        "ts-loader": "^8.1.0",
+        "typescript": "^4.2.4",
+        "webpack": "^5.33.2",
+        "webpack-cli": "^4.6.0",
+        "webpack-dev-server": "^4.8.1",
+        "webpack-import-glob-loader": "^1.6.3"
+    },
+    "jest": {
+        "setupFiles": [
+            "<rootDir>/src/test/config/mock-foundry.ts",
+            "<rootDir>/src/test/config/mock-window.ts",
+            "<rootDir>/src/test/config/constants.ts"
+        ],
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/test/config/global-test-config.ts"
+        ],
+        "testEnvironment": "jsdom",
+        "clearMocks": true,
+        "resetMocks": true,
+        "restoreMocks": true,
+        "resetModules": true
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.16.3"
+    }
 }
