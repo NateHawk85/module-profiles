@@ -1,5 +1,6 @@
 import * as Settings from '../scripts/settings';
 import * as ProfileInteractions from '../scripts/profile-interactions';
+import * as BrowserUtils from '../scripts/browser-utils';
 import CreateModuleProfileForm from './CreateModuleProfileForm';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm';
 import EditModuleProfileForm from './EditModuleProfileForm';
@@ -78,7 +79,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 			if (exportedProfiles)
 			{
-				await navigator.clipboard.writeText(exportedProfiles);
+				await BrowserUtils.copyToClipboard(exportedProfiles);
 				ui.notifications.info(`All profiles have been copied to clipboard!`);
 			}
 		});
@@ -109,7 +110,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 			if (exportedProfile)
 			{
-				await navigator.clipboard.writeText(exportedProfile);
+				await BrowserUtils.copyToClipboard(exportedProfile);
 				ui.notifications.info(`Profile "${profileName}" copied to clipboard!`);
 			}
 		}));
