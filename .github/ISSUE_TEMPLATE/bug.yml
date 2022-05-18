@@ -81,7 +81,9 @@ body:
         - Chrome
         - Safari
         - Microsoft Edge
+        - Internet Explorer
         - FoundryVTT Application
+        - Other (specify below)
     validations:
       required: true
   - type: input
