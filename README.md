@@ -1,4 +1,4 @@
-![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/test.yml/badge.svg)
+![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/run_tests_on_push.yml/badge.svg)
 
 ![Latest Release Download Count](https://img.shields.io/github/downloads/natehawk85/module-profiles/latest/module-profiles.zip?color=2b82fc&label=Downloads%20(latest)&style=for-the-badge)
 [![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fmodule-profiles&colorB=blueviolet)](https://forge-vtt.com/bazaar#package=module-profiles)
