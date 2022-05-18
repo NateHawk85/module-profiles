@@ -1,4 +1,4 @@
-name: Create release with commit
+name: Create manual release
 
 on:
   workflow_dispatch:

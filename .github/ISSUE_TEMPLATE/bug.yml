@@ -1,10 +1,14 @@
 name: Bug Report
 description: Ran into a bug? Let me know so I can squash it!
 title: "[Bug]: "
-labels: ["bug", "unverified"]
+labels: [ "bug", "unverified" ]
 assignees:
   - NateHawk85
 body:
+  - type: markdown
+    attributes:
+      value: |
+        I know there's a lot of fields, but all this info is really needed to quickly diagnose the issue. Thank you so much in advance!
   - type: textarea
     id: description
     attributes:
