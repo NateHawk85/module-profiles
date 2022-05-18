@@ -2,6 +2,7 @@ import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFu
 import {forceManageModuleProfilesHeightResize} from '../../main/classes/ManageModuleProfilesSettingsForm';
 import * as MockedSettings from '../../main/scripts/settings';
 import * as MockedProfileInteractions from '../../main/scripts/profile-interactions';
+import * as MockedBrowserUtils from '../../main/scripts/browser-utils';
 import MockedImportModuleProfileForm from '../../main/classes/ImportModuleProfileForm';
 import MockedCreateModuleProfileForm from '../../main/classes/CreateModuleProfileForm';
 import MockedConfirmDeleteProfileForm from '../../main/classes/ConfirmDeleteProfileForm';
@@ -14,6 +15,8 @@ jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
 jest.mock('../../main/scripts/profile-interactions');
 const ProfileInteractions = jest.mocked(MockedProfileInteractions, true);
+jest.mock('../../main/scripts/browser-utils');
+const BrowserUtils = jest.mocked(MockedBrowserUtils, true);
 jest.mock('../../main/classes/ImportModuleProfileForm');
 const ImportModuleProfileForm = jest.mocked(MockedImportModuleProfileForm, true);
 jest.mock('../../main/classes/CreateModuleProfileForm');
@@ -233,15 +236,6 @@ describe('activateListeners', () =>
 
 	describe('module-profiles-manage-profiles-export', () =>
 	{
-		beforeEach(() =>
-		{
-			// @ts-ignore - navigator only exists in browser, not test
-			// noinspection JSConstantReassignment
-			navigator.clipboard = {
-				writeText: jest.fn()
-			};
-		});
-
 		test.each(['Value', 'Another Value'])
 			('WHEN element with "module-profiles-manage-profiles-export-all" id exists THEN adds exportProfile click event to element: %s', async (value) =>
 		{
@@ -254,8 +248,8 @@ describe('activateListeners', () =>
 			await element.click();
 
 			expect(Settings.exportAllProfiles).toHaveBeenCalledTimes(1);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith(value);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(1);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith(value);
 			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`All profiles have been copied to clipboard!`);
 		});
@@ -578,15 +572,6 @@ describe('activateListeners', () =>
 
 	describe('module-profiles-export-profile', () =>
 	{
-		beforeEach(() =>
-		{
-			// @ts-ignore - navigator only exists in browser, not test
-			// noinspection JSConstantReassignment
-			navigator.clipboard = {
-				writeText: jest.fn()
-			};
-		});
-
 		test('WHEN element does not have "module-profiles-export-profile" class THEN does not add exportProfile click event to element', async () =>
 		{
 			const element = addElementWith(DEFAULT_PROFILE_NAME, ['not-export-profile']);
@@ -594,7 +579,7 @@ describe('activateListeners', () =>
 			manageModuleProfilesSettingsForm.activateListeners();
 			await element.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(0);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(0);
 			expect(ui.notifications.info).toHaveBeenCalledTimes(0);
 		});
 
@@ -607,7 +592,7 @@ describe('activateListeners', () =>
 			await element1.click();
 			await element2.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(0);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(0);
 			expect(ui.notifications.info).toHaveBeenCalledTimes(0);
 		});
 
@@ -621,8 +606,8 @@ describe('activateListeners', () =>
 				await element.click();
 				expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
 				expect(Settings.exportProfileByName).toHaveBeenCalledWith(value);
-				expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-				expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Value');
+				expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(1);
+				expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('A Value');
 				expect(ui.notifications.info).toHaveBeenCalledTimes(1);
 				expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${value}" copied to clipboard!`);
 			});
@@ -638,16 +623,16 @@ describe('activateListeners', () =>
 			await element1.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Different Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(1);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('A Different Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
 			await element2.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('A Different Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(2);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('A Different Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 		});
@@ -664,22 +649,22 @@ describe('activateListeners', () =>
 			await element1.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Yet Another Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(1);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('Yet Another Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
 			await element2.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Yet Another Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(2);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('Yet Another Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 
 			await element3.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(2);
 			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
 		});
 
@@ -694,16 +679,16 @@ describe('activateListeners', () =>
 			await element1.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(1);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(1);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(1);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "${DEFAULT_PROFILE_NAME}" copied to clipboard!`);
 
 			await element2.click();
 			expect(Settings.exportProfileByName).toHaveBeenCalledTimes(2);
 			expect(Settings.exportProfileByName).toHaveBeenCalledWith('A Different Profile Name');
-			expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
-			expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Value');
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledTimes(2);
+			expect(BrowserUtils.copyToClipboard).toHaveBeenCalledWith('Value');
 			expect(ui.notifications.info).toHaveBeenCalledTimes(2);
 			expect(ui.notifications.info).toHaveBeenCalledWith(`Profile "A Different Profile Name" copied to clipboard!`);
 		});
