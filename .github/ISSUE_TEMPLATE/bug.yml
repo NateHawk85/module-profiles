@@ -81,22 +81,7 @@ body:
         - Chrome
         - Safari
         - Microsoft Edge
-        - Native FoundryVTT Application
-        - Other (please specify below)
-    validations:
-      required: true
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browser did you see this on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
-        - Native FoundryVTT Application
-        - Other (please specify below)
+        - FoundryVTT Application
     validations:
       required: true
   - type: input
@@ -109,7 +94,7 @@ body:
   - type: textarea
     id: installed-modules
     attributes:
-      label: Installed Modules/Additional Info
+      label: Installed Modules + Additional Info
       value: |
         - Module Profiles v1.0.0
     validations:
