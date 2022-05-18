@@ -18,11 +18,13 @@ export async function copyToClipboard(text: string): Promise<boolean>
 			document.execCommand('copy');
 			document.body.removeChild(tempTextArea);
 		}
+
 		return true;
 	} catch (error)
 	{
 		ui.notifications.error('Unable to copy to clipboard. Please check console for details.');
 		console.log(error);
+
 		return false;
 	}
 }
