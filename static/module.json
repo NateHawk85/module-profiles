@@ -7,9 +7,10 @@
   "minimumCoreVersion": "0.8.0",
   "compatibleCoreVersion": "9.269",
   "url": "Replaced",
-  "manifest": "Replaced",
+  "manifest": "https://github.com/NateHawk85/module-profiles/releases/latest/download/module.json",
   "download": "Replaced",
   "bugs": "https://github.com/NateHawk85/module-profiles/issues",
+  "changelog": "https://github.com/NateHawk85/module-profiles/releases",
   "license": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/LICENSE",
   "readme": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/README.md",
   "languages": [

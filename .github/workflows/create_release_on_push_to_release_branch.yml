@@ -53,7 +53,6 @@ jobs:
         env:
           version: ${{steps.tag_version.outputs.new_tag}}
           url: https://github.com/${{github.repository}}
-          manifest: https://github.com/${{github.repository}}/releases/latest/download/dist/module.json
           download: https://github.com/${{github.repository}}/releases/download/${{steps.tag_version.outputs.new_tag}}/module-profiles.zip
 
       - name: Create release module .zip file
