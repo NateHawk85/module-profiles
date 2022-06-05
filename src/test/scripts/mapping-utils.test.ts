@@ -1,5 +1,6 @@
 import * as MappingUtils from '../../main/scripts/mapping-utils';
 import * as Constants from '../config/constants';
+import {ModuleInfo} from '../../main/types';
 
 describe('mapToModuleKeyIsActiveRecord', () =>
 {

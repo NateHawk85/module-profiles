@@ -1,5 +1,6 @@
 import * as Settings from '../scripts/settings';
 import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import {ModuleProfile} from '../types';
 
 /**
  * A FormApplication to be rendered when you want a user's confirmation that yes, in fact, they *do* want to delete said profile.

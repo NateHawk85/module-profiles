@@ -2,6 +2,7 @@ import * as Settings from './settings';
 import * as SettingsUtils from './settings-utils';
 import * as MappingUtils from './mapping-utils';
 import {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm';
+import {ModuleInfo, ModuleProfile} from '../types';
 
 export function registerModuleSettings(): void
 {

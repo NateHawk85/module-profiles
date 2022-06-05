@@ -3,6 +3,8 @@
  * @param {ModuleInfo[]} moduleInfos
  * @return {Record<string, boolean>} - The corresponding Record representation of the inputted data.
  */
+import {ModuleInfo} from '../types';
+
 export function mapToModuleKeyIsActiveRecord(moduleInfos: ModuleInfo[]): Record<string, boolean>
 {
 	const record: Record<string, boolean> = {};

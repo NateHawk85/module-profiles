@@ -1,16 +1,21 @@
 import * as SettingsUtils from '../../main/scripts/settings-utils';
+import {MODULE_ID} from '../../main/scripts/settings-utils';
 import * as MockedSettings from '../../main/scripts/settings';
+import * as MockedDataMigration from '../../main/scripts/data-migration';
 import {when} from 'jest-when';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import {DATA_VERSION, DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
 import ManageModuleProfilesSettingsForm from '../../main/classes/ManageModuleProfilesSettingsForm';
 
 jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
+jest.mock('../../main/scripts/data-migration');
+const DataMigration = jest.mocked(MockedDataMigration, true);
 
 const MODULE_NAME = 'module-profiles';
 const PROFILES_SETTING = 'profiles';
 const ACTIVE_PROFILE_NAME_SETTING = 'activeProfileName';
+const DATA_VERSION_SETTING = 'dataVersion';
 const MANAGE_PROFILES_MENU = 'manageProfiles';
 
 describe('registerSettings', () =>
@@ -48,11 +53,42 @@ describe('registerSettings', () =>
 		});
 	});
 
+	test('WHEN the data version is up to date THEN registers the data version setting', () =>
+	{
+		SettingsUtils.registerSettings();
+
+		expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, DATA_VERSION_SETTING, {
+			name: 'Data Version',
+			default: DATA_VERSION,
+			type: Number,
+			scope: 'world'
+		});
+	});
+
+	test.each([0])
+		('WHEN the data version is not the latest version THEN calls DataMigration.migrateData', (value) =>
+		{
+			when(game.settings.get).calledWith(MODULE_ID, DATA_VERSION_SETTING).mockReturnValue(value);
+
+			SettingsUtils.registerSettings();
+
+			expect(DataMigration.migrateData).toHaveBeenCalled();
+		});
+
+	test('WHEN the data version is the latest version THEN does not call DataMigration.migrateData', () =>
+	{
+		when(game.settings.get).calledWith(MODULE_ID, DATA_VERSION_SETTING).mockReturnValue(1);
+
+		SettingsUtils.registerSettings();
+
+		expect(DataMigration.migrateData).toHaveBeenCalledTimes(0);
+	});
+
 	test('WHEN called THEN only calls as many times as there are settings', () =>
 	{
 		SettingsUtils.registerSettings();
 
-		expect(game.settings.register).toHaveBeenCalledTimes(2);
+		expect(game.settings.register).toHaveBeenCalledTimes(3);
 	});
 });
 

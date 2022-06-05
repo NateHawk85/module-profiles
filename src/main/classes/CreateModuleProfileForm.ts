@@ -1,5 +1,6 @@
 import * as Settings from '../scripts/settings';
 import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import {ModuleProfile} from '../types';
 
 /**
  * A FormApplication that allows a user to create a new module profile.

@@ -4,6 +4,7 @@ import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
 import {when} from 'jest-when';
 import * as Constants from '../config/constants';
 import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import {ModuleProfile} from '../../main/types';
 
 jest.mock('../../main/scripts/settings-utils');
 const SettingsUtils = jest.mocked(MockedSettingsUtils, true);

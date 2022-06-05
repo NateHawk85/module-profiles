@@ -4,6 +4,7 @@ import * as ModuleManagementScripts from './module-management-scripts';
 import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm';
 import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm';
 import {MODULE_ID} from '../settings-utils';
+import {ModuleInfo} from '../../types';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 

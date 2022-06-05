@@ -1,6 +1,7 @@
 import * as Settings from '../scripts/settings';
 import * as MappingUtils from '../scripts/mapping-utils';
 import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import {ModuleProfile} from '../types';
 
 /**
  * A FormApplication that allows a user to edit a module profile.

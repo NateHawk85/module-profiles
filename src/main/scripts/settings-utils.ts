@@ -1,5 +1,7 @@
 import * as Settings from './settings';
+import * as DataMigration from './data-migration';
 import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm';
+import {ModuleProfile} from '../types';
 
 export const MODULE_ID = 'module-profiles';
 export const TEMPLATES_PATH = `modules/${MODULE_ID}/templates`;
@@ -7,6 +9,9 @@ export const DEFAULT_PROFILE_NAME = 'Default Profile';
 
 const PROFILES_SETTING = 'profiles';
 const ACTIVE_PROFILE_NAME_SETTING = 'activeProfileName';
+// TODO
+const DATA_VERSION_SETTING = 'dataVersion';
+const DATA_VERSION = 1;
 
 /**
  * Registers settings for the module. This is only meant to be called on initial game load.
@@ -27,6 +32,18 @@ export function registerSettings(): void
 		type: String,
 		scope: 'world'
 	});
+
+	game.settings.register(MODULE_ID, DATA_VERSION_SETTING, {
+		name: 'Data Version',
+		default: 0,
+		type: Number,
+		scope: 'world'
+	});
+
+	if (<number> game.settings.get(MODULE_ID, DATA_VERSION_SETTING) < DATA_VERSION)
+	{
+		DataMigration.migrateData();
+	}
 
 	function buildDefaultProfile(): ModuleProfile
 	{

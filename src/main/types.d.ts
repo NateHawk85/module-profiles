@@ -1,3 +1,5 @@
+import Setting from './classes/Setting';
+
 interface ModuleProfile
 {
 	name: string,
@@ -10,4 +12,5 @@ interface ModuleInfo
 	id: string,
 	title?: string,
 	isActive: boolean
+	settings?: Setting[] // TODO
 }
