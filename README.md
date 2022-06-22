@@ -7,7 +7,7 @@
 
 ## Got feedback?
 
-No problem! Go ahead and [create an issue](https://github.com/NateHawk85/module-profiles/issues) and let me know how much my code sucks, or how it could be 
+No problem! Go ahead and [create an issue](https://github.com/NateHawk85/module-profiles/issues) and let me know how this module can be 
 improved.
 
 Check out what work's being done [here](https://github.com/NateHawk85/module-profiles/projects/2)!
