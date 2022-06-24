@@ -194,7 +194,7 @@ export const CoreGameRecords: Record<CoreModuleConfigurationValues, Record<strin
 // ---------------------------------------- Test Module Profile Constants ----------------------------------------
 
 export const DEFAULT_PROFILE_NAME = 'Default Profile';
-export const DATA_VERSION = 0;
+export const DEFAULT_DATA_VERSION = 0;
 export const DEFAULT_PROFILE: ModuleProfile = {
 	name: DEFAULT_PROFILE_NAME,
 	modules: [

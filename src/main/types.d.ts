@@ -12,5 +12,5 @@ interface ModuleInfo
 	id: string,
 	title?: string,
 	isActive: boolean
-	settings?: Setting[] // TODO
+	settings?: Setting[] // TODO - will not be optional
 }

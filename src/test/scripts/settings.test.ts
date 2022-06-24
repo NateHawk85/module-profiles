@@ -3,7 +3,7 @@ import * as MockedSettingsUtils from '../../main/scripts/settings-utils';
 import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
 import {when} from 'jest-when';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import {DEFAULT_DATA_VERSION, DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
 import {ModuleProfile} from '../../main/types';
 
 jest.mock('../../main/scripts/settings-utils');
@@ -1194,6 +1194,7 @@ describe('resetProfiles', () =>
 	{
 		SettingsUtils.resetProfiles.mockReturnValue(Promise.resolve(undefined));
 		SettingsUtils.setActiveProfileName.mockReturnValue(Promise.resolve(DEFAULT_PROFILE_NAME));
+		SettingsUtils.setDataVersion.mockReturnValue(Promise.resolve(0));
 	});
 
 	test('WHEN called THEN calls SettingsUtils.resetProfiles', async () =>
@@ -1208,6 +1209,13 @@ describe('resetProfiles', () =>
 		await Settings.resetProfiles();
 
 		expect(SettingsUtils.setActiveProfileName).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME);
+	});
+
+	test('WHEN called THEN calls SettingsUtils.setDataVersion to set data version to 0', async () =>
+	{
+		await Settings.resetProfiles();
+
+		expect(SettingsUtils.setDataVersion).toHaveBeenCalledWith(DEFAULT_DATA_VERSION);
 	});
 
 	test('WHEN called THEN calls SettingsUtils.reloadWindow', async () =>

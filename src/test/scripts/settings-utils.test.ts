@@ -1,10 +1,9 @@
 import * as SettingsUtils from '../../main/scripts/settings-utils';
-import {MODULE_ID} from '../../main/scripts/settings-utils';
 import * as MockedSettings from '../../main/scripts/settings';
 import * as MockedDataMigration from '../../main/scripts/data-migration';
 import {when} from 'jest-when';
 import * as Constants from '../config/constants';
-import {DATA_VERSION, DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import {DEFAULT_DATA_VERSION, DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
 import ManageModuleProfilesSettingsForm from '../../main/classes/ManageModuleProfilesSettingsForm';
 
 jest.mock('../../main/scripts/settings');
@@ -53,38 +52,26 @@ describe('registerSettings', () =>
 		});
 	});
 
-	test('WHEN the data version is up to date THEN registers the data version setting', () =>
+	test('WHEN called THEN the "Data Version" setting is registered with "0" saved by default', () =>
 	{
 		SettingsUtils.registerSettings();
 
 		expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, DATA_VERSION_SETTING, {
 			name: 'Data Version',
-			default: DATA_VERSION,
+			default: DEFAULT_DATA_VERSION,
 			type: Number,
 			scope: 'world'
 		});
 	});
 
-	test.each([0])
-		('WHEN the data version is not the latest version THEN calls DataMigration.migrateData', (value) =>
-		{
-			when(game.settings.get).calledWith(MODULE_ID, DATA_VERSION_SETTING).mockReturnValue(value);
-
-			SettingsUtils.registerSettings();
-
-			expect(DataMigration.migrateData).toHaveBeenCalled();
-		});
-
-	test('WHEN the data version is the latest version THEN does not call DataMigration.migrateData', () =>
+	test('WHEN called THEN calls DataMigration.checkToMigrateData', () =>
 	{
-		when(game.settings.get).calledWith(MODULE_ID, DATA_VERSION_SETTING).mockReturnValue(1);
-
 		SettingsUtils.registerSettings();
 
-		expect(DataMigration.migrateData).toHaveBeenCalledTimes(0);
+		expect(DataMigration.checkToMigrateData).toHaveBeenCalled();
 	});
 
-	test('WHEN called THEN only calls as many times as there are settings', () =>
+	test('WHEN called THEN only registers as many times as there are settings', () =>
 	{
 		SettingsUtils.registerSettings();
 
@@ -364,26 +351,6 @@ describe('Settings', () =>
 						]);
 					});
 		});
-
-		describe('resetProfiles', () =>
-		{
-			test('WHEN called THEN calls game.settings.set with "undefined"', () =>
-			{
-				SettingsUtils.resetProfiles();
-
-				expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, undefined);
-			});
-
-			test.each([undefined, 'some value'])
-				('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
-				{
-					when(game.settings.set).calledWith(MODULE_NAME, PROFILES_SETTING, undefined).mockReturnValue(Promise.resolve(value));
-
-					const actual = SettingsUtils.resetProfiles();
-
-					expect(actual).toStrictEqual(Promise.resolve(value));
-				});
-		});
 	});
 
 	describe('Active Profile Name', () =>
@@ -428,5 +395,69 @@ describe('Settings', () =>
 					expect(actual).toStrictEqual(Promise.resolve(value));
 				});
 		});
+	});
+
+	describe('Data Version', () =>
+	{
+		describe('getDataVersion', () =>
+		{
+			test('WHEN called THEN calls game.settings.get with setting name', () =>
+			{
+				SettingsUtils.getDataVersion();
+
+				expect(game.settings.get).toHaveBeenCalledWith(MODULE_NAME, DATA_VERSION_SETTING);
+			});
+
+			test.each([DEFAULT_DATA_VERSION, 2, 5])
+				('WHEN called THEN returns what game.settings.get returns: %s', (value) =>
+				{
+					when(game.settings.get).calledWith(MODULE_NAME, DATA_VERSION_SETTING).mockReturnValue(value);
+
+					const dataVersion = SettingsUtils.getDataVersion();
+
+					expect(dataVersion).toStrictEqual(value);
+				});
+		});
+
+		describe('setDataVersion', () =>
+		{
+			test.each([DEFAULT_DATA_VERSION, 2, 5])
+				('WHEN called THEN calls game.settings.set with setting name: %s', (value) =>
+				{
+					SettingsUtils.setDataVersion(value);
+
+					expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, DATA_VERSION_SETTING, value);
+				});
+
+			test.each([DEFAULT_DATA_VERSION, 2, 5])
+				('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
+				{
+					when(game.settings.set).calledWith(MODULE_NAME, DATA_VERSION_SETTING, value).mockReturnValue(Promise.resolve(value));
+
+					const actual = SettingsUtils.setDataVersion(value);
+
+					expect(actual).toStrictEqual(Promise.resolve(value));
+				});
+		});
+	});
+
+	describe('resetProfiles', () =>
+	{
+		test('WHEN called THEN calls game.settings.set with "undefined" for profiles setting', () =>
+		{
+			SettingsUtils.resetProfiles();
+
+			expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, undefined);
+		});
+
+		test.each([undefined, 'some value'])
+			('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
+			{
+				when(game.settings.set).calledWith(MODULE_NAME, PROFILES_SETTING, undefined).mockReturnValue(Promise.resolve(value));
+
+				const actual = SettingsUtils.resetProfiles();
+
+				expect(actual).toStrictEqual(Promise.resolve(value));
+			});
 	});
 });

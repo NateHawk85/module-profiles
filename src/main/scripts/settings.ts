@@ -266,8 +266,10 @@ export async function deleteProfile(profileName: string): Promise<ModuleProfile[
  */
 export async function resetProfiles(): Promise<void>
 {
+	// TODO - rename to "resetDefaults" and change everything so that SettingsUtils stores default values?
 	await SettingsUtils.resetProfiles()
 					   .then(() => SettingsUtils.setActiveProfileName(SettingsUtils.DEFAULT_PROFILE_NAME))
+					   .then(() => SettingsUtils.setDataVersion(0))
 					   .then(() => SettingsUtils.reloadWindow());
 }
 

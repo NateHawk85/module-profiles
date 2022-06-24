@@ -9,9 +9,7 @@ export const DEFAULT_PROFILE_NAME = 'Default Profile';
 
 const PROFILES_SETTING = 'profiles';
 const ACTIVE_PROFILE_NAME_SETTING = 'activeProfileName';
-// TODO
 const DATA_VERSION_SETTING = 'dataVersion';
-const DATA_VERSION = 1;
 
 /**
  * Registers settings for the module. This is only meant to be called on initial game load.
@@ -40,11 +38,9 @@ export function registerSettings(): void
 		scope: 'world'
 	});
 
-	if (<number> game.settings.get(MODULE_ID, DATA_VERSION_SETTING) < DATA_VERSION)
-	{
-		DataMigration.migrateData();
-	}
+	DataMigration.checkToMigrateData();
 
+	// TODO - must create with new settings
 	function buildDefaultProfile(): ModuleProfile
 	{
 		const savedModuleConfiguration = Settings.getCurrentModuleConfiguration();
@@ -118,14 +114,6 @@ export async function setProfiles(profiles: ModuleProfile[]): Promise<ModuleProf
 }
 
 /**
- * Resets the Profiles game setting to the default profile.
- */
-export function resetProfiles(): Promise<void>
-{
-	return game.settings.set(MODULE_ID, PROFILES_SETTING, undefined);
-}
-
-/**
  * Get the Active Profile Name game setting.
  * @return {string} - The value of the game setting.
  */
@@ -142,4 +130,31 @@ export function getActiveProfileName(): string
 export function setActiveProfileName(activeProfileName: string): Promise<string>
 {
 	return game.settings.set(MODULE_ID, ACTIVE_PROFILE_NAME_SETTING, activeProfileName);
+}
+
+/**
+ * Get the Data Version game setting.
+ * @return {number} - The value of the game setting.
+ */
+export function getDataVersion(): number
+{
+	return <number> game.settings.get(MODULE_ID, DATA_VERSION_SETTING);
+}
+
+/**
+ * Set the Data Version game setting.
+ * @param {number} dataVersion - The value to save to the game setting.
+ * @return {Promise<number>} - A Promise resolving to the new game setting value.
+ */
+export function setDataVersion(dataVersion: number): Promise<number>
+{
+	return game.settings.set(MODULE_ID, DATA_VERSION_SETTING, dataVersion);
+}
+
+/**
+ * Resets the Profiles game setting to the default profile.
+ */
+export function resetProfiles(): Promise<void>
+{
+	return game.settings.set(MODULE_ID, PROFILES_SETTING, undefined);
 }

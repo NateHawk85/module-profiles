@@ -16,6 +16,9 @@ globalThis.game = {
 	},
 	user: {
 		isGM: jest.fn()
+	},
+	i18n: {
+		localize: jest.fn()
 	}
 }
 
