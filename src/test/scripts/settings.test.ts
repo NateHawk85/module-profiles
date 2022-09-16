@@ -160,13 +160,6 @@ describe('getCurrentModuleConfiguration', () =>
 	});
 
 	// TODO - implement v10 tests
-	describe('v10', () =>
-	{
-		beforeEach(() =>
-		{
-			jest.spyOn(Settings, 'getFoundryVersion').mockReturnValue(FoundryVersion.v10);
-		});
-	});
 });
 
 describe('setCoreModuleConfiguration', () =>
