@@ -1,4 +1,5 @@
 import * as Settings from '../../main/scripts/settings';
+import {FoundryVersion} from '../../main/scripts/settings';
 import * as MockedSettingsUtils from '../../main/scripts/settings-utils';
 import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
 import {when} from 'jest-when';
@@ -69,86 +70,103 @@ describe('registerModuleSettings', () =>
 
 describe('getCurrentModuleConfiguration', () =>
 {
-	test.each(Constants.CoreModulesConfigurationToCorrespondingModuleInfosPairs)
-		('WHEN game.modules returns a map of modules THEN maps them to an array of ModuleInfo objects: %o, %o', (coreConfiguration, expectedProfile) =>
+	describe('v9', () =>
+	{
+		beforeEach(() =>
 		{
-			// @ts-ignore - Mocking for Foundry
-			game.modules = coreConfiguration;
-
-			const actual = Settings.getCurrentModuleConfiguration();
-
-			expect(actual).toStrictEqual(expectedProfile.modules);
+			jest.spyOn(Settings, 'getFoundryVersion').mockReturnValue(FoundryVersion.v9);
 		});
 
-	test.each([
-		[
-			Constants.buildCoreGameModulesMapWithProfiles(
-				[Constants.TidyUITestValues, false],
-				[Constants.FindTheCulpritTestValues, false]
-			),
+		test.each(Constants.CoreModulesConfigurationToCorrespondingModuleInfosPairs)
+			('WHEN game.modules returns a map of modules THEN maps them to an array of ModuleInfo objects: %o, %o', (coreConfiguration, expectedProfile) =>
+			{
+				// @ts-ignore - Mocking for Foundry
+				game.modules = coreConfiguration;
+
+				const actual = Settings.getCurrentModuleConfiguration();
+
+				expect(actual).toStrictEqual(expectedProfile.modules);
+			});
+
+		test.each([
 			[
-				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-			]
-		],
-		[
-			Constants.buildCoreGameModulesMapWithProfiles(
-				[Constants.TidyUITestValues, false],
-				[Constants.PopoutTestValues, false],
-				[Constants.FindTheCulpritTestValues, false]
-			),
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.TidyUITestValues, false],
+					[Constants.FindTheCulpritTestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
 			[
-				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-				Constants.buildModuleInfo(Constants.PopoutTestValues, false),
-				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-			]
-		],
-		[
-			Constants.buildCoreGameModulesMapWithProfiles(
-				[Constants.PopoutTestValues, true],
-				[Constants.FindTheCulpritTestValues, false],
-				[Constants.ModuleProfilesTestValues, false],
-				[Constants.TidyUITestValues, false]
-			),
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.TidyUITestValues, false],
+					[Constants.PopoutTestValues, false],
+					[Constants.FindTheCulpritTestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.PopoutTestValues, false),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
 			[
-				Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-				Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
-				Constants.buildModuleInfo(Constants.PopoutTestValues, true),
-				Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-			]
-		],
-		[
-			Constants.buildCoreGameModulesMapWithProfiles(
-				[{ id: 'b-module', title: 'B Module' }, false],
-				[{ id: 'a-module', title: 'A Module' }, false]
-			),
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[Constants.PopoutTestValues, true],
+					[Constants.FindTheCulpritTestValues, false],
+					[Constants.ModuleProfilesTestValues, false],
+					[Constants.TidyUITestValues, false]
+				),
+				[
+					Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
+					Constants.buildModuleInfo(Constants.PopoutTestValues, true),
+					Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+				]
+			],
 			[
-				Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
-				Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false)
-			]
-		],
-		[
-			Constants.buildCoreGameModulesMapWithProfiles(
-				[{ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false],
-				[{ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false],
-				[{ id: 'key-does-not-matter2', title: 'Z Module' }, false]
-			),
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[{ id: 'b-module', title: 'B Module' }, false],
+					[{ id: 'a-module', title: 'A Module' }, false]
+				),
+				[
+					Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
+					Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false)
+				]
+			],
 			[
-				Constants.buildModuleInfo({ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false),
-				Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
-				Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false)
+				Constants.buildCoreGameModulesMapWithProfiles(
+					[{ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false],
+					[{ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false],
+					[{ id: 'key-does-not-matter2', title: 'Z Module' }, false]
+				),
+				[
+					Constants.buildModuleInfo({ id: 'zzzzzzzzzzzzzzzz-module', title: 'A Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
+					Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false)
+				]
 			]
-		]
-	])
-		('WHEN game.modules returns a map of modules unsorted by title THEN sorts them by title: %o, %o', (coreConfiguration, expectedModuleInfos) =>
+		])
+			('WHEN game.modules returns a map of modules unsorted by title THEN sorts them by title: %o, %o', (coreConfiguration, expectedModuleInfos) =>
+			{
+				// @ts-ignore - Mocking for Foundry
+				game.modules = coreConfiguration;
+
+				const actual = Settings.getCurrentModuleConfiguration();
+
+				expect(actual).toStrictEqual(expectedModuleInfos);
+			});
+	});
+
+	// TODO - implement v10 tests
+	describe('v10', () =>
+	{
+		beforeEach(() =>
 		{
-			// @ts-ignore - Mocking for Foundry
-			game.modules = coreConfiguration;
-
-			const actual = Settings.getCurrentModuleConfiguration();
-
-			expect(actual).toStrictEqual(expectedModuleInfos);
+			jest.spyOn(Settings, 'getFoundryVersion').mockReturnValue(FoundryVersion.v10);
 		});
+	});
 });
 
 describe('setCoreModuleConfiguration', () =>
@@ -1215,4 +1233,43 @@ describe('resetProfiles', () =>
 
 		expect(SettingsUtils.reloadWindow).toHaveBeenCalled();
 	});
+});
+
+describe('getFoundryVersion', () =>
+{
+	test.each(['9.265', '9.280'])
+		('WHEN is v9 THEN returns v9', (value) =>
+		{
+			// @ts-ignore - Mocking for Foundry
+			game.version = value;
+
+			const response = Settings.getFoundryVersion();
+
+			expect(response).toStrictEqual(FoundryVersion.v9);
+		});
+
+	test.each(['10.282', '10.285'])
+		('WHEN is v10 THEN returns v10', (value) =>
+		{
+			// @ts-ignore - Mocking for Foundry
+			game.version = value;
+
+			const response = Settings.getFoundryVersion();
+
+			expect(response).toStrictEqual(FoundryVersion.v10);
+		});
+
+	test.each(['11.282', '8.285'])
+		('WHEN is unsupported version THEN throws Error and calls ui.notifications.error', (value) =>
+		{
+			// @ts-ignore - Mocking for Foundry
+			game.version = value;
+
+			const functionCall = () => Settings.getFoundryVersion();
+
+			const errorMessage = `Module Profiles: Foundry version '${value}' is not supported. Please disable the Module Profiles module.`;
+			expect(functionCall).toThrow(Error);
+			expect(ui.notifications.error).toHaveBeenCalledWith(errorMessage);
+			expect(functionCall).toThrow(errorMessage);
+		});
 });
