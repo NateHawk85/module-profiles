@@ -121,6 +121,8 @@ export function buildModuleInfo(moduleInfo: { id: string, title?: string }, isAc
 }
 
 // ---------------------------------------- Test Core Settings Constants ----------------------------------------
+export const DEFAULT_FOUNDRY_10_VERSION = '10.285';
+
 export const CoreGameModuleMaps: Record<CoreModuleConfigurationValues, Map<string, StubCoreModuleDataEntry>> = {
 	MultipleAllDisabled: buildCoreGameModulesMapWithProfiles(
 		[FindTheCulpritTestValues, false],

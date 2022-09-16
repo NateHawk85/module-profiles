@@ -21,11 +21,26 @@ export function registerModuleSettings(): void
  */
 export function getCurrentModuleConfiguration(): ModuleInfo[]
 {
-	return Array.from(game.modules).map(([key, value]) => ({
-		id: key,
-		title: value.data.title,
-		isActive: value.active
-	})).sort((a, b) => a.title.localeCompare(b.title));
+	const currentFoundryVersion = Settings.getFoundryVersion();
+
+	if (currentFoundryVersion == FoundryVersion.v9)
+	{
+		return Array.from(game.modules).map(([key, value]) => ({
+			id: key,
+			title: value.data.title,
+			isActive: value.active
+		})).sort((a, b) => a.title.localeCompare(b.title));
+	}
+	else {
+		return Array.from(game.modules).map(module => ({
+			// @ts-ignore - v10 vs v9 schema
+			id: module.id,
+			// @ts-ignore - v10 vs v9 schema
+			title: module.title,
+			// @ts-ignore - v10 vs v9 schema
+			isActive: module.active
+		})).sort((a, b) => a.title.localeCompare(b.title));
+	}
 }
 
 /**
@@ -278,4 +293,25 @@ export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Pro
 	const mergedConfiguration = { ...coreModuleConfiguration, ...moduleInfosToSave };
 
 	return await game.settings.set('core', 'moduleConfiguration', mergedConfiguration);
+}
+
+export enum FoundryVersion {
+	v9 = '9',
+	v10 = '10'
+}
+
+export function getFoundryVersion(): FoundryVersion {
+	const foundryVersion = game.version.split('.')[0];
+
+	switch (foundryVersion)
+	{
+		case "9":
+			return FoundryVersion.v9;
+		case "10":
+			return FoundryVersion.v10;
+		default:
+			const errorMessage = `Module Profiles: Foundry version '${game.version}' is not supported. Please disable the Module Profiles module.`;
+			ui.notifications.error(errorMessage);
+			throw new Error(errorMessage);
+	}
 }

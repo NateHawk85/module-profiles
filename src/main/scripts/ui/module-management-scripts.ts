@@ -1,4 +1,5 @@
 import * as Settings from '../settings';
+import {FoundryVersion} from '../settings';
 import * as MappingUtils from '../mapping-utils';
 import * as ModuleManagementScripts from './module-management-scripts';
 import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm';
@@ -153,7 +154,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 
 	function modifyModuleListElements()
 	{
-		const moduleElements = document.querySelectorAll('#module-management li[data-module-name]');
+		const moduleElements = getModuleListElements();
 
 		// Add status blinkers and add an "update" event listener to each module in the list
 		moduleElements.forEach(module =>
@@ -183,7 +184,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 function updateAllStatusElements(): void
 {
 	const activeProfile = Settings.getActiveProfile();
-	const modules = <NodeListOf<HTMLLIElement>> document.querySelectorAll('#module-management li[data-module-name]');
+	const modules = getModuleListElements();
 	modules.forEach(module =>
 	{
 		if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
@@ -250,4 +251,16 @@ function findUnsavedModuleInfos(): ModuleInfo[]
 	inactiveModuleIds.forEach(moduleId => moduleList[moduleId] = false);
 
 	return MappingUtils.mapToModuleInfos(moduleList);
+}
+
+// Module management window swapped from using 'data-module-name' to 'data-module-id' when going from v9 to v10
+function getModuleListElements(): NodeListOf<HTMLLIElement>
+{
+	if (Settings.getFoundryVersion() == FoundryVersion.v9)
+	{
+		return document.querySelectorAll('#module-management li[data-module-name]');
+	} else
+	{
+		return document.querySelectorAll('#module-management li[data-module-id]');
+	}
 }

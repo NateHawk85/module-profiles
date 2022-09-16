@@ -1,3 +1,5 @@
+import {DEFAULT_FOUNDRY_10_VERSION} from './constants';
+
 // @ts-ignore - Mocking for Foundry
 globalThis.Hooks = {
 	once: jest.fn(),
@@ -16,7 +18,8 @@ globalThis.game = {
 	},
 	user: {
 		isGM: jest.fn()
-	}
+	},
+	version: DEFAULT_FOUNDRY_10_VERSION
 }
 
 // @ts-ignore - Mocking for Foundry
