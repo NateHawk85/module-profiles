@@ -3,7 +3,7 @@
 
 ![Latest Release Download Count](https://img.shields.io/github/downloads/natehawk85/module-profiles/latest/total?color=2b82fc&label=Downloads%20(latest)&style=plastic)
 ![Total Download Count](https://img.shields.io/github/downloads/natehawk85/module-profiles/total?style=plastic&label=Downloads%20(total))
-[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fmodule-profiles&colorB=blueviolet)](https://forge-vtt.com/bazaar#package=module-profiles)
+[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fmodule-profiles&colorB=blueviolet&style=plastic)](https://forge-vtt.com/bazaar#package=module-profiles)
 
 ## Got feedback?
 
