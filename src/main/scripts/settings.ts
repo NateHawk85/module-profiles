@@ -1,7 +1,7 @@
 import * as Settings from './settings';
 import * as SettingsUtils from './settings-utils';
 import * as MappingUtils from './mapping-utils';
-import {MODULE_PROFILES_UPDATED_HOOK_NAME} from '../classes/ManageModuleProfilesSettingsForm';
+import { MODULE_PROFILES_UPDATED_HOOK_NAME } from '../classes/ManageModuleProfilesSettingsForm';
 
 export function registerModuleSettings(): void
 {
@@ -297,7 +297,8 @@ export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Pro
 
 export enum FoundryVersion {
 	v9 = '9',
-	v10 = '10'
+	v10 = '10',
+	v11 = '11'
 }
 
 export function getFoundryVersion(): FoundryVersion {
@@ -309,6 +310,8 @@ export function getFoundryVersion(): FoundryVersion {
 			return FoundryVersion.v9;
 		case "10":
 			return FoundryVersion.v10;
+		case "11":
+			return FoundryVersion.v11
 		default:
 			const errorMessage = `Module Profiles: Foundry version '${game.version}' is not supported. Please disable the Module Profiles module.`;
 			ui.notifications.error(errorMessage);
