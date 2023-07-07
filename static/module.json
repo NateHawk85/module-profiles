@@ -4,8 +4,11 @@
   "description": "Adds the capability to store multiple different module profiles for easily swapping between game time and setup, as well as other scenarios.",
   "author": "NateHawk85",
   "version": "Replaced",
-  "minimumCoreVersion": "0.8.0",
-  "compatibleCoreVersion": "11.305",
+  "compatibility": {
+    "minimum": "0.8.0",
+    "verified": "11.305",
+    "maximum": "11"
+  },
   "url": "Replaced",
   "manifest": "https://github.com/NateHawk85/module-profiles/releases/latest/download/module.json",
   "download": "Replaced",
