@@ -1,10 +1,10 @@
 import * as Settings from '../../main/scripts/settings';
-import {FoundryVersion} from '../../main/scripts/settings';
+import { FoundryVersion } from '../../main/scripts/settings';
 import * as MockedSettingsUtils from '../../main/scripts/settings-utils';
 import * as MockedMappingUtils from '../../main/scripts/mapping-utils';
-import {when} from 'jest-when';
+import { when } from 'jest-when';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import { DEFAULT_PROFILE, DEFAULT_PROFILE_NAME } from '../config/constants';
 
 jest.mock('../../main/scripts/settings-utils');
 const SettingsUtils = jest.mocked(MockedSettingsUtils, true);
@@ -1252,7 +1252,18 @@ describe('getFoundryVersion', () =>
 			expect(response).toStrictEqual(FoundryVersion.v10);
 		});
 
-	test.each(['11.282', '8.285'])
+	test.each(['11.282', '11.305'])
+		('WHEN is v11 THEN returns v11', (value) =>
+		{
+			// @ts-ignore - Mocking for Foundry
+			game.version = value;
+
+			const response = Settings.getFoundryVersion();
+
+			expect(response).toStrictEqual(FoundryVersion.v11);
+		});
+
+	test.each(['12.282', '8.285'])
 		('WHEN is unsupported version THEN throws Error and calls ui.notifications.error', (value) =>
 		{
 			// @ts-ignore - Mocking for Foundry
