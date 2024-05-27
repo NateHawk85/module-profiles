@@ -1,5 +1,5 @@
-import * as Settings from './settings';
 import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm';
+import * as Settings from './settings';
 
 export const MODULE_ID = 'module-profiles';
 export const TEMPLATES_PATH = `modules/${MODULE_ID}/templates`;
@@ -62,6 +62,8 @@ export function registerAPI(api: Record<string, Function>): void
 {
 	// @ts-ignore - Not recognized due to Foundry object
 	game.modules.get(MODULE_ID)!.api = api;
+
+	console.log(`${MODULE_ID} API registered`);
 }
 
 /**

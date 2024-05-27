@@ -1,3 +1,5 @@
+import * as Settings from './settings';
+
 /**
  * Maps an array of ModuleInfo objects into a Record, identical to how the core module configuration stores which modules are active and which aren't.
  * @param {ModuleInfo[]} moduleInfos
@@ -20,17 +22,20 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 {
 	const moduleInfos: ModuleInfo[] = [];
 
-	Object.entries(moduleIDIsActiveRecord).forEach(([key, value]) => moduleInfos.push({
-		id: key,
-		title: game.modules.get(key)?.data.title,
-		isActive: value
-	}));
+	Object.entries(moduleIDIsActiveRecord).forEach(([ key, value ]) =>
+	{
+		moduleInfos.push({
+			id: key,
+			title: findModuleTitleFromModuleId(key),
+			isActive: value,
+		});
+	});
 
 	moduleInfos.sort((a, b) =>
 	{
 		if (!a.title)
 		{
-			return 1
+			return 1;
 		}
 		if (!b.title)
 		{
@@ -40,4 +45,16 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 	});
 
 	return moduleInfos;
+}
+
+function findModuleTitleFromModuleId(moduleId: string): string | undefined
+{
+	const foundryVersion = Settings.getFoundryVersion();
+	if (foundryVersion === Settings.FoundryVersion.v12)
+	{
+		// @ts-expect-error - Title is inlined in the module object in v12
+		return game.modules.get(moduleId)?.title;
+	}
+
+	return game.modules.get(moduleId)?.data.title;
 }

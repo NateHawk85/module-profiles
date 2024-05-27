@@ -34,7 +34,7 @@
         "@babel/plugin-transform-runtime": "^7.16.4",
         "@babel/preset-env": "^7.16.4",
         "@babel/preset-typescript": "^7.16.7",
-        "@league-of-foundry-developers/foundry-vtt-types": "^9.268.0",
+        "@league-of-foundry-developers/foundry-vtt-types": "^9.280.0",
         "@types/jest": "^27.4.1",
         "@types/jest-when": "^3.5.0",
         "@types/webpack-env": "^1.16.0",
