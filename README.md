@@ -1,5 +1,5 @@
 ![Build Status](https://github.com/NateHawk85/module-profiles/actions/workflows/run_tests_on_push.yml/badge.svg)
-![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnatehawk85%2Fmodule-profiles%2Fmain%2Fstatic%2Fmodule.json&label=Current%20Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange&style=plastic)
+![Current Foundry Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnatehawk85%2Fmodule-profiles%2Fmain%2Fstatic%2Fmodule.json&label=Current%20Foundry%20Version&query=$.compatibility.maximum&colorB=orange&style=plastic)
 
 ![Latest Release Download Count](https://img.shields.io/github/downloads/natehawk85/module-profiles/latest/module-profiles.zip?color=2b82fc&label=Downloads%20(latest)&style=plastic)
 ![Total Download Count](https://img.shields.io/github/downloads/natehawk85/module-profiles/module-profiles.zip?style=plastic&label=Downloads%20(total))
