@@ -1,6 +1,6 @@
 {
     "name": "module-profiles",
-    "version": "v1.0.8",
+    "version": "v1.0.9",
     "description": "A module for FoundryVTT that allows for swapping between multiple customizable module profiles.",
     "main": "scripts/module-profiles.js",
     "scripts": {
