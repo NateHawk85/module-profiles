@@ -2,7 +2,11 @@
   "name": "module-profiles",
   "title": "Module Profiles",
   "description": "Adds the capability to store multiple different module profiles for easily swapping between game time and setup, as well as other scenarios.",
-  "author": "NateHawk85",
+  "authors": [
+    {
+      "name": "NateHawk85"
+    }
+  ],
   "version": "Replaced",
   "compatibility": {
     "minimum": "0.8.0",

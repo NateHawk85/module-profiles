@@ -46,15 +46,15 @@
 
 .module-profiles-status::before {
     content: "";
-    animation: bounce 1.5s infinite;
+    animation: module-profiles-bounce 1.5s infinite;
 }
 
 .module-profiles-status::after {
     content: "";
-    animation: bounce 1.5s -0.4s infinite;
+    animation: module-profiles-bounce 1.5s -0.4s infinite;
 }
 
-@keyframes bounce {
+@keyframes module-profiles-bounce {
     0% {
         transform: scale(1);
         -webkit-transform: scale(1);
@@ -67,7 +67,7 @@
     }
 }
 
-@-webkit-keyframes bounce {
+@-webkit-keyframes module-profiles-bounce {
     0% {
         transform: scale(1);
         -webkit-transform: scale(1);
