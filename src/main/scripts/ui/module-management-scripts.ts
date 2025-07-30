@@ -108,7 +108,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const statusButton = document.createElement('button');
 			statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 			statusButton.classList.add('module-profiles-status-button');
-			statusButton.style.flexBasis = '130%';
+			statusButton.style.flex = '1';
 			statusButton.dataset.profileName = activeProfile.name; // TODO - make this a little more... easier to find? idk
 
 			statusButton.addEventListener('click', (event) =>
@@ -130,7 +130,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
 													   // submits form)
 			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize('MODULE_MANAGEMENT.createNewButton.text')}`;
-			createModuleProfileButton.style.flexBasis = '80%';
+			createModuleProfileButton.style.flex = '1';
 			createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
 			return createModuleProfileButton;
