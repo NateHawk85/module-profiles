@@ -29,9 +29,11 @@ Hooks.on(
 
 // Append an active/total badge to the “Manage Modules” button in the Settings sidebar
 Hooks.on("renderSettingsConfig", (_app: SettingsConfig, html: JQuery) => {
-  // Count how many modules are active vs. total
-  const activeCount = game.modules.filter(m => m.active).length;
-  const totalCount  = game.modules.size;
+ // Count how many modules are active vs. total
+  // Map → array so we can use .filter()
+  const activeCount = Array.from(game.modules.values())
+    .filter((m: any) => m.active).length;
+   const totalCount  = game.modules.size;
 
   // Find the “Manage Modules” button by its data attributes
   const btn = html.find('button[data-action="openApp"][data-app="modules"]');
