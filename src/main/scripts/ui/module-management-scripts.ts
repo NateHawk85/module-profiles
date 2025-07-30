@@ -84,7 +84,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 		preFooterDiv.append(statusButton, saveCurrentConfigurationButton, manageProfilesButton);
 
 		// Add elements just below the module list, with a v13‑friendly fallback
-    const moduleList = document.getElementById('module-list');
+    const moduleList = document.getElementById('package-list');
     if (moduleList) {
       moduleList.after(preFooterDiv);
     } else {
@@ -242,9 +242,13 @@ function updateProfileStatusButtons(): void
 	});
 }
 
-function findUnsavedModuleInfos(): ModuleInfo[]
-{
-	const moduleCheckboxes = <NodeListOf<HTMLInputElement>> document.getElementById('module-list')!.querySelectorAll('input[type=checkbox]');
+function findUnsavedModuleInfos(): ModuleInfo[] {
+    // v12 used <ul id="module-list">; v13 uses <ol class="package-list">
+    const listEl = document.getElementById('module-list')
+        ?? document.querySelector('#module-management .package-list');
+    if (!listEl) return [];                       // nothing to compare yet
+    const moduleCheckboxes = listEl
+        .querySelectorAll<HTMLInputElement>('input[type=checkbox]');
 	const activeModuleIds: string[] = Array.from(moduleCheckboxes)
 										   .filter(checkbox => checkbox.checked)
 		// @ts-ignore - 'name' field exists on Foundry checkboxes with the given module IDs
