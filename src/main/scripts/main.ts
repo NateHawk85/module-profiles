@@ -4,8 +4,8 @@ import * as ModuleManagementScripts from './ui/module-management-scripts';
 import * as ManageModuleProfilesSettingsFormFunctions from '../classes/ManageModuleProfilesSettingsForm';
 
 // Module setup
-Hooks.once('ready', Settings.registerModuleSettings);
-Hooks.once('ready', API.registerApi);
+Hooks.once('init', Settings.registerModuleSettings);
+Hooks.once('init', API.registerApi);
 
 // Module Management window hooks
 Hooks.on('renderModuleManagement', ModuleManagementScripts.modifyModuleManagementRender);

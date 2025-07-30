@@ -83,9 +83,17 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 		const manageProfilesButton = buildManageProfilesButton();
 		preFooterDiv.append(statusButton, saveCurrentConfigurationButton, manageProfilesButton);
 
-		// Add elements just below the module list
-		const moduleList = document.getElementById('module-list')!;
-		moduleList.after(preFooterDiv);
+		// Add elements just below the module list, with a v13‑friendly fallback
+    const moduleList = document.getElementById('module-list');
+    if (moduleList) {
+      moduleList.after(preFooterDiv);
+    } else {
+      const container = document
+        .querySelector('#module-management .package-list')?.parentElement
+        ?? document.querySelector('#module-management .app')
+        ?? document.querySelector('#module-management');
+      if (container) container.append(preFooterDiv);
+    }
 
 		// Update status of status buttons
 		updateProfileStatusButtons();
@@ -121,7 +129,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const createModuleProfileButton = document.createElement('button');
 			createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
 													   // submits form)
-			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize('MODULE_MANAGEMENT.createNewButton.text')}</button>`;
+			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize('MODULE_MANAGEMENT.createNewButton.text')}`;
 			createModuleProfileButton.style.flexBasis = '80%';
 			createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
@@ -133,7 +141,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const manageProfilesButton = document.createElement('button');
 			manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
 												  // form)
-			manageProfilesButton.innerHTML = `<i class="fa fa-cog"></i> ${game.i18n.localize('MODULE_MANAGEMENT.manageModuleProfilesButton.text')}</button>`;
+			manageProfilesButton.innerHTML = `<i class="fa fa-cog"></i> ${game.i18n.localize('MODULE_MANAGEMENT.manageModuleProfilesButton.text')}`;
 			manageProfilesButton.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
