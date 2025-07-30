@@ -36,14 +36,14 @@ test('WHEN main.ts is run THEN module-profile settings are registered', () =>
 {
 	require('../../main/scripts/main');
 
-	expect(Hooks.once).toHaveBeenCalledWith('ready', Settings.registerModuleSettings);
+	expect(Hooks.once).toHaveBeenCalledWith('init', Settings.registerModuleSettings);
 });
 
 test('WHEN main.ts is run THEN the API is registered', () =>
 {
 	require('../../main/scripts/main');
 
-	expect(Hooks.once).toHaveBeenCalledWith('ready', API.registerApi);
+	expect(Hooks.once).toHaveBeenCalledWith('init', API.registerApi);
 });
 
 test('WHEN main.ts is run THEN the module management render is modified', () =>
