@@ -1,36 +1,36 @@
 {
-  "name": "module-profiles",
-  "title": "Module Profiles",
-  "description": "Adds the capability to store multiple different module profiles for easily swapping between game time and setup, as well as other scenarios.",
-  "authors": [
-    {
-      "name": "NateHawk85"
-    }
-  ],
-  "version": "Replaced",
-  "compatibility": {
-    "minimum": "0.8.0",
-    "verified": "12.324",
-    "maximum": "12"
-  },
-  "url": "Replaced",
-  "manifest": "https://github.com/NateHawk85/module-profiles/releases/latest/download/module.json",
-  "download": "Replaced",
-  "bugs": "https://github.com/NateHawk85/module-profiles/issues",
-  "changelog": "https://github.com/NateHawk85/module-profiles/releases",
-  "license": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/LICENSE",
-  "readme": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/README.md",
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
-  "styles": [
-    "styles/module-profiles-styles.css"
-  ],
-  "esmodules": [
-    "module-profiles.js"
-  ]
+    "id": "module-profiles",
+    "title": "Module Profiles",
+    "description": "Adds the capability to store multiple different module profiles for easily swapping between game time and setup, as well as other scenarios.",
+    "authors": [
+        {
+            "name": "NateHawk85"
+        }
+    ],
+    "version": "v1.0.9",
+    "compatibility": {
+        "minimum": "0.8.0",
+        "verified": "12.324",
+        "maximum": "15"
+    },
+    "url": "https://github.com/NateHawk85/module-profiles",
+    "manifest": "https://github.com/NateHawk85/module-profiles/releases/latest/download/module.json",
+    "download": "https://github.com/NateHawk85/module-profiles/releases/download/v1.0.9/module-profiles.zip",
+    "bugs": "https://github.com/NateHawk85/module-profiles/issues",
+    "changelog": "https://github.com/NateHawk85/module-profiles/releases",
+    "license": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/LICENSE",
+    "readme": "https://raw.githubusercontent.com/NateHawk85/module-profiles/main/README.md",
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "styles": [
+        "styles/module-profiles-styles.css"
+    ],
+    "esmodules": [
+        "module-profiles.js"
+    ]
 }
