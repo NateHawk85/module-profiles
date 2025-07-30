@@ -64,4 +64,4 @@ function findModuleTitleFromModuleId(moduleId: string): string {
 
   // For earlier versions (v9–v11), the title lives under .data
   return mod.data.title;
-+}
+}
