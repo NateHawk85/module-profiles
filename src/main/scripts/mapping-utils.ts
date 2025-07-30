@@ -47,14 +47,21 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 	return moduleInfos;
 }
 
-function findModuleTitleFromModuleId(moduleId: string): string | undefined
-{
-	const foundryVersion = Settings.getFoundryVersion();
-	if (foundryVersion === Settings.FoundryVersion.v12)
-	{
-		// @ts-expect-error - Title is inlined in the module object in v12
-		return game.modules.get(moduleId)?.title;
-	}
+function findModuleTitleFromModuleId(moduleId: string): string {
+  const foundryVersion = Settings.getFoundryVersion();
+  const mod = game.modules.get(moduleId);
+  if (!mod) {
+    console.warn(`module-profiles | Unknown module ID: ${moduleId}`);
+    return moduleId;  // Fallback to raw ID if no module is found
+  }
 
-	return game.modules.get(moduleId)?.data.title;
-}
+  // In both v12 and v13 the title is on the top-level Module object
+  if (foundryVersion === Settings.FoundryVersion.v12 ||
+      foundryVersion === Settings.FoundryVersion.v13) {
+   // @ts-expect-error - Title is an inline property in v12+ 
+    return mod.title;
+  }
+
+  // For earlier versions (v9–v11), the title lives under .data
+  return mod.data.title;
++}
