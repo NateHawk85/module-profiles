@@ -73,19 +73,24 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 	}
 
 function addFooterElements(): void {
-  // …build the preFooterDiv and buttons as before…
+  // Build our custom footer row
+  const preFooterDiv = document.createElement('div');
+  preFooterDiv.classList.add('module-profiles-footer-row');
+  preFooterDiv.append(
+    buildStatusButton(),
+    buildCreateModuleProfileButton(),
+    buildManageProfilesButton()
+  );
 
   // Use v13 structure if present: insert between <menu> and <footer>
-  const menuEl   = document.querySelector('#module-management > section > menu');
+  const menuEl = document.querySelector('#module-management > section > menu');
   const footerEl = document.querySelector('#module-management > section > footer');
   if (menuEl && footerEl) {
-    // Insert our row before the existing footer
     menuEl.parentElement!.insertBefore(preFooterDiv, footerEl);
   } else {
-    // Fall back to older selectors (v10/v9) if menu/footer aren’t found
+    // Fall back to older selectors (v10/v9)
     const moduleList =
-      document.getElementById('package-list') ??
-      document.getElementById('module-list');
+      document.getElementById('package-list') ?? document.getElementById('module-list');
     if (moduleList) {
       moduleList.after(preFooterDiv);
     } else {
