@@ -187,7 +187,7 @@ function addFooterElements(): void {
 			return span;
 		}
 	}
-}
+
 
 function updateAllStatusElements(): void
 {
