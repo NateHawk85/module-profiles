@@ -1274,7 +1274,7 @@ describe('getFoundryVersion', () =>
 		expect(response).toStrictEqual(FoundryVersion.v12);
 	});
 
-	test.each(['13.282', '8.285'])
+	test.each(['14', '8.285'])
 		('WHEN is unsupported version THEN throws Error and calls ui.notifications.error', (value) =>
 		{
 			// @ts-ignore - Mocking for Foundry

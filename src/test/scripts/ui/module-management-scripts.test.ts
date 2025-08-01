@@ -210,7 +210,7 @@ beforeEach(() =>
 // 	function buildModuleListElement()
 // 	{
 // 		const moduleList = document.createElement('ul');
-// 		moduleList.id = 'module-list';
+// 		moduleList.id = 'package-list';
 //
 // 		return moduleList;
 // 	}

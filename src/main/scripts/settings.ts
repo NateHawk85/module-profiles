@@ -299,7 +299,8 @@ export enum FoundryVersion {
 	v9 = '9',
 	v10 = '10',
 	v11 = '11',
-	v12 = '12'
+	v12 = '12',
+	v13 = '13'
 }
 
 export function getFoundryVersion(): FoundryVersion {
@@ -315,7 +316,10 @@ export function getFoundryVersion(): FoundryVersion {
 			return FoundryVersion.v11
 		case "12":
 			return FoundryVersion.v12
+		case "13":
+			return FoundryVersion.v13
 		default:
+			
 			const errorMessage = `Module Profiles: Foundry version '${game.version}' is not supported. Please disable the Module Profiles module.`;
 			ui.notifications.error(errorMessage);
 			throw new Error(errorMessage);

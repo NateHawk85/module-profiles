@@ -47,14 +47,16 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 	return moduleInfos;
 }
 
-function findModuleTitleFromModuleId(moduleId: string): string | undefined
-{
-	const foundryVersion = Settings.getFoundryVersion();
-	if (foundryVersion === Settings.FoundryVersion.v12)
-	{
-		// @ts-expect-error - Title is inlined in the module object in v12
-		return game.modules.get(moduleId)?.title;
-	}
+function findModuleTitleFromModuleId(moduleId: string): string | undefined {
+  const mod = game.modules.get(moduleId);
+  if (!mod) return undefined;
 
-	return game.modules.get(moduleId)?.data.title;
+  const version = Settings.getFoundryVersion();
+  if (version === Settings.FoundryVersion.v12 || version === Settings.FoundryVersion.v13) {
+    // @ts-expect-error - Title is an inline property in v12+ 
+   return mod.title;
+  }
+
+  // v9–v11 retained title under .data
+  return mod.data.title;
 }

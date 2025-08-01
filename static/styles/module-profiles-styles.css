@@ -83,7 +83,7 @@
 /* ------------------------------ Module Management Window ------------------------------ */
 
 #module-management .window-content {
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 #module-management .module-profiles-footer-row {
