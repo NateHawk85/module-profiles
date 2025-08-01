@@ -158,19 +158,29 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
  */
 function updateAllStatusElements(): void {
   const activeProfile = Settings.getActiveProfile();
-  getModuleListElements().forEach(li => {
-    const blinker = li.querySelector<HTMLSpanElement>('.module-profiles-status');
-    const checkbox = li.querySelector<HTMLInputElement>('input[type=checkbox]');
-    if (!blinker || !checkbox) return;
+  const modules = getModuleListElements();
 
-    // @ts-ignore name exists on Foundry checkbox
-    const matching = activeProfile.modules.find(m => m.id === checkbox.name)!;
+  modules.forEach(li => {
+    const blinker  = li.querySelector<HTMLSpanElement>('.module-profiles-status');
+    const checkbox = li.querySelector<HTMLInputElement>('input[type=checkbox]');
+    if (!blinker || !checkbox) return;       // nothing to do
+
+    // @ts-ignore - Foundry puts module.id in checkbox.name
+    const moduleId = checkbox.name;
+    const matching = activeProfile.modules.find(m => m.id === moduleId);
+    if (!matching) {
+      // no profile info → treat as “changed” (or skip entirely)
+      blinker.classList.replace('module-profiles-status-saved', 'module-profiles-status-changed');
+      return;
+    }
+
     if (matching.isActive === checkbox.checked) {
       blinker.classList.replace('module-profiles-status-changed', 'module-profiles-status-saved');
     } else {
       blinker.classList.replace('module-profiles-status-saved', 'module-profiles-status-changed');
     }
   });
+
   updateProfileStatusButtons();
 }
 
