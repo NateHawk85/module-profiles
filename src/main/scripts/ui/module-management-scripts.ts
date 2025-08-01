@@ -72,39 +72,34 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 		updateAllStatusElements();
 	}
 
-function addFooterElements(): void {
-  // Build our custom footer row
-  const preFooterDiv = document.createElement('div');
-  preFooterDiv.classList.add('module-profiles-footer-row');
-  preFooterDiv.append(
-    buildStatusButton(),
-    buildCreateModuleProfileButton(),
-    buildManageProfilesButton()
-  );
+	function addFooterElements(): void
+	{
+		// Create the elements
+		const preFooterDiv = document.createElement('div');
+		preFooterDiv.classList.add('module-profiles-footer-row');
 
-  // Use v13 structure if present: insert between <menu> and <footer>
-  const menuEl = document.querySelector('#module-management > section > menu');
-  const footerEl = document.querySelector('#module-management > section > footer');
-  if (menuEl && footerEl) {
-    menuEl.parentElement!.insertBefore(preFooterDiv, footerEl);
-  } else {
-    // Fall back to older selectors (v10/v9)
-    const moduleList =
-      document.getElementById('package-list') ?? document.getElementById('module-list');
+		const statusButton = buildStatusButton();
+		const saveCurrentConfigurationButton = buildCreateModuleProfileButton();
+		const manageProfilesButton = buildManageProfilesButton();
+		preFooterDiv.append(statusButton, saveCurrentConfigurationButton, manageProfilesButton);
+
+		// Add elements just below the module list, with a v13‑friendly fallback
+    const moduleList = document.getElementById('package-list');
     if (moduleList) {
       moduleList.after(preFooterDiv);
     } else {
-      const container =
-        document.querySelector('#module-management .package-list')?.parentElement ??
-        document.querySelector('#module-management .app') ??
-        document.querySelector('#module-management');
-      container?.append(preFooterDiv);
+      const container = document
+        .querySelector('#module-management .package-list')?.parentElement
+        ?? document.querySelector('#module-management .app')
+        ?? document.querySelector('#module-management');
+      if (container) container.append(preFooterDiv);
     }
-  }
 
-  updateProfileStatusButtons();
-  forceModuleManagementWindowHeightResize();
-}
+		// Update status of status buttons
+		updateProfileStatusButtons();
+
+		// Update the height of the window with the new elements
+		forceModuleManagementWindowHeightResize();
 
 		function buildStatusButton()
 		{
@@ -192,7 +187,7 @@ function addFooterElements(): void {
 			return span;
 		}
 	}
-
+}
 
 function updateAllStatusElements(): void
 {
