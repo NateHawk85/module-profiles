@@ -1,6 +1,7 @@
 interface ModuleProfile
 {
 	name: string,
+	description: string,
 	modules: ModuleInfo[]
 }
 

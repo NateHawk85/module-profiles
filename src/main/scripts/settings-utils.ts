@@ -1,12 +1,16 @@
 import ManageModuleProfilesSettingsForm from '../classes/ManageModuleProfilesSettingsForm';
 import * as Settings from './settings';
 
+export type SettingsDataVersion = `${string}.${string}.${string}`;
+
 export const MODULE_ID = 'module-profiles';
 export const TEMPLATES_PATH = `modules/${MODULE_ID}/templates`;
 export const DEFAULT_PROFILE_NAME = 'Default Profile';
 
 const PROFILES_SETTING = 'profiles';
 const ACTIVE_PROFILE_NAME_SETTING = 'activeProfileName';
+const SHOW_MODULE_ICON_ANIMATION_SETTING = 'showModuleIconAnimation';
+const SETTINGS_DATA_VERSION_SETTING = 'settingsDataVersion';
 
 /**
  * Registers settings for the module. This is only meant to be called on initial game load.
@@ -18,14 +22,29 @@ export function registerSettings(): void
 		hint: 'Existing module profiles',
 		default: [buildDefaultProfile()],
 		type: Array,
-		scope: 'world'
+		scope: 'world',
 	});
 
 	game.settings.register(MODULE_ID, ACTIVE_PROFILE_NAME_SETTING, {
 		name: 'Active Profile Name',
 		default: DEFAULT_PROFILE_NAME,
 		type: String,
-		scope: 'world'
+		scope: 'world',
+	});
+
+	game.settings.register(MODULE_ID, SHOW_MODULE_ICON_ANIMATION_SETTING, {
+		name: 'Show Module Icon Animation',
+		default: true,
+		type: Boolean,
+		scope: 'world',
+		config: true,
+	});
+
+	game.settings.register(MODULE_ID, SETTINGS_DATA_VERSION_SETTING, {
+		name: 'Settings Data Version (for migration purposes)',
+		default: '0.0.0',
+		type: String,
+		scope: 'world',
 	});
 
 	function buildDefaultProfile(): ModuleProfile
@@ -34,7 +53,8 @@ export function registerSettings(): void
 
 		return {
 			name: DEFAULT_PROFILE_NAME,
-			modules: savedModuleConfiguration
+			description: '',
+			modules: savedModuleConfiguration,
 		};
 	}
 }
@@ -49,7 +69,7 @@ export function registerMenus(): void
 		label: 'Manage Profiles',
 		icon: 'fas fa-cog',
 		type: ManageModuleProfilesSettingsForm,
-		restricted: true
+		restricted: true,
 	});
 }
 
@@ -63,7 +83,7 @@ export function registerAPI(api: Record<string, Function>): void
 	// @ts-ignore - Not recognized due to Foundry object
 	game.modules.get(MODULE_ID)!.api = api;
 
-	console.log(`${MODULE_ID} API registered`);
+	console.debug(`${MODULE_ID} API registered`);
 }
 
 /**
@@ -81,7 +101,7 @@ export function reloadWindow(): void
  */
 export function getProfiles(): ModuleProfile[]
 {
-	return <ModuleProfile[]> game.settings.get(MODULE_ID, PROFILES_SETTING);
+	return <ModuleProfile[]>game.settings.get(MODULE_ID, PROFILES_SETTING);
 }
 
 /**
@@ -116,7 +136,7 @@ export function resetProfiles(): Promise<void>
  */
 export function getActiveProfileName(): string
 {
-	return <string> game.settings.get(MODULE_ID, ACTIVE_PROFILE_NAME_SETTING);
+	return <string>game.settings.get(MODULE_ID, ACTIVE_PROFILE_NAME_SETTING);
 }
 
 /**
@@ -127,4 +147,42 @@ export function getActiveProfileName(): string
 export function setActiveProfileName(activeProfileName: string): Promise<string>
 {
 	return game.settings.set(MODULE_ID, ACTIVE_PROFILE_NAME_SETTING, activeProfileName);
+}
+
+/**
+ * Get the Show Module Animation game setting.
+ * @return {string} - The value of the game setting.
+ */
+export function getShowModuleIconAnimation(): boolean
+{
+	return <boolean>game.settings.get(MODULE_ID, SHOW_MODULE_ICON_ANIMATION_SETTING);
+}
+
+/**
+ * Set the Show Module Animation game setting.
+ * @param {boolean} showModuleAnimation - The value to save to the game setting.
+ * @return {Promise<boolean>} - A Promise resolving to the new game setting value.
+ */
+export function setShowModuleIconAnimation(showModuleAnimation: boolean): Promise<boolean>
+{
+	return game.settings.set(MODULE_ID, SHOW_MODULE_ICON_ANIMATION_SETTING, showModuleAnimation);
+}
+
+/**
+ * Get the Settings Data Version game setting.
+ * @return {string} - The value of the game setting.
+ */
+export function getSettingsDataVersion(): SettingsDataVersion
+{
+	return <SettingsDataVersion>game.settings.get(MODULE_ID, SETTINGS_DATA_VERSION_SETTING);
+}
+
+/**
+ * Set the Settings Data Version game setting.
+ * @param {string} settingsDataVersion - The value to save to the game setting.
+ * @return {Promise<string>} - A Promise resolving to the new game setting value.
+ */
+export function setSettingsDataVersion(settingsDataVersion: SettingsDataVersion): Promise<string>
+{
+	return game.settings.set(MODULE_ID, SETTINGS_DATA_VERSION_SETTING, settingsDataVersion);
 }

@@ -1,8 +1,8 @@
 import * as SettingsUtils from '../../main/scripts/settings-utils';
 import * as MockedSettings from '../../main/scripts/settings';
-import {when} from 'jest-when';
+import { when } from 'jest-when';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import { DEFAULT_PROFILE, DEFAULT_PROFILE_NAME } from '../config/constants';
 import ManageModuleProfilesSettingsForm from '../../main/classes/ManageModuleProfilesSettingsForm';
 
 jest.mock('../../main/scripts/settings');
@@ -16,37 +16,40 @@ const MANAGE_PROFILES_MENU = 'manageProfiles';
 describe('registerSettings', () =>
 {
 	test.each([[DEFAULT_PROFILE.modules], [Constants.TestModuleProfiles.MultipleAllDisabled.modules]])
-		('WHEN called THEN the "Profiles" setting is registered with the currently-active module configuration saved by default: %s', (configuration) =>
-		{
-			Settings.getCurrentModuleConfiguration.mockReturnValue(configuration);
+		(
+			'WHEN called THEN the "Profiles" setting is registered with the currently-active module configuration saved by default: %s',
+			(configuration) =>
+			{
+				Settings.getCurrentModuleConfiguration.mockReturnValue(configuration);
 
+				SettingsUtils.registerSettings();
+
+				expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, {
+					name: 'Profiles',
+					hint: 'Existing module profiles',
+					default: [
+						{
+							name: DEFAULT_PROFILE_NAME,
+							modules: configuration,
+						},
+					],
+					type: Array,
+					scope: 'world',
+				});
+			});
+
+	test('WHEN called THEN the "Active Profile Name" setting is registered with the "Default Profile" name saved by default',
+		() =>
+		{
 			SettingsUtils.registerSettings();
 
-			expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, {
-				name: 'Profiles',
-				hint: 'Existing module profiles',
-				default: [
-					{
-						name: DEFAULT_PROFILE_NAME,
-						modules: configuration
-					}
-				],
-				type: Array,
-				scope: 'world'
+			expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, ACTIVE_PROFILE_NAME_SETTING, {
+				name: 'Active Profile Name',
+				default: DEFAULT_PROFILE_NAME,
+				type: String,
+				scope: 'world',
 			});
 		});
-
-	test('WHEN called THEN the "Active Profile Name" setting is registered with the "Default Profile" name saved by default', () =>
-	{
-		SettingsUtils.registerSettings();
-
-		expect(game.settings.register).toHaveBeenCalledWith(MODULE_NAME, ACTIVE_PROFILE_NAME_SETTING, {
-			name: 'Active Profile Name',
-			default: DEFAULT_PROFILE_NAME,
-			type: String,
-			scope: 'world'
-		});
-	});
 
 	test('WHEN called THEN only calls as many times as there are settings', () =>
 	{
@@ -67,7 +70,7 @@ describe('registerMenus', () =>
 			label: 'Manage Profiles',
 			icon: 'fas fa-cog',
 			type: ManageModuleProfilesSettingsForm,
-			restricted: true
+			restricted: true,
 		});
 	});
 
@@ -83,7 +86,13 @@ describe('registerAPI', () =>
 {
 	test.each([
 		[{ name: () => console.log('Something'), exampleCall: () => console.log('Hello!') }],
-		[{ someFunctionA: () => [], someFunctionB: () => {} }]
+		[
+			{
+				someFunctionA: () => [], someFunctionB: () =>
+				{
+				},
+			},
+		],
 	])
 		('WHEN called THEN registers the API under the module\'s ID: %s', (value) =>
 		{
@@ -123,7 +132,12 @@ describe('Settings', () =>
 
 			test.each([
 				[[DEFAULT_PROFILE]],
-				[[Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI, Constants.TestModuleProfiles.MultipleAllDisabled]]
+				[
+					[
+						Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI,
+						Constants.TestModuleProfiles.MultipleAllDisabled,
+					],
+				],
 			])
 				('WHEN called THEN returns what game.settings.get returns: %s', (value) =>
 				{
@@ -139,7 +153,12 @@ describe('Settings', () =>
 		{
 			test.each([
 				[[DEFAULT_PROFILE]],
-				[[Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI]]
+				[
+					[
+						Constants.TestModuleProfiles.MultipleAllDisabled,
+						Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI,
+					],
+				],
 			])
 				('WHEN called THEN calls game.settings.set with setting name: %s', (value) =>
 				{
@@ -150,11 +169,13 @@ describe('Settings', () =>
 
 			test.each([
 				[[DEFAULT_PROFILE]],
-				[[DEFAULT_PROFILE, Constants.TestModuleProfiles.MultipleAllDisabled]]
+				[[DEFAULT_PROFILE, Constants.TestModuleProfiles.MultipleAllDisabled]],
 			])
 				('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
 				{
-					when(game.settings.set).calledWith(MODULE_NAME, PROFILES_SETTING, value).mockReturnValue(Promise.resolve(value));
+					when(game.settings.set)
+						.calledWith(MODULE_NAME, PROFILES_SETTING, value)
+						.mockReturnValue(Promise.resolve(value));
 
 					const actual = SettingsUtils.setProfiles(value);
 
@@ -164,107 +185,125 @@ describe('Settings', () =>
 			test.each([
 				[
 					[Constants.TestModuleProfiles.OnlyModuleProfiles, Constants.TestModuleProfiles.MultipleAllDisabled],
-					[Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.OnlyModuleProfiles]
+					[Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.OnlyModuleProfiles],
 				],
 				[
 					[Constants.TestModuleProfiles.MultipleAllEnabled, Constants.TestModuleProfiles.MultipleAllDisabled],
-					[Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.MultipleAllEnabled]
+					[Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.MultipleAllEnabled],
 				],
 				[
-					[{ name: 'Some Module Profile', modules: [] }, { name: 'A Module Profile', modules: [] }],
-					[{ name: 'A Module Profile', modules: [] }, { name: 'Some Module Profile', modules: [] }]
+					[
+						{ name: 'Some Module Profile', description: '', modules: [] },
+						{ name: 'A Module Profile', description: 'Some description', modules: [] },
+					],
+					[
+						{ name: 'A Module Profile', description: '', modules: [] },
+						{ name: 'Some Module Profile', description: 'Some description', modules: [] },
+					],
 				],
 				[
-					[{ name: 'Some Module Profile', modules: [] }, { name: 'AAAAAA Module Profile', modules: [] }, { name: 'A Module Profile', modules: [] }],
-					[{ name: 'A Module Profile', modules: [] }, { name: 'AAAAAA Module Profile', modules: [] }, { name: 'Some Module Profile', modules: [] }]
-				]
+					[
+						{ name: 'Some Module Profile', description: '', modules: [] },
+						{ name: 'AAAAAA Module Profile', description: 'Helloo', modules: [] },
+						{ name: 'A Module Profile', description: '', modules: [] },
+					],
+					[
+						{ name: 'A Module Profile', description: '', modules: [] },
+						{ name: 'AAAAAA Module Profile', description: 'Helloo', modules: [] },
+						{ name: 'Some Module Profile', description: '', modules: [] },
+					],
+				],
 			])
-				('WHEN profiles are not in alphabetical order by profile name THEN sorts them before calling game.settings.set: %o, %o',
+				(
+					'WHEN profiles are not in alphabetical order by profile name THEN sorts them before calling game.settings.set: %o, %o',
 					(inputtedModuleProfiles, expectedModuleProfiles) =>
 					{
 						SettingsUtils.setProfiles(inputtedModuleProfiles);
 
-						expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, expectedModuleProfiles);
+						expect(game.settings.set)
+							.toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, expectedModuleProfiles);
 					});
 
 			test.each([
 				[
 					[
 						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 					],
 					[
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-						Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-					]
+						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
 						Constants.buildModuleInfo(Constants.PopoutTestValues, false),
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 					],
 					[
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo(Constants.PopoutTestValues, false),
-						Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-					]
+						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo(Constants.PopoutTestValues, true),
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
-						Constants.buildModuleInfo(Constants.TidyUITestValues, false)
+						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
 					],
 					[
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo(Constants.ModuleProfilesTestValues, false),
 						Constants.buildModuleInfo(Constants.PopoutTestValues, true),
-						Constants.buildModuleInfo(Constants.TidyUITestValues, false)
-					]
+						Constants.buildModuleInfo(Constants.TidyUITestValues, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false),
-						Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false)
+						Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
 					],
 					[
 						Constants.buildModuleInfo({ id: 'a-module', title: 'A Module' }, false),
-						Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false)
-					]
+						Constants.buildModuleInfo({ id: 'b-module', title: 'B Module' }, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false),
 						Constants.buildModuleInfo({ id: 'zzzzzz-module', title: 'A Module' }, false),
-						Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false)
+						Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
 					],
 					[
 						Constants.buildModuleInfo({ id: 'zzzzzz-module', title: 'A Module' }, false),
 						Constants.buildModuleInfo({ id: 'key-does-not-matter2', title: 'Z Module' }, false),
-						Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false)
-					]
+						Constants.buildModuleInfo({ id: 'key-does-not-matter', title: 'ZZZZ Module' }, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo({ id: 'a-key', title: 'ZZZZ Module' }, false),
 						Constants.buildModuleInfo({ id: 'b-key', title: 'A Module' }, false),
-						Constants.buildModuleInfo({ id: 'c-key', title: 'C Module' }, false)
+						Constants.buildModuleInfo({ id: 'c-key', title: 'C Module' }, false),
 					],
 					[
 						Constants.buildModuleInfo({ id: 'b-key', title: 'A Module' }, false),
 						Constants.buildModuleInfo({ id: 'c-key', title: 'C Module' }, false),
-						Constants.buildModuleInfo({ id: 'a-key', title: 'ZZZZ Module' }, false)
-					]
-				]
+						Constants.buildModuleInfo({ id: 'a-key', title: 'ZZZZ Module' }, false),
+					],
+				],
 			])
-				('WHEN modules are not in alphabetical order by title THEN sorts them before calling game.settings.set: %o, %o',
+				(
+					'WHEN modules are not in alphabetical order by title THEN sorts them before calling game.settings.set: %o, %o',
 					(inputtedModuleInfos, expectedModuleInfos) =>
 					{
 						const moduleProfile = {
 							name: DEFAULT_PROFILE_NAME,
-							modules: inputtedModuleInfos
+							description: '',
+							modules: inputtedModuleInfos,
 						};
 
 						SettingsUtils.setProfiles([moduleProfile]);
@@ -272,8 +311,8 @@ describe('Settings', () =>
 						expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, [
 							{
 								name: DEFAULT_PROFILE_NAME,
-								modules: expectedModuleInfos
-							}
+								modules: expectedModuleInfos,
+							},
 						]);
 					});
 
@@ -281,41 +320,42 @@ describe('Settings', () =>
 				[
 					[
 						Constants.buildModuleInfo({ id: 'some-key', title: undefined }, false),
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 					],
 					[
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
-					]
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo({ id: 'some-key', title: undefined }, false),
 						Constants.buildModuleInfo({ id: 'more-modules', title: undefined }, false),
 						Constants.buildModuleInfo({ id: 'another!', title: undefined }, false),
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 					],
 					[
-						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)
-					]
+						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
+					],
 				],
 				[
 					[
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo({ id: 'some-key', title: undefined }, false),
-						Constants.buildModuleInfo(Constants.PopoutTestValues, false)
+						Constants.buildModuleInfo(Constants.PopoutTestValues, false),
 					],
 					[
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
-						Constants.buildModuleInfo(Constants.PopoutTestValues, false)
-					]
-				]
+						Constants.buildModuleInfo(Constants.PopoutTestValues, false),
+					],
+				],
 			])
 				('WHEN module profile has module info with undefined title THEN filters out undefined module infos: %s',
 					(inputtedModuleInfos, expectedModuleInfos) =>
 					{
 						const moduleProfile = {
 							name: DEFAULT_PROFILE_NAME,
-							modules: inputtedModuleInfos
+							description: '',
+							modules: inputtedModuleInfos,
 						};
 
 						SettingsUtils.setProfiles([moduleProfile]);
@@ -323,8 +363,8 @@ describe('Settings', () =>
 						expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, [
 							{
 								name: DEFAULT_PROFILE_NAME,
-								modules: expectedModuleInfos
-							}
+								modules: expectedModuleInfos,
+							},
 						]);
 					});
 		});
@@ -341,7 +381,9 @@ describe('Settings', () =>
 			test.each([undefined, 'some value'])
 				('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
 				{
-					when(game.settings.set).calledWith(MODULE_NAME, PROFILES_SETTING, undefined).mockReturnValue(Promise.resolve(value));
+					when(game.settings.set)
+						.calledWith(MODULE_NAME, PROFILES_SETTING, undefined)
+						.mockReturnValue(Promise.resolve(value));
 
 					const actual = SettingsUtils.resetProfiles();
 
@@ -385,7 +427,9 @@ describe('Settings', () =>
 			test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
 				('WHEN called THEN returns what game.settings.set returns: %s', (value) =>
 				{
-					when(game.settings.set).calledWith(MODULE_NAME, ACTIVE_PROFILE_NAME_SETTING, value).mockReturnValue(Promise.resolve(value));
+					when(game.settings.set)
+						.calledWith(MODULE_NAME, ACTIVE_PROFILE_NAME_SETTING, value)
+						.mockReturnValue(Promise.resolve(value));
 
 					const actual = SettingsUtils.setActiveProfileName(value);
 

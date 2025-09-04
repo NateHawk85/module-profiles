@@ -13,6 +13,7 @@
 	"FORM_APPLICATION.import.importProfiles": "Import Profile(s)",
 	"FORM_APPLICATION.export.exportAll": "Export All Profiles",
 	"FORM_APPLICATION.header.profileName": "Profile Name",
+	"FORM_APPLICATION.header.profileDescription": "Profile Description",
 	"FORM_APPLICATION.manageProfiles.activate": "Activate",
 	"FORM_APPLICATION.manageProfiles.edit": "Edit",
 	"FORM_APPLICATION.manageProfiles.duplicate": "Duplicate",

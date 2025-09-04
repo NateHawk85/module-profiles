@@ -1,5 +1,10 @@
 import * as Settings from '../scripts/settings';
-import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import { TEMPLATES_PATH } from '../scripts/settings-utils';
+
+type FormData = {
+	moduleProfilesCreateNewProfileName: string;
+	moduleProfilesCreateNewProfileDescription: string;
+}
 
 /**
  * A FormApplication that allows a user to create a new module profile.
@@ -22,7 +27,7 @@ export default class CreateModuleProfileForm extends FormApplication
 			id: 'module-profiles-create-module-profile',
 			template: `${TEMPLATES_PATH}/create-module-profile.hbs`,
 			title: 'Create New Module Profile',
-			width: 660
+			width: 660,
 		};
 	}
 
@@ -36,11 +41,15 @@ export default class CreateModuleProfileForm extends FormApplication
 		document.getElementById('moduleProfilesCreateNewProfileName')!.focus();
 	}
 
-	async _updateObject(event: any, formData?: any): Promise<ModuleProfile[] | undefined>
+	async _updateObject(event: any, formData: FormData): Promise<ModuleProfile[] | undefined>
 	{
 		if (event?.submitter?.id === 'moduleProfilesCreateNewProfileSubmit')
 		{
-			return await Settings.createProfile(formData.moduleProfilesCreateNewProfileName, Settings.getCurrentModuleConfiguration());
+			return await Settings.createProfile({
+				name: formData.moduleProfilesCreateNewProfileName,
+				description: formData.moduleProfilesCreateNewProfileDescription,
+				modules: Settings.getCurrentModuleConfiguration(),
+			});
 		}
 	}
 }

@@ -5,7 +5,7 @@ import CreateModuleProfileForm from './CreateModuleProfileForm';
 import ConfirmDeleteProfileForm from './ConfirmDeleteProfileForm';
 import EditModuleProfileForm from './EditModuleProfileForm';
 import ImportModuleProfileForm from './ImportModuleProfileForm';
-import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import { TEMPLATES_PATH } from '../scripts/settings-utils';
 
 export const RENDER_HOOK_NAME = 'renderManageModuleProfilesSettingsForm';
 export const MODULE_PROFILES_UPDATED_HOOK_NAME = 'moduleProfilesUpdated';
@@ -33,7 +33,7 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			id: this.FORM_ID,
 			template: `${TEMPLATES_PATH}/manage-profiles.hbs`,
 			title: 'Manage Module Profiles',
-			width: 660
+			width: 660,
 		};
 	}
 
@@ -43,11 +43,11 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 
 		const profilesWithActiveFlag = Settings.getAllProfiles().map(profile => ({
 			...profile,
-			isProfileActive: activeProfileName === profile.name
+			isProfileActive: activeProfileName === profile.name,
 		}));
 
 		return {
-			profiles: profilesWithActiveFlag
+			profiles: profilesWithActiveFlag,
 		};
 	}
 
@@ -62,11 +62,12 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 		createNewProfileElement?.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
 		const importProfileElement = document.getElementById('module-profiles-manage-profiles-import');
-		importProfileElement?.addEventListener('click', (e) => {
+		importProfileElement?.addEventListener('click', (e) =>
+		{
 			// Prevents window from automatically closing
 			e.preventDefault();
 
-			new ImportModuleProfileForm().render(true)
+			new ImportModuleProfileForm().render(true);
 		});
 
 		const exportAllProfilesElement = document.getElementById('module-profiles-manage-profiles-export-all');
@@ -84,25 +85,33 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			}
 		});
 
-		const activateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-activate-profile');
+		const activateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>>document.getElementsByClassName(
+			'module-profiles-activate-profile');
 		Array.from(activateProfileElements).forEach(element => element.addEventListener('click', () =>
 			ProfileInteractions.activateProfile(element.dataset.profileName!)));
 
-		const editProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-edit-profile');
+		const editProfileElements = <HTMLCollectionOf<HTMLAnchorElement>>
+			document.getElementsByClassName('module-profiles-edit-profile');
 		Array.from(editProfileElements).forEach(element => element.addEventListener('click', () =>
 			new EditModuleProfileForm(element.dataset.profileName!).render(true)));
 
-		const duplicateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-duplicate-profile');
+		const duplicateProfileElements = <HTMLCollectionOf<HTMLAnchorElement>>
+			document.getElementsByClassName('module-profiles-duplicate-profile');
 		Array.from(duplicateProfileElements).forEach(element => element.addEventListener('click', () =>
 		{
 			const profile = Settings.getProfileByName(element.dataset.profileName!);
 			if (profile)
 			{
-				return Settings.createProfile(profile.name + ' (Copy)', profile.modules);
+				return Settings.createProfile({
+					name: profile.name + ' (Copy)',
+					description: profile.description,
+					modules: profile.modules,
+				});
 			}
 		}));
 
-		const exportProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-export-profile');
+		const exportProfileElements = <HTMLCollectionOf<HTMLAnchorElement>>document.getElementsByClassName(
+			'module-profiles-export-profile');
 		Array.from(exportProfileElements).forEach(element => element.addEventListener('click', async () =>
 		{
 			const profileName = element.dataset.profileName!;
@@ -115,12 +124,15 @@ export default class ManageModuleProfilesSettingsForm extends FormApplication
 			}
 		}));
 
-		const deleteProfileElements = <HTMLCollectionOf<HTMLAnchorElement>> document.getElementsByClassName('module-profiles-delete-profile');
+		const deleteProfileElements = <HTMLCollectionOf<HTMLAnchorElement>>
+			document.getElementsByClassName('module-profiles-delete-profile');
 		Array.from(deleteProfileElements).forEach((element) => element.addEventListener('click', () =>
 			new ConfirmDeleteProfileForm(element.dataset.profileName!).render(true)));
 	}
 
-	async _updateObject() {}
+	async _updateObject()
+	{
+	}
 }
 
 /**

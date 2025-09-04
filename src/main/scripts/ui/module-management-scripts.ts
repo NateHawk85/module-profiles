@@ -1,10 +1,9 @@
 import * as Settings from '../settings';
-import {FoundryVersion} from '../settings';
 import * as MappingUtils from '../mapping-utils';
 import * as ModuleManagementScripts from './module-management-scripts';
 import ManageModuleProfilesSettingsForm from '../../classes/ManageModuleProfilesSettingsForm';
 import CreateModuleProfileForm from '../../classes/CreateModuleProfileForm';
-import {MODULE_ID} from '../settings-utils';
+import { MODULE_ID } from '../settings-utils';
 
 const MODULE_MANAGEMENT_WINDOW_ID = 'module-management';
 
@@ -84,8 +83,8 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 		preFooterDiv.append(statusButton, saveCurrentConfigurationButton, manageProfilesButton);
 
 		// Add elements just below the module list
-		const moduleList = document.getElementById('module-list')!;
-		moduleList.after(preFooterDiv);
+		const moduleList = Settings.getFoundryVersionStrategy().getModuleListContainer();
+		Settings.getFoundryVersionStrategy().injectManagementFooter(moduleList, preFooterDiv);
 
 		// Update status of status buttons
 		updateProfileStatusButtons();
@@ -100,7 +99,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const statusButton = document.createElement('button');
 			statusButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits form)
 			statusButton.classList.add('module-profiles-status-button');
-			statusButton.style.flexBasis = '130%';
+			statusButton.style.flexBasis = '40%';
 			statusButton.dataset.profileName = activeProfile.name; // TODO - make this a little more... easier to find? idk
 
 			statusButton.addEventListener('click', (event) =>
@@ -109,7 +108,7 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 
 				const moduleInfos = findUnsavedModuleInfos();
 
-				Settings.saveChangesToProfile(activeProfile.name, moduleInfos)
+				Settings.saveChangesToProfile(activeProfile.name, { modules: moduleInfos })
 						.then(() => updateProfileStatusButtons());
 			});
 
@@ -121,8 +120,10 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const createModuleProfileButton = document.createElement('button');
 			createModuleProfileButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically
 													   // submits form)
-			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize('MODULE_MANAGEMENT.createNewButton.text')}</button>`;
-			createModuleProfileButton.style.flexBasis = '80%';
+			createModuleProfileButton.innerHTML = `<i class="fa fa-plus"></i> ${game.i18n.localize(
+				'MODULE_MANAGEMENT.createNewButton.text')}</button>`;
+			createModuleProfileButton.style.flexBasis = '30%';
+			createModuleProfileButton.style.marginLeft = '1rem';
 			createModuleProfileButton.addEventListener('click', () => new CreateModuleProfileForm().render(true));
 
 			return createModuleProfileButton;
@@ -133,7 +134,10 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			const manageProfilesButton = document.createElement('button');
 			manageProfilesButton.type = 'button'; // TODO - prevents submission, therefore reloading page? (any button with type="submit" automatically submits
 												  // form)
-			manageProfilesButton.innerHTML = `<i class="fa fa-cog"></i> ${game.i18n.localize('MODULE_MANAGEMENT.manageModuleProfilesButton.text')}</button>`;
+			manageProfilesButton.style.flexBasis = '30%'
+			manageProfilesButton.style.marginLeft = '1rem'
+			manageProfilesButton.innerHTML = `<i class="fa fa-cog"></i> ${game.i18n.localize(
+				'MODULE_MANAGEMENT.manageModuleProfilesButton.text')}</button>`;
 			manageProfilesButton.addEventListener('click', (event) =>
 			{
 				event.preventDefault();
@@ -154,15 +158,16 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 
 	function modifyModuleListElements()
 	{
-		const moduleElements = getModuleListElements();
+		const showAnimation = Settings.getShowModuleIconAnimation();
+		const moduleElements = Settings.getFoundryVersionStrategy().getModuleListElements();
 
-		// Add status blinkers and add an "update" event listener to each module in the list
+		// Add status icons and add an "update" event listener to each module in the list
 		moduleElements.forEach(module =>
 		{
-			let statusBlinkerContainer = createModuleStatusBlinker();
+			let statusIconContainer = createModuleStatusIcon();
 			if (module.children.length > 0)
 			{
-				module.children[0].prepend(statusBlinkerContainer);
+				module.children[0].prepend(statusIconContainer);
 				module.addEventListener('input', () => updateAllStatusElements());
 			} else
 			{
@@ -171,11 +176,11 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 			}
 		});
 
-		function createModuleStatusBlinker()
+		function createModuleStatusIcon()
 		{
 			const span = document.createElement('span');
 			span.classList.add('module-profiles-status-container');
-			span.innerHTML = '<span class="module-profiles-status module-profiles-status-saved"></span>';
+			span.innerHTML = `<span class="module-profiles-status ${showAnimation ? 'module-profiles-status-animation' : ''} module-profiles-status-saved"></span>`;
 			return span;
 		}
 	}
@@ -184,25 +189,25 @@ export function modifyModuleManagementRender(app: ModuleManagement, html: JQuery
 function updateAllStatusElements(): void
 {
 	const activeProfile = Settings.getActiveProfile();
-	const modules = getModuleListElements();
+	const modules = Settings.getFoundryVersionStrategy().getModuleListElements();
 	modules.forEach(module =>
 	{
 		if (module.children[0]?.children[1]?.children[0]) // TODO - appropriately handle this
 		{
-			const statusBlinker = <HTMLSpanElement> module.children[0].children[0].firstChild!;
-			const checkbox = <HTMLInputElement> module.children[0].children[1].children[0];
+			const statusIcon = <HTMLSpanElement>module.children[0].children[0].firstChild!;
+			const checkbox = <HTMLInputElement>module.children[0].children[1].children[0];
 
 			// @ts-ignore - 'name' field exists on Foundry checkboxes with the given module IDs
 			const matchingModuleInfo = activeProfile.modules.find(module => module.id === checkbox.attributes.name.value)!;
 
 			if (matchingModuleInfo && matchingModuleInfo.isActive === checkbox.checked)
 			{
-				statusBlinker.classList.remove('module-profiles-status-changed');
-				statusBlinker.classList.add('module-profiles-status-saved');
+				statusIcon.classList.remove('module-profiles-status-changed');
+				statusIcon.classList.add('module-profiles-status-saved');
 			} else
 			{
-				statusBlinker.classList.remove('module-profiles-status-saved');
-				statusBlinker.classList.add('module-profiles-status-changed');
+				statusIcon.classList.remove('module-profiles-status-saved');
+				statusIcon.classList.add('module-profiles-status-changed');
 			}
 		}
 	});
@@ -215,7 +220,8 @@ function updateProfileStatusButtons(): void
 	const activeProfile = Settings.getActiveProfile();
 	const isUpToDate = !ModuleManagementScripts.unsavedChangesExistOn(activeProfile.name);
 
-	const profileButtons = <HTMLCollectionOf<HTMLButtonElement>> document.getElementsByClassName('module-profiles-status-button');
+	const profileButtons = <HTMLCollectionOf<HTMLButtonElement>>document.getElementsByClassName(
+		'module-profiles-status-button');
 	Array.from(profileButtons).forEach(button =>
 	{
 		const buttonProfileName = button.dataset.profileName;
@@ -227,7 +233,8 @@ function updateProfileStatusButtons(): void
 		} else
 		{
 			button.style.backgroundColor = 'orangered';
-			button.innerHTML = `<i class="far fa-save"></i> ${game.i18n.localize('MODULE_MANAGEMENT.statusButton.saveChanges')} <b>${(buttonProfileName)}</b>`;
+			button.innerHTML = `<i class="far fa-save"></i> ${game.i18n.localize(
+				'MODULE_MANAGEMENT.statusButton.saveChanges')} <b>${(buttonProfileName)}</b>`;
 		}
 
 		button.disabled = isUpToDate;
@@ -236,7 +243,9 @@ function updateProfileStatusButtons(): void
 
 function findUnsavedModuleInfos(): ModuleInfo[]
 {
-	const moduleCheckboxes = <NodeListOf<HTMLInputElement>> document.getElementById('module-list')!.querySelectorAll('input[type=checkbox]');
+	const moduleCheckboxes = <NodeListOf<HTMLInputElement>>Settings.getFoundryVersionStrategy()
+																   .getModuleListContainer()
+																   .querySelectorAll('input[type=checkbox]');
 	const activeModuleIds: string[] = Array.from(moduleCheckboxes)
 										   .filter(checkbox => checkbox.checked)
 		// @ts-ignore - 'name' field exists on Foundry checkboxes with the given module IDs
@@ -251,16 +260,4 @@ function findUnsavedModuleInfos(): ModuleInfo[]
 	inactiveModuleIds.forEach(moduleId => moduleList[moduleId] = false);
 
 	return MappingUtils.mapToModuleInfos(moduleList);
-}
-
-// Module management window swapped from using 'data-module-name' to 'data-module-id' when going from v9 to v10
-function getModuleListElements(): NodeListOf<HTMLLIElement>
-{
-	if (Settings.getFoundryVersion() == FoundryVersion.v9)
-	{
-		return document.querySelectorAll('#module-management li[data-module-name]');
-	} else
-	{
-		return document.querySelectorAll('#module-management li[data-module-id]');
-	}
 }

@@ -1,4 +1,5 @@
 {
+  "id": "module-profiles",
   "name": "module-profiles",
   "title": "Module Profiles",
   "description": "Adds the capability to store multiple different module profiles for easily swapping between game time and setup, as well as other scenarios.",
@@ -10,8 +11,8 @@
   "version": "Replaced",
   "compatibility": {
     "minimum": "0.8.0",
-    "verified": "12.324",
-    "maximum": "12"
+    "verified": "13.348",
+    "maximum": "14"
   },
   "url": "Replaced",
   "manifest": "https://github.com/NateHawk85/module-profiles/releases/latest/download/module.json",

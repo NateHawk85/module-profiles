@@ -2,7 +2,7 @@ import ConfirmActivateProfileForm from '../../main/classes/ConfirmActivateProfil
 import * as MockedSettings from '../../main/scripts/settings';
 import * as MockedProfileInteractions from '../../main/scripts/profile-interactions';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import { DEFAULT_PROFILE, DEFAULT_PROFILE_NAME } from '../config/constants';
 
 jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
@@ -98,7 +98,7 @@ describe('getData', () =>
 	])
 		('WHEN called THEN returns active profile from what Settings.getActiveProfile() returns: %s, %s', (profileNameToActivate, activeProfileName) =>
 		{
-			Settings.getActiveProfile.mockReturnValue({ name: activeProfileName, modules: [] });
+			Settings.getActiveProfile.mockReturnValue({ name: activeProfileName, description: '', modules: [] });
 
 			confirmActivateProfileForm = new ConfirmActivateProfileForm(profileNameToActivate);
 

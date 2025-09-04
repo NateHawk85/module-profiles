@@ -1,5 +1,6 @@
-import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFunctions from '../../main/classes/ManageModuleProfilesSettingsForm';
-import {forceManageModuleProfilesHeightResize} from '../../main/classes/ManageModuleProfilesSettingsForm';
+import ManageModuleProfilesSettingsForm, * as ManageModuleProfilesSettingsFormFunctions
+	from '../../main/classes/ManageModuleProfilesSettingsForm';
+import { forceManageModuleProfilesHeightResize } from '../../main/classes/ManageModuleProfilesSettingsForm';
 import * as MockedSettings from '../../main/scripts/settings';
 import * as MockedProfileInteractions from '../../main/scripts/profile-interactions';
 import * as MockedBrowserUtils from '../../main/scripts/browser-utils';
@@ -8,8 +9,8 @@ import MockedCreateModuleProfileForm from '../../main/classes/CreateModuleProfil
 import MockedConfirmDeleteProfileForm from '../../main/classes/ConfirmDeleteProfileForm';
 import MockedEditModuleProfileForm from '../../main/classes/EditModuleProfileForm';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
-import {when} from 'jest-when';
+import { DEFAULT_PROFILE, DEFAULT_PROFILE_NAME } from '../config/constants';
+import { when } from 'jest-when';
 
 jest.mock('../../main/scripts/settings');
 const Settings = jest.mocked(MockedSettings, true);
@@ -131,7 +132,7 @@ describe('getData', () =>
 	test.each(Constants.ModuleProfilesAsArray)
 		('WHEN Settings.getActiveProfile does not match profile THEN returns unhighlighted profiles with what Settings.getAllProfiles returns: %s', (value) =>
 		{
-			Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', modules: [] });
+			Settings.getActiveProfile.mockReturnValue({ name: 'A Different Profile Name', description: '', modules: [] });
 			Settings.getAllProfiles.mockReturnValue([value]);
 
 			const actual = manageModuleProfilesSettingsForm.getData();
@@ -526,6 +527,7 @@ describe('activateListeners', () =>
 			when(Settings.getProfileByName).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(DEFAULT_PROFILE);
 			const differentProfileNameProfile = {
 				name: 'A Different Profile Name (Copy)',
+				description: '',
 				modules: DEFAULT_PROFILE.modules
 			};
 			when(Settings.getProfileByName).calledWith('A Different Profile Name').mockReturnValue(differentProfileNameProfile);
@@ -552,6 +554,7 @@ describe('activateListeners', () =>
 			when(Settings.getProfileByName).calledWith(DEFAULT_PROFILE_NAME).mockReturnValue(DEFAULT_PROFILE);
 			const differentProfileNameProfile = {
 				name: 'A Different Profile Name',
+				description: '',
 				modules: DEFAULT_PROFILE.modules
 			};
 			when(Settings.getProfileByName).calledWith('A Different Profile Name').mockReturnValue(differentProfileNameProfile);

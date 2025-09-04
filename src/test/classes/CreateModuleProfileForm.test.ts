@@ -1,7 +1,7 @@
 import CreateModuleProfileForm from '../../main/classes/CreateModuleProfileForm';
 import * as MockedSettings from '../../main/scripts/settings';
 import * as Constants from '../config/constants';
-import {DEFAULT_PROFILE, DEFAULT_PROFILE_NAME} from '../config/constants';
+import { DEFAULT_PROFILE, DEFAULT_PROFILE_NAME } from '../config/constants';
 
 const FORM_ID = 'module-profiles-create-module-profile';
 const FORM_TEMPLATE = 'modules/module-profiles/templates/create-module-profile.hbs';
@@ -40,7 +40,7 @@ describe('defaultOptions', () =>
 			id: FORM_ID,
 			template: FORM_TEMPLATE,
 			title: FORM_TITLE,
-			width: 660
+			width: 660,
 		});
 	});
 
@@ -57,7 +57,7 @@ describe('defaultOptions', () =>
 			id: FORM_ID,
 			template: FORM_TEMPLATE,
 			title: FORM_TITLE,
-			width: 660
+			width: 660,
 		});
 	});
 
@@ -72,7 +72,7 @@ describe('defaultOptions', () =>
 			id: FORM_ID,
 			template: FORM_TEMPLATE,
 			title: FORM_TITLE,
-			width: 660
+			width: 660,
 		});
 	});
 });
@@ -81,7 +81,10 @@ describe('_updateObject', () =>
 {
 	test('WHEN event.submitter is undefined THEN does nothing', async () =>
 	{
-		await createModuleProfileForm._updateObject({}, {});
+		await createModuleProfileForm._updateObject(
+			{},
+			{ moduleProfilesCreateNewProfileName: DEFAULT_PROFILE_NAME, moduleProfilesCreateNewProfileDescription: '' },
+		);
 
 		expect(Settings.createProfile).toHaveBeenCalledTimes(0);
 	});
@@ -91,27 +94,32 @@ describe('_updateObject', () =>
 		{
 			const event = {
 				submitter: {
-					id: value
-				}
+					id: value,
+				},
 			};
 
-			await createModuleProfileForm._updateObject(event, {});
+			await createModuleProfileForm._updateObject(
+				event,
+				{ moduleProfilesCreateNewProfileName: DEFAULT_PROFILE_NAME, moduleProfilesCreateNewProfileDescription: '' },
+			);
 
 			expect(Settings.createProfile).toHaveBeenCalledTimes(0);
 		});
 
 	test.each(Constants.ModuleProfileNames)
-		('WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with value from ' +
+		(
+			'WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with value from ' +
 			'"moduleProfilesCreateNewProfileName" key: %s',
 			async (value) =>
 			{
 				const event = {
 					submitter: {
-						id: SUBMIT_ELEMENT_ID
-					}
+						id: SUBMIT_ELEMENT_ID,
+					},
 				};
 				const formData = {
-					moduleProfilesCreateNewProfileName: value
+					moduleProfilesCreateNewProfileName: value,
+					moduleProfilesCreateNewProfileDescription: ''
 				};
 
 				await createModuleProfileForm._updateObject(event, formData);
@@ -120,17 +128,19 @@ describe('_updateObject', () =>
 			});
 
 	test.each(Constants.SavedModuleInfosFromGameSettings)
-		('WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with response from ' +
+		(
+			'WHEN event.submitter.id is "moduleProfilesCreateNewProfileSubmit" THEN calls Settings.createProfile with response from ' +
 			'Settings.getCurrentModuleConfiguration: %s', async (value) =>
 		{
 			Settings.getCurrentModuleConfiguration.mockReturnValue(value);
 			const event = {
 				submitter: {
-					id: SUBMIT_ELEMENT_ID
-				}
+					id: SUBMIT_ELEMENT_ID,
+				},
 			};
 			const formData = {
-				moduleProfilesCreateNewProfileName: DEFAULT_PROFILE_NAME
+				moduleProfilesCreateNewProfileName: DEFAULT_PROFILE_NAME,
+				moduleProfilesCreateNewProfileDescription: ''
 			};
 
 			await createModuleProfileForm._updateObject(event, formData);

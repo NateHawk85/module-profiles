@@ -1,6 +1,11 @@
 import * as Settings from '../scripts/settings';
 import * as MappingUtils from '../scripts/mapping-utils';
-import {TEMPLATES_PATH} from '../scripts/settings-utils';
+import { TEMPLATES_PATH } from '../scripts/settings-utils';
+
+export type EditModuleProfileFormData = Record<string, unknown> & {
+	moduleProfilesEditProfileName: string;
+	moduleProfilesEditProfileDescription: string;
+};
 
 /**
  * A FormApplication that allows a user to edit a module profile.
@@ -28,7 +33,7 @@ export default class EditModuleProfileForm extends FormApplication
 			resizable: true,
 			template: `${TEMPLATES_PATH}/edit-module-profile.hbs`,
 			title: 'Edit Module Profile',
-			width: 450
+			width: 450,
 		};
 	}
 
@@ -47,11 +52,22 @@ export default class EditModuleProfileForm extends FormApplication
 		return profile;
 	}
 
-	async _updateObject(event: any, formData: Record<string, boolean>): Promise<ModuleProfile[] | undefined>
+	async _updateObject(event: any, formData: EditModuleProfileFormData): Promise<ModuleProfile[] | undefined>
 	{
-		if (event?.submitter?.id === 'moduleProfilesEditProfileSubmit')
+		if (event?.submitter?.id !== 'moduleProfilesEditProfileSubmit')
 		{
-			return await Settings.saveChangesToProfile(this.profileName, MappingUtils.mapToModuleInfos(formData));
+			return;
 		}
+
+		const { moduleProfilesEditProfileName, moduleProfilesEditProfileDescription, ...rest } = formData;
+
+		return await Settings.saveChangesToProfile(
+			this.profileName,
+			{
+				name: moduleProfilesEditProfileName,
+				description: moduleProfilesEditProfileDescription,
+				modules: MappingUtils.mapToModuleInfos(rest as Record<string, boolean>),
+			},
+		);
 	}
 }

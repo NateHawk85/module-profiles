@@ -2,17 +2,22 @@ import { MODULE_PROFILES_UPDATED_HOOK_NAME } from '../classes/ManageModuleProfil
 import * as MappingUtils from './mapping-utils';
 import * as Settings from './settings';
 import * as SettingsUtils from './settings-utils';
+import * as SettingsMigration from './settings-migration';
+import { type FoundryVersionStrategy, v10, v11, v12, v13, v9 } from './version-strategies';
 
 export function registerModuleSettings(): void
 {
 	SettingsUtils.registerSettings();
 	SettingsUtils.registerMenus();
 
-	const profiles = Settings.getAllProfiles();
-	if (!profiles || profiles.length === 0)
+	SettingsMigration.migrate().then(() =>
 	{
-		Settings.resetProfiles();
-	}
+		const profiles = Settings.getAllProfiles();
+		if (!profiles || profiles.length === 0)
+		{
+			Settings.resetProfiles();
+		}
+	});
 }
 
 /**
@@ -21,26 +26,7 @@ export function registerModuleSettings(): void
  */
 export function getCurrentModuleConfiguration(): ModuleInfo[]
 {
-	const currentFoundryVersion = Settings.getFoundryVersion();
-
-	if (currentFoundryVersion == FoundryVersion.v9)
-	{
-		return Array.from(game.modules).map(([key, value]) => ({
-			id: key,
-			title: value.data.title,
-			isActive: value.active
-		})).sort((a, b) => a.title.localeCompare(b.title));
-	}
-	else {
-		return Array.from(game.modules).map(module => ({
-			// @ts-ignore - v10 vs v9 schema
-			id: module.id,
-			// @ts-ignore - v10 vs v9 schema
-			title: module.title,
-			// @ts-ignore - v10 vs v9 schema
-			isActive: module.active
-		})).sort((a, b) => a.title.localeCompare(b.title));
-	}
+	return Settings.getFoundryVersionStrategy().getCurrentModuleConfiguration();
 }
 
 /**
@@ -104,18 +90,23 @@ export function exportProfileByName(profileName: string): string | undefined
 	return profile ? JSON.stringify(profile, null, 2) : profile;
 }
 
+type CreateProfileParams = {
+	name: string;
+	description: string;
+	modules: ModuleInfo[];
+};
+
 /**
  * Creates a new {@link ModuleProfile} in the game settings.
- * @param {string} profileName - The name of the profile to create.
- * @param {ModuleInfo[]} modules - The Array of {@link ModuleInfo} objects that represent each module's activation status.
+ * @param {CreateProfileParams} params - The profile params.
  * @returns {Promise<ModuleProfile[]>} - The new Array of {@link ModuleProfile}s.
  * @throws Error - When a profile exists with the given profileName
  */
-export async function createProfile(profileName: string, modules: ModuleInfo[]): Promise<ModuleProfile[]>
+export async function createProfile({ name, description, modules }: CreateProfileParams): Promise<ModuleProfile[]>
 {
-	if (!profileName)
+	if (!name)
 	{
-		const postfix = profileName === '' ? 'Profile name must not be empty.' : 'Profile name is undefined.';
+		const postfix = name === '' ? 'Profile name must not be empty.' : 'Profile name is undefined.';
 		const errorMessage = `Unable to create module profile. ${postfix}`;
 		ui.notifications.error(errorMessage);
 		throw new Error(errorMessage);
@@ -128,19 +119,19 @@ export async function createProfile(profileName: string, modules: ModuleInfo[]):
 		throw new Error(errorMessage);
 	}
 
-	if (Settings.getProfileByName(profileName))
+	if (Settings.getProfileByName(name))
 	{
-		const errorMessage = `Unable to create module profile. Profile "${profileName}" already exists!`;
+		const errorMessage = `Unable to create module profile. Profile "${name}" already exists!`;
 		ui.notifications.error(errorMessage);
 		throw new Error(errorMessage);
 	}
 
 	const profiles = Settings.getAllProfiles();
-	profiles.push({ name: profileName, modules: modules });
+	profiles.push({ name: name, description: description, modules: modules });
 
 	const response = SettingsUtils.setProfiles(profiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
-	ui.notifications.info(`Profile "${profileName}" has been created!`);
+	ui.notifications.info(`Profile "${name}" has been created!`);
 
 	return response;
 }
@@ -171,16 +162,17 @@ export async function importProfiles(json: string): Promise<ModuleProfile[]>
 	{
 		try
 		{
-			await Settings.createProfile(profile.name, profile.modules);
+			await Settings.createProfile(profile);
 		} catch (ignored)
-		{}
+		{
+		}
 	}
 
 	return Settings.getAllProfiles();
 
 	function isValidModuleProfile(profile: ModuleProfile): boolean
 	{
-		if (!profile || !profile.name || !profile.modules)
+		if (!profile || profile.name == null || profile.modules == null || profile.description == null)
 		{
 			return false;
 		}
@@ -211,14 +203,23 @@ export async function activateProfile(profileName: string): Promise<void>
 				 .then(() => SettingsUtils.reloadWindow());
 }
 
+type UpdateProfileParams = {
+	name?: string;
+	description?: string;
+	modules?: ModuleInfo[];
+};
+
 /**
  * Saves the current profile settings to an existing profile.
  * @param {string} profileName - The name of the profile to update.
- * @param {ModuleInfo[]} modules - The Array of {@link ModuleInfo} objects that represent each module's activation status.
+ * @param {UpdateProfileParams} params - New fields to update on the profile.
  * @returns {Promise<ModuleProfile[]>} - The new Array of module profiles.
  * @throws Error - When a profile name is passed and no profiles exist with that name.
  */
-export async function saveChangesToProfile(profileName: string, modules: ModuleInfo[]): Promise<ModuleProfile[]>
+export async function saveChangesToProfile(
+	profileName: string,
+	params: UpdateProfileParams,
+): Promise<ModuleProfile[]>
 {
 	const savedProfiles = Settings.getAllProfiles();
 	const matchingProfileIndex = savedProfiles.findIndex(profile => profile.name === profileName);
@@ -230,11 +231,24 @@ export async function saveChangesToProfile(profileName: string, modules: ModuleI
 		throw new Error(errorMessage);
 	}
 
-	savedProfiles[matchingProfileIndex] = { name: profileName, modules: modules };
+	const existingProfile = savedProfiles[matchingProfileIndex];
+	const newProfileName = params.name ?? existingProfile.name;
+
+	savedProfiles[matchingProfileIndex] = {
+		name: newProfileName,
+		description: params.description ?? existingProfile.description,
+		modules: params.modules ?? existingProfile.modules,
+	};
+
+	const activeProfileName = SettingsUtils.getActiveProfileName();
+	if (activeProfileName === existingProfile.name)
+	{
+		await SettingsUtils.setActiveProfileName(newProfileName);
+	}
 
 	const response = SettingsUtils.setProfiles(savedProfiles);
 	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
-	ui.notifications.info(`Changes to profile "${profileName}" have been saved!`);
+	ui.notifications.info(`Changes to profile "${newProfileName}" have been saved!`);
 
 	return response;
 }
@@ -285,6 +299,24 @@ export async function resetProfiles(): Promise<void>
 					   .then(() => SettingsUtils.reloadWindow());
 }
 
+/**
+ * Determine whether to show the module icon animations.
+ */
+export function getShowModuleIconAnimation(): boolean
+{
+	return SettingsUtils.getShowModuleIconAnimation();
+}
+
+export async function setShowModuleIconAnimation(showModuleAnimation: boolean): Promise<boolean>
+{
+	const response = SettingsUtils.setShowModuleIconAnimation(showModuleAnimation);
+
+	response.then(() => Hooks.callAll(MODULE_PROFILES_UPDATED_HOOK_NAME));
+	ui.notifications.info(`Module icon animation has been ${showModuleAnimation ? 'enabled' : 'disabled'}`);
+
+	return response;
+}
+
 export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Promise<Record<string, boolean>>
 {
 	const moduleInfosToSave = MappingUtils.mapToModuleKeyIsActiveRecord(moduleInfos);
@@ -295,26 +327,22 @@ export async function setCoreModuleConfiguration(moduleInfos: ModuleInfo[]): Pro
 	return await game.settings.set('core', 'moduleConfiguration', mergedConfiguration);
 }
 
-export enum FoundryVersion {
-	v9 = '9',
-	v10 = '10',
-	v11 = '11',
-	v12 = '12'
-}
-
-export function getFoundryVersion(): FoundryVersion {
+export function getFoundryVersionStrategy(): FoundryVersionStrategy
+{
 	const foundryVersion = game.version.split('.')[0];
 
 	switch (foundryVersion)
 	{
-		case "9":
-			return FoundryVersion.v9;
-		case "10":
-			return FoundryVersion.v10;
-		case "11":
-			return FoundryVersion.v11
-		case "12":
-			return FoundryVersion.v12
+		case '9':
+			return v9;
+		case '10':
+			return v10;
+		case '11':
+			return v11;
+		case '12':
+			return v12;
+		case '13':
+			return v13;
 		default:
 			const errorMessage = `Module Profiles: Foundry version '${game.version}' is not supported. Please disable the Module Profiles module.`;
 			ui.notifications.error(errorMessage);

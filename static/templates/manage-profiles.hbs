@@ -23,9 +23,9 @@
 		</tr>
 		</thead>
 		<tbody>
-		{{#each profiles}}
-            <tr class="flexrow" {{#if isProfileActive}}style="background-color: lightgreen"{{/if}}>
-                <td class="profile-name-column">{{name}}</td>
+		{{#each profiles}}w
+            <tr class="flexrow" title="{{description}}" {{#if isProfileActive}}style="background-color: lightgreen"{{/if}}>
+			<td class="profile-name-column">{{#if description}}<span class="fa fa-circle-info" title="{{description}}" style="margin-right: 2px"></span>{{/if}}{{name}}</td>
 				<td class="icon-column"><a class="fa fa-power-off module-profiles-activate-profile" data-profile-name="{{name}}"></a></td>
 				<td class="icon-column"><a class="fa fa-edit module-profiles-edit-profile" data-profile-name="{{name}}"></a></td>
 				<td class="icon-column"><a class="fa fa-copy module-profiles-duplicate-profile" data-profile-name="{{name}}"></a></td>

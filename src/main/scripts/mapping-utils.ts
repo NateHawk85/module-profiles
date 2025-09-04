@@ -26,7 +26,7 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 	{
 		moduleInfos.push({
 			id: key,
-			title: findModuleTitleFromModuleId(key),
+			title: Settings.getFoundryVersionStrategy().findModuleTitleFromModuleId(key),
 			isActive: value,
 		});
 	});
@@ -45,16 +45,4 @@ export function mapToModuleInfos(moduleIDIsActiveRecord: Record<string, boolean>
 	});
 
 	return moduleInfos;
-}
-
-function findModuleTitleFromModuleId(moduleId: string): string | undefined
-{
-	const foundryVersion = Settings.getFoundryVersion();
-	if (foundryVersion === Settings.FoundryVersion.v12)
-	{
-		// @ts-expect-error - Title is inlined in the module object in v12
-		return game.modules.get(moduleId)?.title;
-	}
-
-	return game.modules.get(moduleId)?.data.title;
 }

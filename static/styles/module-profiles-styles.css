@@ -44,12 +44,12 @@
     background: orangered;
 }
 
-.module-profiles-status::before {
+.module-profiles-status-animation::before {
     content: "";
     animation: module-profiles-bounce 1.5s infinite;
 }
 
-.module-profiles-status::after {
+.module-profiles-status-animation::after {
     content: "";
     animation: module-profiles-bounce 1.5s -0.4s infinite;
 }

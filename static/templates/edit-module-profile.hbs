@@ -1,6 +1,10 @@
 <form id="module-profiles-view-profile-modules-form">
 	<!------------------------------ Header ------------------------------>
 	<h2 class="module-profiles-header">{{name}}</h2>
+	<label for="moduleProfilesEditProfileName">{{localize 'FORM_APPLICATION.header.profileName'}}</label>
+	<input id="moduleProfilesEditProfileName" name="moduleProfilesEditProfileName" type="text" value="{{name}}" />
+	<label for="moduleProfilesEditProfileDescription">{{localize 'FORM_APPLICATION.header.profileDescription'}}</label>
+	<input id="moduleProfilesEditProfileDescription" name="moduleProfilesEditProfileDescription" type="text" value="{{description}}" />
 	<!------------------------------ Content ------------------------------>
 	<ul>
 		{{#each modules}}

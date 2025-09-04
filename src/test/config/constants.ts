@@ -1,4 +1,6 @@
 // ---------------------------------------- Test Definitions ----------------------------------------
+import type { EditModuleProfileFormData } from 'main/classes/EditModuleProfileForm';
+
 interface TestModuleValues
 {
 	id: string,
@@ -32,6 +34,7 @@ export const TidyUITestValues: TestModuleValues = {
 export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, Readonly<ModuleProfile>>> = {
 	MultipleAllDisabled: {
 		name: 'Multiple Profiles - All Disabled',
+		description: '',
 		modules: [
 			buildModuleInfo(FindTheCulpritTestValues, false),
 			buildModuleInfo(ModuleProfilesTestValues, false),
@@ -41,6 +44,7 @@ export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, 
 	},
 	MultipleAllEnabled: {
 		name: 'Multiple Profiles - All Enabled',
+		description: '',
 		modules: [
 			buildModuleInfo(FindTheCulpritTestValues, true),
 			buildModuleInfo(ModuleProfilesTestValues, true),
@@ -50,6 +54,7 @@ export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, 
 	},
 	MultipleOnlyModuleProfilesEnabled: {
 		name: 'Multiple Profiles - Only Module Profiles Enabled',
+		description: '',
 		modules: [
 			buildModuleInfo(FindTheCulpritTestValues, false),
 			buildModuleInfo(ModuleProfilesTestValues, true),
@@ -59,6 +64,7 @@ export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, 
 	},
 	MultipleOnlyModuleProfilesAndTidyUIEnabled: {
 		name: 'Multiple Profiles - Module Profiles and Tidy UI Enabled',
+		description: '',
 		modules: [
 			buildModuleInfo(FindTheCulpritTestValues, false),
 			buildModuleInfo(ModuleProfilesTestValues, true),
@@ -68,12 +74,14 @@ export const TestModuleProfiles: Readonly<Record<CoreModuleConfigurationValues, 
 	},
 	OnlyModuleProfiles: {
 		name: 'Only Module Profiles',
+		description: '',
 		modules: [
 			buildModuleInfo(ModuleProfilesTestValues, true)
 		]
 	},
 	OnlyModuleProfilesAndTidyUI: {
 		name: 'Only Module Profiles And Tidy UI',
+		description: '',
 		modules: [
 			buildModuleInfo(ModuleProfilesTestValues, true),
 			buildModuleInfo(TidyUITestValues, true)
@@ -196,6 +204,7 @@ export const CoreGameRecords: Record<CoreModuleConfigurationValues, Record<strin
 export const DEFAULT_PROFILE_NAME = 'Default Profile';
 export const DEFAULT_PROFILE: ModuleProfile = {
 	name: DEFAULT_PROFILE_NAME,
+	description: '',
 	modules: [
 		{
 			id: ModuleProfilesTestValues.id,
@@ -226,7 +235,7 @@ export const NameModuleProfilePairs: [name: string, profile: ModuleProfile][] = 
 
 export const CoreModulesConfigurationToCorrespondingModuleInfosPairs:
 	[coreGameModuleMap: Map<string, StubCoreModuleDataEntry>, moduleProfile: ModuleProfile][] = coreModulesConfigurationToCorrespondingModuleInfosPairs();
-export const CoreSettingsModuleConfigurations: Record<string, boolean>[] = coreSettingsModuleConfigurations();
+export const CoreSettingsModuleConfigurations: EditModuleProfileFormData[] = coreSettingsModuleConfigurations();
 export const ModuleInfosToCorrespondingCoreSettingsModuleConfigurationPairs:
 	[moduleInfos: ModuleInfo[], coreConfiguration: Record<string, boolean>][] = moduleInfosToCorrespondingCoreSettingsModuleConfigurationPairs();
 
@@ -264,14 +273,18 @@ function coreModulesConfigurationToCorrespondingModuleInfosPairs(): [coreGameMod
 	});
 }
 
-function coreSettingsModuleConfigurations(): Record<string, boolean>[]
+function coreSettingsModuleConfigurations(): EditModuleProfileFormData[]
 {
 	return Object.entries(TestModuleProfiles).map(identifierModuleProfilePair =>
 	{
 		const coreConfiguration: Record<string, boolean> = {};
 		identifierModuleProfilePair[1].modules.forEach(moduleInfo => coreConfiguration[moduleInfo.id] = moduleInfo.isActive);
 
-		return coreConfiguration;
+		return {
+			moduleProfilesEditProfileName: DEFAULT_PROFILE_NAME,
+			moduleProfilesEditProfileDescription: '',
+			...coreConfiguration
+		};
 	});
 }
 
