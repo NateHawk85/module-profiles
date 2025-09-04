@@ -11,7 +11,7 @@ type StructuredDataVersion = { major: number; minor: number; patch: number };
 export async function migrate(): Promise<void>
 {
 	const savedDataVersion = SettingsUtils.getSettingsDataVersion();
-	// @ts-expect-error - Correct way to grab version info
+	// @ts-expect-error - Correct way to grab version info in v13+
 	const currentDataVersion = game.modules.get(SettingsUtils.MODULE_ID)?.version;
 
 	if (
@@ -85,14 +85,13 @@ export async function migrate(): Promise<void>
 		}
 	}
 
-	const newVersion = SettingsUtils.getSettingsDataVersion();
-
 	if (errors.length === 0)
 	{
-		ui.notifications.info(`Module Profiles: Migration to v${newVersion} was successful`);
+		await SettingsUtils.setSettingsDataVersion(currentDataVersion);
+		ui.notifications.info(`Module Profiles: Migration to v${currentDataVersion} was successful`);
 	} else
 	{
-		ui.notifications.error(`Module Profiles: Migration to v${newVersion} failed, check console for details`);
+		ui.notifications.error(`Module Profiles: Migration to v${currentDataVersion} failed, check console for details`);
 	}
 
 }
