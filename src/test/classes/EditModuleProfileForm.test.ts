@@ -172,7 +172,7 @@ describe('_updateObject', () =>
 
 				await editModuleProfileForm._updateObject(event, value);
 
-				const { moduleProfilesEditProfileName, ...rest } = value;
+				const { moduleProfilesEditProfileName, moduleProfilesEditProfileDescription, ...rest } = value;
 
 				expect(MappingUtils.mapToModuleInfos).toHaveBeenCalledWith(rest);
 			});
@@ -198,6 +198,7 @@ describe('_updateObject', () =>
 
 			expect(Settings.saveChangesToProfile).toHaveBeenCalledWith(profileName, {
 				name: DEFAULT_PROFILE_NAME,
+				description: '',
 				modules: moduleProfile.modules,
 			});
 		});

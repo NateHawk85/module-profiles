@@ -5,19 +5,18 @@ import * as SettingsUtils from './settings-utils';
 import * as SettingsMigration from './settings-migration';
 import { type FoundryVersionStrategy, v10, v11, v12, v13, v9 } from './version-strategies';
 
-export function registerModuleSettings(): void
+export async function registerModuleSettings(): Promise<void>
 {
 	SettingsUtils.registerSettings();
 	SettingsUtils.registerMenus();
 
-	SettingsMigration.migrate().then(() =>
+	await SettingsMigration.migrate();
+
+	const profiles = Settings.getAllProfiles();
+	if (!profiles || profiles.length === 0)
 	{
-		const profiles = Settings.getAllProfiles();
-		if (!profiles || profiles.length === 0)
-		{
-			Settings.resetProfiles();
-		}
-	});
+		Settings.resetProfiles();
+	}
 }
 
 /**

@@ -37,22 +37,22 @@ describe('registerModuleSettings', () =>
 		expect(SettingsUtils.registerMenus).toHaveBeenCalled();
 	});
 
-	test('WHEN Profiles setting returns undefined THEN resets to default profile', () =>
+	test('WHEN Profiles setting returns undefined THEN resets to default profile', async () =>
 	{
 		jest.spyOn(Settings, 'getAllProfiles').mockImplementation(() => <ModuleProfile[]><unknown>undefined);
 		jest.spyOn(Settings, 'resetProfiles').mockReturnValue(Promise.resolve());
 
-		Settings.registerModuleSettings();
+		await Settings.registerModuleSettings();
 
 		expect(Settings.resetProfiles).toHaveBeenCalled();
 	});
 
-	test('WHEN no profiles exist THEN resets to default profile', () =>
+	test('WHEN no profiles exist THEN resets to default profile', async () =>
 	{
 		jest.spyOn(Settings, 'getAllProfiles').mockImplementation(() => []);
 		jest.spyOn(Settings, 'resetProfiles').mockReturnValue(Promise.resolve());
 
-		Settings.registerModuleSettings();
+		await Settings.registerModuleSettings();
 
 		expect(Settings.resetProfiles).toHaveBeenCalled();
 	});
@@ -376,7 +376,7 @@ describe('createProfile', () =>
 				});
 
 				expect(SettingsUtils.setProfiles)
-					.toHaveBeenCalledWith([{ name: profileName, modules: testProfile.modules }]);
+					.toHaveBeenCalledWith([{ name: profileName, description: '', modules: testProfile.modules }]);
 			});
 
 	test.each(Constants.NameModuleProfilePairs)
@@ -393,7 +393,10 @@ describe('createProfile', () =>
 					modules: testProfile.modules,
 				});
 
-				const expectedProfilesArray = [existingProfile, { name: profileName, modules: testProfile.modules }];
+				const expectedProfilesArray = [
+					existingProfile,
+					{ name: profileName, description: '', modules: testProfile.modules },
+				];
 				expect(SettingsUtils.setProfiles).toHaveBeenCalledWith(expectedProfilesArray);
 			});
 
@@ -583,6 +586,7 @@ describe('saveChangesToProfile', () =>
 			[
 				{
 					name: Constants.TestModuleProfiles.OnlyModuleProfiles.name,
+					description: '',
 					modules: [Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)],
 				},
 			],
@@ -597,6 +601,7 @@ describe('saveChangesToProfile', () =>
 			[
 				{
 					name: Constants.TestModuleProfiles.OnlyModuleProfiles.name,
+					description: '',
 					modules: [
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo(Constants.PopoutTestValues, true),
@@ -611,6 +616,7 @@ describe('saveChangesToProfile', () =>
 			[
 				{
 					name: Constants.TestModuleProfiles.OnlyModuleProfiles.name,
+					description: '',
 					modules: [Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false)],
 				},
 				Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI,
@@ -626,6 +632,7 @@ describe('saveChangesToProfile', () =>
 			[
 				{
 					name: Constants.TestModuleProfiles.MultipleAllDisabled.name,
+					description: '',
 					modules: [
 						Constants.buildModuleInfo(Constants.FindTheCulpritTestValues, false),
 						Constants.buildModuleInfo(Constants.PopoutTestValues, true),
@@ -642,7 +649,8 @@ describe('saveChangesToProfile', () =>
 			DEFAULT_PROFILE_NAME,
 			[],
 			[
-				{ name: DEFAULT_PROFILE_NAME, modules: [] },
+				{ name: DEFAULT_PROFILE_NAME,
+					description: '',modules: [] },
 				Constants.TestModuleProfiles.MultipleAllDisabled, Constants.TestModuleProfiles.OnlyModuleProfilesAndTidyUI,
 			],
 		],
@@ -653,7 +661,7 @@ describe('saveChangesToProfile', () =>
 			{
 				jest.spyOn(Settings, 'getAllProfiles').mockReturnValue(existingProfiles);
 
-				await Settings.saveChangesToProfile(updatedProfileName, { modules: updatedModuleInfos });
+				await Settings.saveChangesToProfile(updatedProfileName, { description: '', modules: updatedModuleInfos });
 
 				expect(SettingsUtils.setProfiles).toHaveBeenCalledWith(expected);
 			});
@@ -891,7 +899,11 @@ describe('importProfiles', () =>
 					await Settings.importProfiles('json');
 
 					expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-					expect(Settings.createProfile).toHaveBeenCalledWith(value.name, value.modules);
+					expect(Settings.createProfile).toHaveBeenCalledWith({
+						name: value.name,
+						description: value.description,
+						modules: value.modules,
+					});
 				});
 
 		test.each(Constants.ModuleProfilesAsArray)
@@ -923,7 +935,11 @@ describe('importProfiles', () =>
 					await Settings.importProfiles('json');
 
 					expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-					expect(Settings.createProfile).toHaveBeenCalledWith(value.name, value.modules);
+					expect(Settings.createProfile).toHaveBeenCalledWith({
+						name: value.name,
+						description: value.description,
+						modules: value.modules,
+					});
 				});
 
 		test.each([
@@ -955,7 +971,11 @@ describe('importProfiles', () =>
 
 					expect(Settings.createProfile).toHaveBeenCalledTimes(value.length);
 					value.forEach(
-						profile => expect(Settings.createProfile).toHaveBeenCalledWith(profile.name, profile.modules));
+						profile => expect(Settings.createProfile).toHaveBeenCalledWith({
+							name: profile.name,
+							description: profile.description,
+							modules: profile.modules
+						}));
 				});
 
 		test.each([
@@ -1018,6 +1038,7 @@ describe('exportAllProfiles', () =>
 			const expected = '['
 							 + '\n  {'
 							 + '\n    "name": "A Profile Name",'
+							 + '\n    "description": "",'
 							 + '\n    "modules": ['
 							 + '\n      {'
 							 + '\n        "id": "a-module",'
@@ -1084,6 +1105,7 @@ describe('exportAllProfiles', () =>
 			const expected = '['
 							 + '\n  {'
 							 + '\n    "name": "A Profile Name",'
+							 + '\n    "description": "",'
 							 + '\n    "modules": ['
 							 + '\n      {'
 							 + '\n        "id": "a-module",'
@@ -1099,6 +1121,7 @@ describe('exportAllProfiles', () =>
 							 + '\n  },'
 							 + '\n  {'
 							 + '\n    "name": "A Different Profile Name",'
+							 + '\n    "description": "",'
 							 + '\n    "modules": ['
 							 + '\n      {'
 							 + '\n        "id": "a-module",'
@@ -1170,6 +1193,7 @@ describe('exportProfileByName', () =>
 
 			const expected = '{'
 							 + '\n  "name": "A Profile Name",'
+							 + '\n  "description": "",'
 							 + '\n  "modules": ['
 							 + '\n    {'
 							 + '\n      "id": "a-module",'
@@ -1218,6 +1242,7 @@ describe('exportProfileByName', () =>
 
 			const expected = '{'
 							 + '\n  "name": "A Different Profile Name",'
+							 + '\n  "description": "",'
 							 + '\n  "modules": ['
 							 + '\n    {'
 							 + '\n      "id": "a-module",'

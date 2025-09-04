@@ -12,7 +12,7 @@ export async function migrate(): Promise<void>
 {
 	const savedDataVersion = SettingsUtils.getSettingsDataVersion();
 	// @ts-expect-error - Correct way to grab version info
-	const currentDataVersion = game.modules.get(SettingsUtils.MODULE_ID)!.version;
+	const currentDataVersion = game.modules.get(SettingsUtils.MODULE_ID)?.version;
 
 	if (
 		!isSettingsDataVersion(savedDataVersion) ||

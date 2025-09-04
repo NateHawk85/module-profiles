@@ -124,7 +124,11 @@ describe('_updateObject', () =>
 
 				await createModuleProfileForm._updateObject(event, formData);
 
-				expect(Settings.createProfile).toHaveBeenCalledWith(value, CURRENT_MODULE_CONFIGURATION);
+				expect(Settings.createProfile).toHaveBeenCalledWith({
+					name: value,
+					description: '',
+					modules: CURRENT_MODULE_CONFIGURATION,
+				});
 			});
 
 	test.each(Constants.SavedModuleInfosFromGameSettings)
@@ -145,7 +149,11 @@ describe('_updateObject', () =>
 
 			await createModuleProfileForm._updateObject(event, formData);
 
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME, value);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: DEFAULT_PROFILE_NAME,
+				description: '',
+				modules: value,
+			});
 		});
 });
 

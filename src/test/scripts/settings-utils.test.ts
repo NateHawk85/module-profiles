@@ -30,6 +30,7 @@ describe('registerSettings', () =>
 					default: [
 						{
 							name: DEFAULT_PROFILE_NAME,
+							description: '',
 							modules: configuration,
 						},
 					],
@@ -55,7 +56,7 @@ describe('registerSettings', () =>
 	{
 		SettingsUtils.registerSettings();
 
-		expect(game.settings.register).toHaveBeenCalledTimes(2);
+		expect(game.settings.register).toHaveBeenCalledTimes(4);
 	});
 });
 
@@ -197,8 +198,8 @@ describe('Settings', () =>
 						{ name: 'A Module Profile', description: 'Some description', modules: [] },
 					],
 					[
-						{ name: 'A Module Profile', description: '', modules: [] },
-						{ name: 'Some Module Profile', description: 'Some description', modules: [] },
+						{ name: 'A Module Profile', description: 'Some description', modules: [] },
+						{ name: 'Some Module Profile', description: '', modules: [] },
 					],
 				],
 				[
@@ -311,6 +312,7 @@ describe('Settings', () =>
 						expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, [
 							{
 								name: DEFAULT_PROFILE_NAME,
+								description: '',
 								modules: expectedModuleInfos,
 							},
 						]);
@@ -363,6 +365,7 @@ describe('Settings', () =>
 						expect(game.settings.set).toHaveBeenCalledWith(MODULE_NAME, PROFILES_SETTING, [
 							{
 								name: DEFAULT_PROFILE_NAME,
+								description: '',
 								modules: expectedModuleInfos,
 							},
 						]);

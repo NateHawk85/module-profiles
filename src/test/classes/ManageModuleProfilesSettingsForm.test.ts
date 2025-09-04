@@ -488,7 +488,11 @@ describe('activateListeners', () =>
 					manageModuleProfilesSettingsForm.activateListeners();
 					element.click();
 					expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-					expect(Settings.createProfile).toHaveBeenCalledWith(profile.name + ' (Copy)', profile.modules);
+					expect(Settings.createProfile).toHaveBeenCalledWith({
+						name: profile.name + ' (Copy)',
+						description: profile.description,
+						modules: profile.modules,
+					});
 				});
 
 		test.each([DEFAULT_PROFILE_NAME, 'A Different Profile Name'])
@@ -500,7 +504,11 @@ describe('activateListeners', () =>
 				manageModuleProfilesSettingsForm.activateListeners();
 				element.click();
 				expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-				expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+				expect(Settings.createProfile).toHaveBeenCalledWith({
+					name: DEFAULT_PROFILE_NAME + ' (Copy)',
+					description: '',
+					modules: DEFAULT_PROFILE.modules,
+				});
 			});
 
 		test('WHEN elements have "module-profiles-duplicate-profile" class THEN adds duplicateProfile click event for many elements with class', () =>
@@ -514,12 +522,19 @@ describe('activateListeners', () =>
 
 			element1.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: DEFAULT_PROFILE_NAME + ' (Copy)',
+				description: '',
+				modules: DEFAULT_PROFILE.modules,
+			});
 
 			element2.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
-			expect(Settings.createProfile).toHaveBeenCalledWith(Constants.TestModuleProfiles.OnlyModuleProfiles.name + ' (Copy)',
-				Constants.TestModuleProfiles.OnlyModuleProfiles.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: Constants.TestModuleProfiles.OnlyModuleProfiles.name + ' (Copy)',
+				description: '',
+				modules: Constants.TestModuleProfiles.OnlyModuleProfiles.modules,
+			});
 		});
 
 		test('WHEN some elements have "module-profiles-duplicate-profile" class THEN only adds duplicateProfile click event to elements with class', () =>
@@ -539,11 +554,19 @@ describe('activateListeners', () =>
 
 			element1.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: DEFAULT_PROFILE_NAME + ' (Copy)',
+				description: '',
+				modules: DEFAULT_PROFILE.modules,
+			});
 
 			element2.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
-			expect(Settings.createProfile).toHaveBeenCalledWith('A Different Profile Name (Copy) (Copy)', differentProfileNameProfile.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: 'A Different Profile Name (Copy) (Copy)',
+				description: '',
+				modules: differentProfileNameProfile.modules,
+			});
 
 			element3.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
@@ -565,11 +588,19 @@ describe('activateListeners', () =>
 
 			element1.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(1);
-			expect(Settings.createProfile).toHaveBeenCalledWith(DEFAULT_PROFILE_NAME + ' (Copy)', DEFAULT_PROFILE.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: DEFAULT_PROFILE_NAME + ' (Copy)',
+				description: '',
+				modules: DEFAULT_PROFILE.modules,
+			});
 
 			element2.click();
 			expect(Settings.createProfile).toHaveBeenCalledTimes(2);
-			expect(Settings.createProfile).toHaveBeenCalledWith('A Different Profile Name (Copy)', differentProfileNameProfile.modules);
+			expect(Settings.createProfile).toHaveBeenCalledWith({
+				name: 'A Different Profile Name (Copy)',
+				description: '',
+				modules: differentProfileNameProfile.modules
+			});
 		});
 	});
 
